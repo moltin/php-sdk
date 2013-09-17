@@ -1,4 +1,4 @@
-# Currency Package
+# PHP SDK
 
 [![Build Status](https://secure.travis-ci.org/moltin/php-sdk.png)](http://travis-ci.org/moltin/php-sdk)
 
