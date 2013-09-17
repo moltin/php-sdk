@@ -22,7 +22,7 @@ namespace Moltin\SDK\Authenticate;
 
 use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
-class AuthorizationCode implements \Moltin\SDK\AuthenticateInterface
+class Password implements \Moltin\SDK\AuthenticateInterface
 {
 
     protected $data = array(
@@ -34,12 +34,14 @@ class AuthorizationCode implements \Moltin\SDK\AuthenticateInterface
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
         // Variables
-        $url  = $parent->auth_url.'oauth';
+        $url  = $parent->api_url.'oauth/access_token';
         $data = array(
-            'response_type' => 'code',
+            'grant_type'    => 'password',
+            'username'      => $args['username'],
+            'password'      => $args['password'],
             'client_id'     => $args['client_id'],
             'client_secret' => $args['client_secret'],
-            'redirect_uri'  => 'http://forge.dev.molt.in'
+            'redirect_uri'  => $args['redirect_url']
         );
 
         // Make initial request
