@@ -72,6 +72,8 @@ class SDK
         $this->store->insertUpdate('token',   $this->token);
         $this->store->insertUpdate('refresh', $this->refresh);
         $this->store->insertUpdate('expires', $this->expires);
+
+        return ( $this->token === null ? false : true );
     }
 
     public function refresh()

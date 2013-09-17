@@ -5,3 +5,4 @@ composer.lock
 ._*
 Thumbs.db
 Desktop.ini
+sftp-config.json

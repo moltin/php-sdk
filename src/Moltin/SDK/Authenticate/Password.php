@@ -34,21 +34,18 @@ class Password implements \Moltin\SDK\AuthenticateInterface
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
         // Variables
-        $url  = $parent->api_url.'oauth/access_token';
+        $url  = $parent->url.'oauth/access_token';
         $data = array(
             'grant_type'    => 'password',
             'username'      => $args['username'],
             'password'      => $args['password'],
             'client_id'     => $args['client_id'],
             'client_secret' => $args['client_secret'],
-            'redirect_uri'  => $args['redirect_url']
+            'redirect_uri'  => $args['redirect_uri']
         );
 
-        // Make initial request
-        header("Location: {$url}?".http_build_query($data));
-
-        /*$parent->request->setup($url, 'POST', $data);
-        list($data, $code) = $parent->request->make();
+        $parent->request->setup($url, 'POST', $data);
+        list($result, $code) = $parent->request->make();
 
         // Check response
         $result = json_decode($result, true);
@@ -58,12 +55,9 @@ class Password implements \Moltin\SDK\AuthenticateInterface
             throw new InvalidResponse($result['error']);
         }
 
-        var_dump($data);
-        exit();*/
-
         // Set data
-        $this->data['token']   = $result['token'];
-        $this->data['refresh'] = $result['refresh'];
+        $this->data['token']   = $result['access_token'];
+        $this->data['refresh'] = $result['refresh_token'];
         $this->data['expires'] = $result['expires'];
     }
 
