@@ -50,8 +50,8 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         // Add auth header
         if ( $token !== null ) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Authorization: OAuth '.$this->token
+            curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
+                'Authorization: Bearer '.$token
             ));
         }
 

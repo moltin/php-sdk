@@ -64,19 +64,7 @@ class Session implements \Moltin\SDK\StorageInterface
      */
     public function insertUpdate($id = null, $data)
     {
-        // Update
-        if ( $id !== null ) {
-            if ( ! isset($data['id']) ) { $data['id'] = $id; }
-            $_SESSION['sdk'][$id] = array_merge($_SESSION['sdk'][$id], $data);
-
-        // Insert
-        } else {
-            $_SESSION['sdk'][] = $data;
-            $ids = array_keys($_SESSION['sdk']);
-            $id = end($ids);
-            if ( ! isset($_SESSION['sdk'][$id]['id']) ) { $_SESSION['sdk'][$id]['id'] = $id; }
-        }
-
+        $_SESSION['sdk'][$id] = $data;
         return $this;
     }
 

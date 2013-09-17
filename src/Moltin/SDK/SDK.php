@@ -20,14 +20,14 @@
 
 namespace Moltin\SDK;
 
-use Moltin\SDK\InvalidRequestException as InvalidRequest;
-use Moltin\SDK\InvalidResponseException as InvalidResponse;
+use Moltin\SDK\Exception\InvalidRequestException as InvalidRequest;
+use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
 class SDK
 {
 
     // Test Paths
-    public $version  = 'beta';
+    public $version  = 'v1';
     public $url      = 'http://api.dev.molt.in/';
     public $auth_url = 'http://auth.dev.molt.in/';
 
@@ -69,9 +69,9 @@ class SDK
         $this->expires = $auth->get('expires');
 
         // Store them
-        $this->store('token',   $this->token);
-        $this->store('refresh', $this->refresh);
-        $this->store('expires', $this->expires);
+        $this->store->insertUpdate('token',   $this->token);
+        $this->store->insertUpdate('refresh', $this->refresh);
+        $this->store->insertUpdate('expires', $this->expires);
     }
 
     public function refresh()
@@ -79,11 +79,11 @@ class SDK
 
     }
 
-    protected function _request($url, $method, $post)
+    protected function _request($url, $method, $data)
     {
         // Check type
-        if ( ! in_array($type, $this->methods) ) {
-            throw new InvalidRequest('Invalid request type ('.$type.')');
+        if ( ! in_array($method, $this->methods) ) {
+            throw new InvalidRequest('Invalid request type ('.$method.')');
         }
 
         // Check token
@@ -96,23 +96,25 @@ class SDK
             throw new InvalidRequest('Your current OAuth session has expired');
         }
 
+        // Append URL
+        if ( $method == 'GET' and ! empty($data) ) {
+        	$url .= '?'.http_build_query($data);
+        	$data = array();
+        }
+
         // Start request
-        $this->request->setup($url, $method, $post, $this->token);
+        $this->request->setup($url, $method, $data, $this->token);
 
         // Make request
         list($result, $code) = $this->request->make();
-
-        // Check code
-        if ( $code !== 200 ) {
-            throw new InvalidResponse('Your request to '.$url.' returned code '.$code);
-        }
 
         // Check response
         $result = json_decode($result, true);
 
         // Check JSON for error
-        if ( isset($result['error']) ) {
-            throw new InvalidResponse($result['error']);
+        if ( isset($result['status']) and ! $result['status'] ) {
+        	$error = ( isset($result['errors']) ? implode("\n", $result['errors']) : $result['error'] );
+            throw new InvalidResponse($error);
         }
 
         // Return response

@@ -44,7 +44,7 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 
         // Make request
         $parent->request->setup($url, 'POST', $data);
-        list($data, $code) = $parent->request->make();
+        list($result, $code) = $parent->request->make();
 
         // Check response
         $result = json_decode($result, true);
@@ -54,12 +54,9 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
             throw new InvalidResponse($result['error']);
         }
 
-        var_dump($data);
-        exit();
-
         // Set data
-        $this->data['token']   = $result['token'];
-        $this->data['refresh'] = $result['refresh'];
+        $this->data['token']   = $result['access_token'];
+        $this->data['refresh'] = $result['access_token'];
         $this->data['expires'] = $result['expires'];
     }
 
