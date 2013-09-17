@@ -1,0 +1,32 @@
+{
+    "name": "moltin/php-sdk",
+    "version": "dev",
+    "description": "The Moltin php-sdk is a simple to use interface for the API to help you get off the ground quickly and efficiently",
+    "authors": [
+        {
+            "name": "Moltin Ltd",
+            "email": "support@molt.in",
+            "homepage": "http://molt.in",
+            "role": "Vendor"
+        }
+    ],
+    "support": {
+        "email": "support@molt.in",
+        "issues": "http://github.com/moltin/php-sdk/issues",
+        "source": "http://github.com/moltin/php-sdk"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.0",
+        "guzzle/guzzle": "3.6.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+        "mockery/mockery": "0.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Moltin": "src/"
+        }
+    }
+}

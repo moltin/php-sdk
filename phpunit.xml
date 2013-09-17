@@ -1,0 +1,7 @@
+<phpunit bootstrap="vendor/autoload.php" colors="false">
+    <testsuites>
+        <testsuite name="Moltin PHP SDK Test Suite">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
