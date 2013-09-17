@@ -22,7 +22,7 @@ namespace Moltin\SDK\Authenticate;
 
 use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
-class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
+class AuthorizationCode implements \Moltin\SDK\AuthenticateInterface
 {
 
     protected $data = array(

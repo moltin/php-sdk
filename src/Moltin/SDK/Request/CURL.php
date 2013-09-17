@@ -23,47 +23,47 @@ namespace Moltin\SDK\Request;
 class CURL implements \Moltin\SDK\RequestInterface
 {
 
-	protected $curl;
+    protected $curl;
 
     public function setup($url, $method, $post = array(), $token = null)
     {
-    	// Start curl
-    	$this->curl = curl_init();
+        // Start curl
+        $this->curl = curl_init();
 
-		// Add request settings
-		curl_setopt_array($this->curl, array(
-			CURLOPT_URL            => $url,
-			CURLOPT_CUSTOMREQUEST  => $method,
-			CURLOPT_HEADER         => false,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_SSL_VERIFYHOST => false,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_TIMEOUT        => 4
-		));
+        // Add request settings
+        curl_setopt_array($this->curl, array(
+            CURLOPT_URL            => $url,
+            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_HEADER         => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_TIMEOUT        => 4
+        ));
 
-		// Add post
-		if ( ! empty($post) ) {
-			curl_setopt($this->curl, CURLOPT_POST, true);
-			curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($post));
-		}
+        // Add post
+        if ( ! empty($post) ) {
+            curl_setopt($this->curl, CURLOPT_POST, true);
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($post));
+        }
 
-		// Add auth header
-		if ( $token !== null ) {
-			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-				'Authorization: OAuth '.$this->token
-			));
-		}
+        // Add auth header
+        if ( $token !== null ) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Authorization: OAuth '.$this->token
+            ));
+        }
 
     }
 
     public function make()
     {
-   		// Make request
-		$result = curl_exec($this->curl);
-		$code   = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        // Make request
+        $result = curl_exec($this->curl);
+        $code   = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
 
-		return [$result, $code];
+        return [$result, $code];
     }
 
 }
