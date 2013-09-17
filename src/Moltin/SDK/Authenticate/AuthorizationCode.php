@@ -34,16 +34,18 @@ class AuthorizationCode implements \Moltin\SDK\AuthenticateInterface
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
         // Variables
-        $url  = $parent->url.'oauth/access_token';
+        $url  = $parent->auth_url.'oauth';
         $data = array(
-            'grant_type'    => 'client_credentials',
+            'response_type' => 'code',
             'client_id'     => $args['client_id'],
             'client_secret' => $args['client_secret'],
-            'redirect_uri'  => ''
+            'redirect_uri'  => 'http://forge.dev.molt.in'
         );
 
-        // Make request
-        $parent->request->setup($url, 'POST', $data);
+        // Make initial request
+        header("Location: {$url}?".http_build_query($data));
+
+        /*$parent->request->setup($url, 'POST', $data);
         list($data, $code) = $parent->request->make();
 
         // Check response
@@ -55,7 +57,7 @@ class AuthorizationCode implements \Moltin\SDK\AuthenticateInterface
         }
 
         var_dump($data);
-        exit();
+        exit();*/
 
         // Set data
         $this->data['token']   = $result['token'];
