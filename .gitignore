@@ -1,5 +1,4 @@
 /vendor/
-/_test/
 composer.lock
 .DS_Store
 ._*

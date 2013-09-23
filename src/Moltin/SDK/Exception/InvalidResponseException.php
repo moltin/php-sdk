@@ -22,4 +22,8 @@ namespace Moltin\SDK\Exception;
 
 class InvalidResponseException extends \Exception
 {
+	public function __toString()
+	{
+	    return $this->message;
+	}
 }

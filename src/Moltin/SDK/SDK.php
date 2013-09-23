@@ -63,6 +63,25 @@ class SDK
         // Perform authentication
         $auth->authenticate($args, $this);
 
+        // Store
+        $this->_storeToken($auth);
+
+        return ( $this->token === null ? false : true );
+    }
+
+    public function refresh(\Moltin\SDK\AuthenticateInterface $auth, $args = array())
+    {
+        // Perform refresh
+        $auth->refresh($args, $this);
+
+        // Store
+        $this->_storeToken($auth);
+
+        return ( $this->token === null ? false : true );
+    }
+
+    protected function _storeToken(\Moltin\SDK\AuthenticateInterface $auth)
+    {
         // Get keys
         $this->token   = $auth->get('token');
         $this->refresh = $auth->get('refresh');
@@ -72,13 +91,6 @@ class SDK
         $this->store->insertUpdate('token',   $this->token);
         $this->store->insertUpdate('refresh', $this->refresh);
         $this->store->insertUpdate('expires', $this->expires);
-
-        return ( $this->token === null ? false : true );
-    }
-
-    public function refresh()
-    {
-
     }
 
     protected function _request($url, $method, $data)

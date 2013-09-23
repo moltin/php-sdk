@@ -61,6 +61,35 @@ class Password implements \Moltin\SDK\AuthenticateInterface
         $this->data['expires'] = $result['expires'];
     }
 
+    public function refresh($args, \Moltin\SDK\SDK $parent)
+    {
+        // Variables
+        $url  = $parent->url.'oauth/access_token';
+        $data = array(
+            'grant_type'    => 'refresh_token',
+            'refresh_token' => $parent->store->get('refresh'),
+            'client_id'     => $args['client_id'],
+            'client_secret' => $args['client_secret'],
+            'redirect_uri'  => $args['redirect_uri']
+        );
+
+        $parent->request->setup($url, 'POST', $data);
+        list($result, $code) = $parent->request->make();
+
+        // Check response
+        $result = json_decode($result, true);
+
+        // Check JSON for error
+        if ( isset($result['error']) ) {
+            throw new InvalidResponse($result['error']);
+        }
+
+        // Set data
+        $this->data['token']   = $result['access_token'];
+        $this->data['refresh'] = $parent->store->get('refresh');
+        $this->data['expires'] = $result['expires'];
+    }
+
     public function get($key)
     {
         if ( ! isset($this->data[$key]) ) { return; }
