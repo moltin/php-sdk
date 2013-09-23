@@ -27,12 +27,12 @@ class SDK
 {
 
     // Test Paths
-    public $version  = 'v1';
+    public $version  = 'beta';
     public $url      = 'http://api.dev.molt.in/';
     public $auth_url = 'http://auth.dev.molt.in/';
 
     // Live Paths
-    // public $version  = 'v1';
+    // public $version  = 'beta';
     // public $url      = 'http://api.molt.in/';
     // public $auth_url = 'http://auth.molt.in/';
 
@@ -46,11 +46,14 @@ class SDK
     protected $refresh;
     protected $expires;
 
-    public function __construct(\Moltin\SDK\StorageInterface $store, \Moltin\SDK\RequestInterface $request)
+    public function __construct(\Moltin\SDK\StorageInterface $store, \Moltin\SDK\RequestInterface $request, $args = array())
     {
         // Make global
         $this->store   = $store;
         $this->request = $request;
+
+        // Setup args
+        if ( isset($args['version']) ) { $this->version = $args['version']; }
 
         // Retrieve information
         $this->token   = $this->store->get('token');
