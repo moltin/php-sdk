@@ -22,7 +22,54 @@ Add the following to your project `composer.json` file
 When you're done just run `php composer.phar install` and the package is ready to be used.
 
 ## Usage
-Coming Soon
+
+Below is a basic usage guide for this package.
+
+### Instantiating the Package
+
+Before you begin you will need to instantiate the package.
+
+``` php
+use Moltin\SDK\Request\CURL as Request;
+use Moltin\SDK\Storage\Session as Storage;
+
+$moltin = new \Moltin\SDK\SDK(new Storage(), new Request());
+```
+
+If you wish to use another storage or request method simply change the relevant use statement to reflect your preferences.
+
+### Authorisation
+
+Before you can use the API you will need to authorise, there are a number of ways to this. The simplest of which is to use the "client credentials" method. You can do this as follows:
+
+``` php
+$result = $moltin->authenticate(new \Moltin\SDK\Authenticate\ClientCredentials(), array(
+	'client_id'     => '<YOUR CLIENT ID>',
+	'client_secret' => '<YOUR CLIENT SECRET>'
+));
+```
+
+Once this is done your token will be stored in your selected storage method and passed automatically to all subsequent calls.
+
+### Making a Call
+
+After authorising you can start to make calls to the API, there are four simple calls to use: GET, PUT, POST and DELETE.
+
+*Note:* The following example shows the products API, for other end-points please check our [Documentation](http://docs.molt.in)
+
+``` php
+	// Create a product
+	$result = $moltin->post('product', $_POST);
+
+	// Update a product
+	$result = $moltin->put('product/1', array('title' => 'Updated!'));
+
+	// Get a product
+	$result = $moltin->get('product/1');
+
+	// Delete a product
+	$result = $moltin->delete('product/1');
+```
 
 ## Testing
 
