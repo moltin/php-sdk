@@ -44,7 +44,7 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 
         // Make request
         $parent->request->setup($url, 'POST', $data);
-        list($result, $code) = $parent->request->make();
+        $result = $parent->request->make();
 
         // Check response
         $result = json_decode($result, true);

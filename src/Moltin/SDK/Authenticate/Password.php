@@ -45,7 +45,7 @@ class Password implements \Moltin\SDK\AuthenticateInterface
         );
 
         $parent->request->setup($url, 'POST', $data);
-        list($result, $code) = $parent->request->make();
+        $result = $parent->request->make();
 
         // Check response
         $result = json_decode($result, true);

@@ -22,13 +22,17 @@ namespace Moltin\SDK\Request;
 
 class CURL implements \Moltin\SDK\RequestInterface
 {
+    public $url;
+    public $code;
+    public $time;
 
     protected $curl;
 
     public function setup($url, $method, $post = array(), $token = null)
     {
-        // Start curl
+        // Variables
         $this->curl = curl_init();
+        $this->url  = $url;
 
         // Add request settings
         curl_setopt_array($this->curl, array(
@@ -45,7 +49,7 @@ class CURL implements \Moltin\SDK\RequestInterface
         // Add post
         if ( ! empty($post) ) {
             curl_setopt($this->curl, CURLOPT_POST, true);
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($post));
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
         }
 
         // Add auth header
@@ -60,10 +64,11 @@ class CURL implements \Moltin\SDK\RequestInterface
     public function make()
     {
         // Make request
-        $result = curl_exec($this->curl);
-        $code   = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        $result     = curl_exec($this->curl);
+        $this->code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        $this->time = curl_getinfo($this->curl, CURLINFO_TOTAL_TIME);
 
-        return [$result, $code];
+        return $result;
     }
 
 }

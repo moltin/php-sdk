@@ -123,7 +123,7 @@ class SDK
         $this->request->setup($url, $method, $data, $this->token);
 
         // Make request
-        list($result, $code) = $this->request->make();
+        $result = $this->request->make();
 
         // Check response
         $result = json_decode($result, true);
