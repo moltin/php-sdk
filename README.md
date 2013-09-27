@@ -71,6 +71,24 @@ After authorising you can start to make calls to the API, there are four simple 
 	$result = $moltin->delete('product/1');
 ```
 
+### Building a Form
+
+To help with the usual CRUD forms we've included an automated form builder to take care of the messy bits for you.
+
+``` php
+	// Get assignments (create)
+	$assignments = $moltin->assignments('products');
+
+	// Get assignments (edit product 1)
+	$assignments = $moltin->assignments('products', 1);
+
+	// Show form
+	foreach ($assignments as $field) {
+		echo '<label for="'.$field['slug'].'">'.$field['name'].'</label>';
+		echo $field['input'];
+	}
+```
+
 ## Testing
 
 ``` bash
