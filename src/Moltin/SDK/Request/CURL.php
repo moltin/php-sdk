@@ -25,12 +25,14 @@ class CURL implements \Moltin\SDK\RequestInterface
     public $url;
     public $code;
     public $time;
+    public $header;
 
     protected $curl;
 
     public function setup($url, $method, $post = array(), $token = null)
     {
         // Variables
+        $headers    = [];
         $this->curl = curl_init();
         $this->url  = $url;
 
@@ -43,30 +45,42 @@ class CURL implements \Moltin\SDK\RequestInterface
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_TIMEOUT        => 4
+            CURLOPT_TIMEOUT        => 4,
+            CURLINFO_HEADER_OUT    => true
         ));
+
+        // Add put
+        // if ( $method == 'PUT' ) {
+        //     curl_setopt($this->curl, CURLOPT_PUT, true);
+        // }
 
         // Add post
         if ( ! empty($post) ) {
             curl_setopt($this->curl, CURLOPT_POST, true);
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, ( $method == 'PUT' ? http_build_query($post) : $post ));
+        }
+
+        // Add content-type header
+        if ( $token !== null and $method == 'PUT' ) {
+            $headers[] = 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8';
         }
 
         // Add auth header
         if ( $token !== null ) {
-            curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer '.$token
-            ));
+            $headers[] = 'Authorization: Bearer '.$token;
         }
 
+        // Set headers
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
     }
 
     public function make()
     {
         // Make request
-        $result     = curl_exec($this->curl);
-        $this->code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
-        $this->time = curl_getinfo($this->curl, CURLINFO_TOTAL_TIME);
+        $result       = curl_exec($this->curl);
+        $this->code   = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        $this->time   = curl_getinfo($this->curl, CURLINFO_TOTAL_TIME);
+        $this->header = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
 
         return $result;
     }

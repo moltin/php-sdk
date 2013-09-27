@@ -25,16 +25,10 @@ use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
 class SDK
 {
-
-    // Test Paths
+    // Paths
     public $version  = 'beta';
-    public $url      = 'http://api.dev.molt.in/';
-    public $auth_url = 'http://auth.dev.molt.in/';
-
-    // Live Paths
-    // public $version  = 'beta';
-    // public $url      = 'http://api.molt.in/';
-    // public $auth_url = 'http://auth.molt.in/';
+    public $url      = 'http://api.molt.in/';
+    public $auth_url = 'http://auth.molt.in/';
 
     // Variables
     public $methods = array('GET', 'POST', 'PUT', 'DELETE');
@@ -81,6 +75,16 @@ class SDK
         $this->_storeToken($auth);
 
         return ( $this->token === null ? false : true );
+    }
+
+    public function assignments($type, $id = null)
+    {
+        // Variables
+        $assignments = $this->get($type.'/assignments'.( $id !== null ? '/'.$id : '' ));
+        $flows       = new Flows($assignments['result']);
+
+        // Build and return form
+        return $flows->build($assignments);
     }
 
     protected function _storeToken(\Moltin\SDK\AuthenticateInterface $auth)
