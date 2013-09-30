@@ -27,7 +27,7 @@ class SDK
 {
     // Paths
     public $version  = 'beta';
-    public $url      = 'http://api.molt.in/';
+    public $url      = 'https://api.molt.in/';
     public $auth_url = 'http://auth.molt.in/';
 
     // Variables
