@@ -47,7 +47,7 @@ class Flows {
 				$this->args = array(
 					'name'     => $assignment['slug'],
 					'id'       => $assignment['slug'],
-					'value'    => ( isset($_POST[$assignment['slug']]) ? $_POST[$assignment['slug']] : false ),
+					'value'    => ( isset($_POST[$assignment['slug']]) ? $_POST[$assignment['slug']] : ( isset($assignment['value']) ? $assignment['value'] : null ) ),
 					'required' => ( $assignment['required'] == 1 ? 'required' : false )
 				);
 
@@ -56,8 +56,7 @@ class Flows {
 
 			// Not found
 			} else {
-				// throw new InvalidFieldType('Field type '.$assignment['type'].' was not found');
-				echo 'Field type '.$assignment['type'].' was not found<br />';
+				throw new InvalidFieldType('Field type '.$assignment['type'].' was not found');
 			}
 		}
 
@@ -94,12 +93,14 @@ class Flows {
 
 	protected function typeChoice($a)
 	{
+		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['key']; }
 		$options = $this->_buildOptions($a['options']['choices'], $this->args['value'], $a['options']['default']);
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
 	}
 
 	protected function typeRelationship($a)
 	{
+		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['id']; }
 		$options = $this->_buildOptions($a['available'], $this->args['value']);
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
 	}

@@ -80,7 +80,7 @@ class SDK
     public function assignments($type, $id = null)
     {
         // Variables
-        $assignments = $this->get($type.'/assignments'.( $id !== null ? '/'.$id : '' ));
+        $assignments = $this->get($type.( $id !== null ? '/'.$id : '' ).'/assignments');
         $flows       = new Flows($assignments['result']);
 
         // Build and return form
