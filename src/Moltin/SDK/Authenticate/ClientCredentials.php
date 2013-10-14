@@ -60,6 +60,10 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
         $this->data['expires'] = $result['expires'];
     }
 
+    public function refresh($args, \Moltin\SDK\SDK $parent)
+    {
+    }
+
     public function get($key)
     {
         if ( ! isset($this->data[$key]) ) { return; }

@@ -48,7 +48,8 @@ class Flows {
 					'name'     => $assignment['slug'],
 					'id'       => $assignment['slug'],
 					'value'    => ( isset($_POST[$assignment['slug']]) ? $_POST[$assignment['slug']] : ( isset($assignment['value']) ? $assignment['value'] : null ) ),
-					'required' => ( $assignment['required'] == 1 ? 'required' : false )
+					'required' => ( $assignment['required'] == 1 ? 'required' : false ),
+					'class'    => ['form-control']
 				);
 
 				// Build input
@@ -72,7 +73,7 @@ class Flows {
 	protected function typeSlug($a)
 	{
 		$this->args['type']        = 'text';
-		$this->args['class']       = 'slug';
+		$this->args['class'][]     = 'slug';
 		$this->args['data-parent'] = '#'.$a['options']['parent'];
 		return '<input '.$this->_buildArgs($this->args).' />';
 	}
@@ -86,7 +87,7 @@ class Flows {
 	protected function typeDecimal($a)
 	{
 		$this->args['type']        = 'text';
-		$this->args['class']       = 'decimal';
+		$this->args['class'][]     = 'decimal';
 		$this->args['data-places'] = $a['options']['decimal_places'];
 		return '<input '.$this->_buildArgs($this->args).' />';
 	}
@@ -113,7 +114,7 @@ class Flows {
 	protected function _buildArgs($args)
 	{
 		$string = '';
-		foreach ( $args as $key => $value ) { if ( $value !== false ) { $string .= $key.'="'.$value.'" '; } }
+		foreach ( $args as $key => $value ) { if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } }
 		return trim($string);
 	}
 
