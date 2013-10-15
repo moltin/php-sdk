@@ -95,7 +95,7 @@ class Flows {
 	protected function typeChoice($a)
 	{
 		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['key']; }
-		$options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], null, $a['required']);
+		$options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], $a['required']);
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
 	}
 
