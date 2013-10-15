@@ -95,14 +95,14 @@ class Flows {
 	protected function typeChoice($a)
 	{
 		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['key']; }
-		$options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default']);
+		$options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], null, $a['required']);
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
 	}
 
 	protected function typeRelationship($a)
 	{
 		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['id']; }
-		$options = $this->_buildOptions($a['available'], $a['name'], $this->args['value']);
+		$options = $this->_buildOptions($a['available'], $a['name'], $this->args['value'], null, $a['required']);
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
 	}
 
@@ -118,9 +118,9 @@ class Flows {
 		return trim($string);
 	}
 
-	protected function _buildOptions($options, $title, $value = null, $default = null)
+	protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
 	{
-		$string = '<option value="">Select a '.$title.'</option>';
+		$string = ( ! $required ? '<option value="">Select a '.$title.'</option>' : '' );
 		foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
 		return $string;
 	}
