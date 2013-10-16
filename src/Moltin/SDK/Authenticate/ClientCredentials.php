@@ -38,12 +38,11 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
         $data = array(
             'grant_type'    => 'client_credentials',
             'client_id'     => $args['client_id'],
-            'client_secret' => $args['client_secret'],
-            'redirect_uri'  => ''
+            'client_secret' => $args['client_secret']
         );
 
         // Make request
-        $parent->request->setup($url, 'POST', $data);
+        $parent->request->setup($url, 'POST', http_build_query($data));
         $result = $parent->request->make();
 
         // Check response
@@ -62,6 +61,7 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 
     public function refresh($args, \Moltin\SDK\SDK $parent)
     {
+        $this->authenticate($args, $parent);
     }
 
     public function get($key)
