@@ -57,7 +57,7 @@ class CURL implements \Moltin\SDK\RequestInterface
         // Add post
         if ( ! empty($post) ) {
             curl_setopt($this->curl, CURLOPT_POST, true);
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, ( $method == 'PUT' ? http_build_query($post) : $post ));
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($post));
         }
 
         // Add content-type header

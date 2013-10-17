@@ -42,7 +42,7 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
         );
 
         // Make request
-        $parent->request->setup($url, 'POST', http_build_query($data));
+        $parent->request->setup($url, 'POST', $data);
         $result = $parent->request->make();
 
         // Check response
