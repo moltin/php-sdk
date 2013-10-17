@@ -70,6 +70,9 @@ class CURL implements \Moltin\SDK\RequestInterface
             $headers[] = 'Authorization: Bearer '.$token;
         }
 
+        // Add session header
+        $headers[] = 'X-Moltin-Session: '.session_id();
+
         // Set headers
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
     }
