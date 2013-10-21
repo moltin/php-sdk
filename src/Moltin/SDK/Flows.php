@@ -38,7 +38,7 @@ class Flows {
 		foreach ( $this->assignments as &$assignment ) {
 
 			// Variables
-			$method = 'type'.ucwords(str_replace('-', ' ', $assignment['type']));
+			$method = 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $assignment['type'])));
 
 			// Check for method
 			if ( method_exists($this, $method) ) {
