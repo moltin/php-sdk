@@ -38,7 +38,7 @@ class Flows {
 		foreach ( $this->assignments as &$assignment ) {
 
 			// Variables
-			$method = 'type'.ucfirst($assignment['type']);
+			$method = 'type'.ucwords(str_replace('-', ' ', $assignment['type']));
 
 			// Check for method
 			if ( method_exists($this, $method) ) {
@@ -104,6 +104,11 @@ class Flows {
 		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['id']; }
 		$options = $this->_buildOptions($a['available'], $a['name'], $this->args['value'], null, $a['required']);
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
+	}
+
+	protected function typeTaxBand($a)
+	{
+		return $this->typeRelationship($a);
 	}
 
 	protected function typeText($a)
