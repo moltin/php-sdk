@@ -70,6 +70,12 @@ class Flows {
 		return '<input '.$this->_buildArgs($this->args).' />';
 	}
 
+	protected function typeEmail($a)
+	{
+		$this->args['type'] = 'email';
+		return '<input '.$this->_buildArgs($this->args).' />';
+	}
+
 	protected function typeSlug($a)
 	{
 		$this->args['type']        = 'text';
@@ -107,6 +113,11 @@ class Flows {
 	}
 
 	protected function typeTaxBand($a)
+	{
+		return $this->typeRelationship($a);
+	}
+
+	protected function typeCountry($a)
 	{
 		return $this->typeRelationship($a);
 	}
