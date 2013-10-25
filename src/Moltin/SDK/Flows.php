@@ -124,7 +124,9 @@ class Flows {
 
 	protected function typeText($a)
 	{
-		return '<textarea '.$this->_buildArgs($this->args).'>'.$this->args['value'].'</textarea>';
+		$value = $this->args['value'];
+		unset($this->args['value']);
+		return '<textarea '.$this->_buildArgs($this->args).'>'.$value.'</textarea>';
 	}
 
 	protected function _buildArgs($args)
