@@ -122,6 +122,11 @@ class Flows {
 		return $this->typeRelationship($a);
 	}
 
+	protected function typeCurrency($a)
+	{
+		return $this->typeRelationship($a);
+	}
+
 	protected function typeGateway($a)
 	{
 		return $this->typeRelationship($a);
