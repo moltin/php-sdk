@@ -122,6 +122,11 @@ class Flows {
 		return $this->typeRelationship($a);
 	}
 
+	protected function typeGateway($a)
+	{
+		return $this->typeRelationship($a);
+	}
+
 	protected function typeText($a)
 	{
 		$value = $this->args['value'];
