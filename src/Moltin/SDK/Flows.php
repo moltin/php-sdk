@@ -112,6 +112,12 @@ class Flows {
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
 	}
 
+	protected function typeMultiple($a)
+	{
+		$this->args['multiple'] = false;
+		return $this->typeRelationship($a);
+	}
+
 	protected function typeTaxBand($a)
 	{
 		return $this->typeRelationship($a);
@@ -142,14 +148,14 @@ class Flows {
 	protected function _buildArgs($args)
 	{
 		$string = '';
-		foreach ( $args as $key => $value ) { if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } }
+		foreach ( $args as $key => $value ) { if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } else { $string .= $key.' '; } }
 		return trim($string);
 	}
 
 	protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
 	{
 		$string = ( ! $required ? '<option value="">Select a '.$title.'</option>' : '' );
-		foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
+		foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
 		return $string;
 	}
 
