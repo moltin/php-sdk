@@ -146,15 +146,86 @@ class SDK
         return $result;
     }
 
+    protected function _identifier()
+    {
+        if ( isset($_COOKIE['identifier']) ) { return $_COOKIE['identifier']; }
+
+        $identifier = md5(uniqid());
+        setcookie('identifier', $identifier, strtotime("+30 day"), '/');
+        return $identifier;
+    }
+
     public function __call($method, $args)
     {
         // Variables
-        $method = strtoupper($method);
-        $url    = $this->url.$this->version.'/'.$args[0];
-        $post   = ( isset($args[1]) ? $args[1] : array() );
+        $regex = "/(get|delete|update|create)(?:(\w+)By(\w+)|(\w+))/i";
+        $map   = array('update' => 'put', 'create' => 'post');
+
+        // Nice method generation
+        if ( preg_match($regex, $method, $result) )
+        {
+            // Format result
+            if ( isset($result[4]) )
+            {
+                $type   = $result[1];
+                $method = $result[4];
+                $by     = null;
+            }
+            else 
+            {
+                $type   = $result[1];
+                $method = $result[2];
+                $by     = $result[3];
+            }
+
+            // Sub-items
+            $pieces = array_filter(preg_split('/(?=[A-Z])/', $method));
+            $method = implode('/', $pieces);
+
+            // Variables
+            $type = strtoupper(( array_key_exists($type, $map) ? $map[$type] : $type ));
+            $url  = $this->url.$this->version.'/'.strtolower($method);
+            $post = array();
+
+            // Append Id directly to URL
+            if ( isset($args[0]) and ! empty($args[0]) and ( ( $by !== null and $by == 'Id' ) or in_array($type, array('PUT', 'DELETE')) ) )
+            {
+                $url .= '/'.$args[0];
+                array_shift($args);
+                $by = null;
+            }
+
+            // Append Identifier to Cart
+            if ( strtolower($method) == 'cart' )
+            {
+                $url .= '/'.$this->_identifier();
+            }
+
+            // Setup get-by
+            if ( $by !== null )
+            {
+                $post = array(strtolower($by) => $args[0]);
+                array_shift($args);
+            }
+            
+            // Set post
+            if ( ! empty($args) )
+            {
+                $post = $args[0];
+            }
+
+        }
+        // Base method request
+        else
+        {
+            // Variables
+            $type = strtoupper($method);
+            $url  = $this->url.$this->version.'/'.$args[0];
+            $post = ( isset($args[1]) ? $args[1] : array() );
+        }
 
         // Make request
-        return $this->_request($url, $method, $post);
+        return $this->_request($url, $type, $post);
     }
 
 }
