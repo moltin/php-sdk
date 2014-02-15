@@ -114,8 +114,9 @@ class Flows {
 
 	protected function typeMultiple($a)
 	{
-		$this->args['multiple'] = false;
 		if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) { $this->args['value'] = array_keys($this->args['value']); }
+		$this->args['multiple'] = 'multiple';
+		$this->args['name']    .= '[]';
 		return $this->typeRelationship($a);
 	}
 
