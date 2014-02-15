@@ -107,7 +107,7 @@ class Flows {
 
 	protected function typeRelationship($a)
 	{
-		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['id']; }
+		if ( is_array($this->args['value']) && isset($this->args['value']['id'])) { $this->args['value'] = $this->args['value']['id']; }
 		$options = $this->_buildOptions($a['available'], $a['name'], $this->args['value'], null, $a['required']);
 		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
 	}
@@ -115,6 +115,7 @@ class Flows {
 	protected function typeMultiple($a)
 	{
 		$this->args['multiple'] = false;
+		if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) { $this->args['value'] = array_keys($this->args['value']); }
 		return $this->typeRelationship($a);
 	}
 
