@@ -150,7 +150,7 @@ class Flows {
 	protected function _buildArgs($args)
 	{
 		$string = '';
-		foreach ( $args as $key => $value ) { if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } else { $string .= $key.' '; } }
+		foreach ( $args as $key => $value ) { if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } elseif ($key != "required") { $string .= $key.' '; } }
 		return trim($string);
 	}
 
