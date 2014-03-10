@@ -81,11 +81,11 @@ class SDK
         return ( $this->token === null ? false : true );
     }
 
-    public function assignments($type, $id = null)
+    public function assignments($type, $id = null, $wrap = false)
     {
         // Variables
         $assignments = $this->get($type.( $id !== null ? '/'.$id : '' ).'/assignments');
-        $flows       = new Flows($assignments['result']);
+        $flows       = new Flows($assignments['result'], $wrap);
 
         // Build and return form
         return $flows->build($assignments);

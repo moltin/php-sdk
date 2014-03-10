@@ -25,9 +25,10 @@ use Moltin\SDK\Exception\InvalidFieldTypeException as InvalidFieldType;
 class Flows {
 
 	protected $assignments;
+	protected $wrap;
 	protected $args;
 
-	public function __construct($assignments)
+	public function __construct($assignments, $wrap = false)
 	{
 		$this->assignments = $assignments;
 	}
@@ -51,6 +52,9 @@ class Flows {
 					'required' => ( $assignment['required'] == 1 ? 'required' : false ),
 					'class'    => ['form-control']
 				);
+
+				// Wrap form value
+				if ( $this->wrap !== false ) { $this->args['name'] = $wrap.'['.$assignment['slug'].']'; }
 
 				// Build input
 				$assignment['input'] = $this->$method($assignment);
