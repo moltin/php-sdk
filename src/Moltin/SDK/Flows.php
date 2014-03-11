@@ -54,7 +54,7 @@ class Flows {
 				);
 
 				// Wrap form value
-				if ( $this->wrap !== false ) { $this->args['name'] = $wrap.'['.$assignment['slug'].']'; }
+				if ( $this->wrap !== false ) { $this->args['name'] = $this->wrap.'['.$assignment['slug'].']'; }
 
 				// Build input
 				$assignment['input'] = $this->$method($assignment);
