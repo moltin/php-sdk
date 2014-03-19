@@ -155,8 +155,10 @@ class Flows {
 	protected function _buildArgs($args, $val = true)
 	{
 		$string = '';
-		foreach ( $args as $key => $value ) {
+		foreach ( $args as $key => $value ) { 
 			if ($key == "value" && $val != true) {
+
+			} else {
 				if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } elseif ($key != "required") { $string .= $key.' '; }
 			}
 		}
