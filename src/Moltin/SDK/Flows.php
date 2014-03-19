@@ -106,14 +106,14 @@ class Flows {
 	{
 		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['key']; }
 		$options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], $a['required']);
-		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
+		return '<select '.$this->_buildArgs($this->args, false).'>'.$options.'</select>';
 	}
 
 	protected function typeRelationship($a)
 	{
 		if ( is_array($this->args['value']) && isset($this->args['value']['id'])) { $this->args['value'] = $this->args['value']['id']; }
 		$options = $this->_buildOptions($a['available'], $a['name'], $this->args['value'], null, $a['required']);
-		return '<select '.$this->_buildArgs($this->args).'>'.$options.'</select>';
+		return '<select '.$this->_buildArgs($this->args, false).'>'.$options.'</select>';
 	}
 
 	protected function typeMultiple($a)
@@ -151,10 +151,14 @@ class Flows {
 		return '<textarea '.$this->_buildArgs($this->args).'>'.$value.'</textarea>';
 	}
 
-	protected function _buildArgs($args)
+	protected function _buildArgs($args, $val = true)
 	{
 		$string = '';
-		foreach ( $args as $key => $value ) { if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } elseif ($key != "required") { $string .= $key.' '; } }
+		foreach ( $args as $key => $value ) {
+			if ($key == "value" && $val != true) {
+				if ( $value !== false ) { $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" '; } elseif ($key != "required") { $string .= $key.' '; }
+			}
+		}
 		return trim($string);
 	}
 
