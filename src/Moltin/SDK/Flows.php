@@ -31,6 +31,7 @@ class Flows {
 	public function __construct($fields, $wrap = false)
 	{
 		$this->fields = $fields;
+		$this->wrap   = $wrap;
 	}
 
 	public function build()
