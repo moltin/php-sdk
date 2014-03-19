@@ -81,14 +81,14 @@ class SDK
         return ( $this->token === null ? false : true );
     }
 
-    public function assignments($type, $id = null, $wrap = false)
+    public function fields($type, $id = null, $wrap = false, $suffix = 'fields')
     {
         // Variables
-        $assignments = $this->get($type.( $id !== null ? '/'.$id : '' ).'/assignments');
-        $flows       = new Flows($assignments['result'], $wrap);
+        $fields = $this->get($type.( $id !== null ? '/'.$id : '' ).'/'.$suffix);
+        $flows       = new Flows($fields['result'], $wrap);
 
         // Build and return form
-        return $flows->build($assignments);
+        return $flows->build($fields);
     }
 
     protected function _storeToken(\Moltin\SDK\AuthenticateInterface $auth)

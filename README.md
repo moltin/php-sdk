@@ -76,14 +76,14 @@ After authorising you can start to make calls to the API, there are four simple 
 To help with the usual CRUD forms we've included an automated form builder to take care of the messy bits for you.
 
 ``` php
-	// Get assignments (create)
-	$assignments = $moltin->assignments('products');
+	// Get fields (create)
+	$fields = $moltin->fields('products');
 
-	// Get assignments (edit product 1)
-	$assignments = $moltin->assignments('products', 1);
+	// Get fields (edit product 1)
+	$fields = $moltin->fields('products', 1);
 
 	// Show form
-	foreach ($assignments as $field) {
+	foreach ($fields as $field) {
 		echo '<label for="'.$field['slug'].'">'.$field['name'].'</label>';
 		echo $field['input'];
 	}

@@ -24,48 +24,48 @@ use Moltin\SDK\Exception\InvalidFieldTypeException as InvalidFieldType;
 
 class Flows {
 
-	protected $assignments;
+	protected $fields;
 	protected $wrap;
 	protected $args;
 
-	public function __construct($assignments, $wrap = false)
+	public function __construct($fields, $wrap = false)
 	{
-		$this->assignments = $assignments;
+		$this->fields = $fields;
 	}
 
 	public function build()
 	{
-		// Loop assignments
-		foreach ( $this->assignments as &$assignment ) {
+		// Loop fields
+		foreach ( $this->fields as &$field ) {
 
 			// Variables
-			$method = 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $assignment['type'])));
+			$method = 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
 
 			// Check for method
 			if ( method_exists($this, $method) ) {
 
 				// Setup args
 				$this->args = array(
-					'name'     => $assignment['slug'],
-					'id'       => $assignment['slug'],
-					'value'    => ( isset($_POST[$assignment['slug']]) ? $_POST[$assignment['slug']] : ( isset($assignment['value']) ? $assignment['value'] : null ) ),
-					'required' => ( $assignment['required'] == 1 ? 'required' : false ),
+					'name'     => $field['slug'],
+					'id'       => $field['slug'],
+					'value'    => ( isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : ( isset($field['value']) ? $field['value'] : null ) ),
+					'required' => ( $field['required'] == 1 ? 'required' : false ),
 					'class'    => ['form-control']
 				);
 
 				// Wrap form value
-				if ( isset($this->wrap) && $this->wrap !== false ) { $this->args['name'] = $this->wrap.'['.$assignment['slug'].']'; }
+				if ( isset($this->wrap) && $this->wrap !== false ) { $this->args['name'] = $this->wrap.'['.$field['slug'].']'; }
 
 				// Build input
-				$assignment['input'] = $this->$method($assignment);
+				$field['input'] = $this->$method($field);
 
 			// Not found
 			} else {
-				throw new InvalidFieldType('Field type '.$assignment['type'].' was not found');
+				throw new InvalidFieldType('Field type '.$field['type'].' was not found');
 			}
 		}
 
-		return $this->assignments;
+		return $this->fields;
 	}
 
 	protected function typeString($a)
