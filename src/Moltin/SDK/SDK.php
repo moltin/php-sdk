@@ -81,7 +81,7 @@ class SDK
         return ( $this->token === null ? false : true );
     }
 
-    public function fields($type, $id = null, $wrap = false, $suffix = 'assignments')
+    public function fields($type, $id = null, $wrap = false, $suffix = 'fields')
     {
         // Variables
         $fields = $this->get($type.( $id !== null ? '/'.$id : '' ).'/'.$suffix);
