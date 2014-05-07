@@ -105,21 +105,21 @@ class Flows {
 
 	protected function typeChoice($a)
 	{
-		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['key']; }
+		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['data']['key']; }
 		$options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], $a['required']);
 		return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
 	}
 
 	protected function typeRelationship($a)
 	{
-		if ( is_array($this->args['value']) && isset($this->args['value']['id'])) { $this->args['value'] = $this->args['value']['id']; }
+		if ( is_array($this->args['value']) && isset($this->args['value']['data']['id'])) { $this->args['value'] = $this->args['value']['data']['id']; }
 		$options = $this->_buildOptions($a['available'], $a['name'], $this->args['value'], null, $a['required']);
 		return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
 	}
 
 	protected function typeMultiple($a)
 	{
-		if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) { $this->args['value'] = array_keys($this->args['value']); }
+		if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) { $this->args['value'] = array_keys($this->args['value']['data']); }
 		$this->args['multiple'] = 'multiple';
 		$this->args['name']    .= '[]';
 		return $this->typeRelationship($a);
