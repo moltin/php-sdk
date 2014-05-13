@@ -70,13 +70,14 @@ class SDK
         return ( $this->token === null ? false : true );
     }
 
-    public function refresh(\Moltin\SDK\AuthenticateInterface $auth, $args = array())
+    public function refresh($args = array())
     {
         // Perform refresh
-        $auth->refresh($args, $this);
+        $refresh = new Authenticate\Refresh($args, $this);
+        $refresh->authenticate($args, $this);
 
         // Store
-        $this->_storeToken($auth);
+        $this->_storeToken($refresh);
 
         return ( $this->token === null ? false : true );
     }
@@ -138,7 +139,16 @@ class SDK
 
         // Check JSON for error
         if ( isset($result['status']) and ! $result['status'] ) {
-        	$error = ( isset($result['errors']) ? implode("\n", $result['errors']) : $result['error'] );
+
+            // Format errors
+            if ( isset($result['errors']) && is_array($result['errors']) ) {
+                $error = implode("\n", $result['errors']);
+            } else if ( isset($result['error']) && is_array($result['error']) ) {
+                $error = implode("\n", $result['error']);
+            } else {
+                $error = $result['error'];
+            }
+
             throw new InvalidResponse($error);
         }
 
@@ -227,5 +237,4 @@ class SDK
         // Make request
         return $this->_request($url, $type, $post);
     }
-
 }

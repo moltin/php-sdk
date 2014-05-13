@@ -22,7 +22,6 @@ namespace Moltin\SDK\Storage;
 
 class Session implements \Moltin\SDK\StorageInterface
 {
-
     /**
      * Creates session or respawns previous instance, also created the default
      * addresses item if it doesn't already exist.
@@ -79,5 +78,4 @@ class Session implements \Moltin\SDK\StorageInterface
         unset($_SESSION['sdk'][$id]);
         return $this;
     }
-
 }

@@ -49,11 +49,6 @@ class CURL implements \Moltin\SDK\RequestInterface
             CURLINFO_HEADER_OUT    => true
         ));
 
-        // Add put
-        // if ( $method == 'PUT' ) {
-        //     curl_setopt($this->curl, CURLOPT_PUT, true);
-        // }
-
         // Add post
         if ( ! empty($post) ) {
             $post = ( isset($post['file']) && $post['file'] instanceof \CurlFile ? $post : http_build_query($post) );
@@ -88,5 +83,4 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         return $result;
     }
-
 }

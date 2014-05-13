@@ -20,9 +20,10 @@
 
 namespace Moltin\SDK\Authenticate;
 
+use Moltin\SDK\Exception\InvalidRequestException as InvalidRequest;
 use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
-class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
+class Refresh implements \Moltin\SDK\AuthenticateInterface
 {
     protected $data = array(
         'token'   => null,
@@ -35,10 +36,16 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
         // Variables
         $url  = $parent->url.'oauth/access_token';
         $data = array(
-            'grant_type'    => 'client_credentials',
+            'grant_type'    => 'refresh_token',
             'client_id'     => $args['client_id'],
-            'client_secret' => $args['client_secret']
+            'client_secret' => $args['client_secret'],
+            'refresh_token' => $parent->refresh
         );
+
+        // Check refresh token
+        if ( empty($data['refresh_token']) ) {
+            return false;
+        }
 
         // Make request
         $parent->request->setup($url, 'POST', $data);
@@ -54,13 +61,8 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 
         // Set data
         $this->data['token']   = $result['access_token'];
-        $this->data['refresh'] = null;
+        $this->data['refresh'] = $result['refresh_token'];
         $this->data['expires'] = $result['expires'];
-    }
-
-    public function refresh($args, \Moltin\SDK\SDK $parent)
-    {
-        $this->authenticate($args, $parent);
     }
 
     public function get($key)

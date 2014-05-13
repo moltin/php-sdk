@@ -22,8 +22,8 @@ namespace Moltin\SDK;
 
 use Moltin\SDK\Exception\InvalidFieldTypeException as InvalidFieldType;
 
-class Flows {
-
+class Flows
+{
 	protected $fields;
 	protected $wrap;
 	protected $args;
@@ -173,5 +173,4 @@ class Flows {
 		foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
 		return $string;
 	}
-
 }

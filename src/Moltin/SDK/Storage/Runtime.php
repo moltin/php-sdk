@@ -22,7 +22,6 @@ namespace Moltin\SDK\Storage;
 
 class Runtime implements \Moltin\SDK\StorageInterface
 {
-
     protected $items = array();
 
     /**
@@ -91,5 +90,4 @@ class Runtime implements \Moltin\SDK\StorageInterface
         unset($this->items[$id]);
         return $this;
     }
-
 }
