@@ -75,6 +75,14 @@ class Flows
 		return '<input '.$this->_buildArgs($this->args).' />';
 	}
 
+	protected function typeDate($a)
+	{
+		$this->args['type'] = 'text';
+		$this->args['class'][] = 'datepicker';
+
+		return '<input '.$this->_buildArgs($this->args).' />';
+	}
+
 	protected function typeEmail($a)
 	{
 		$this->args['type'] = 'email';
