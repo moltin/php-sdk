@@ -33,19 +33,19 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
+        // Check refresh token
+        if ( ! isset($args['refresh_token']) or empty($data['refresh_token']) ) {
+            return false;
+        }
+
         // Variables
         $url  = $parent->url.'oauth/access_token';
         $data = array(
             'grant_type'    => 'refresh_token',
             'client_id'     => $args['client_id'],
             'client_secret' => $args['client_secret'],
-            'refresh_token' => $parent->refresh
+            'refresh_token' => $args['refresh_token']
         );
-
-        // Check refresh token
-        if ( empty($data['refresh_token']) ) {
-            return false;
-        }
 
         // Make request
         $parent->request->setup($url, 'POST', $data);
@@ -61,7 +61,7 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
 
         // Set data
         $this->data['token']   = $result['access_token'];
-        $this->data['refresh'] = $parent->refresh;
+        $this->data['refresh'] = $args['refresh_token'];
         $this->data['expires'] = $result['expires'];
     }
 

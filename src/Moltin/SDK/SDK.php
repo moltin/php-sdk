@@ -59,7 +59,7 @@ class SDK
     {
         // Skip active auth or refresh current
         if ( $this->expires > 0 and $this->expires > time() ) { return true; }
-        else if ( $this->expires > 0 and $this->expires < time() ) { return $this->refresh($auth, $args); }
+        else if ( $this->expires > 0 and $this->expires < time() ) { return $this->refresh($args); }
 
         // Perform authentication
         $auth->authenticate($args, $this);
@@ -73,7 +73,7 @@ class SDK
     public function refresh($args = array())
     {
         // Perform refresh
-        $refresh = new Authenticate\Refresh($args, $this);
+        $refresh = new Authenticate\Refresh();
         $refresh->authenticate($args, $this);
 
         // Store
