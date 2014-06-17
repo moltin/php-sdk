@@ -121,7 +121,7 @@ class Flows
 	protected function typeRelationship($a)
 	{
 		if ( is_array($this->args['value']) && isset($this->args['value']['data']['id'])) { $this->args['value'] = $this->args['value']['data']['id']; }
-		$options = $this->_buildOptions($a['available'], $a['name'], $this->args['value'], null, $a['required']);
+		$options = $this->_buildOptions(( isset($a['available') ? $a['available'] : null ), $a['name'], $this->args['value'], null, $a['required']);
 		return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
 	}
 
@@ -178,7 +178,11 @@ class Flows
 	protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
 	{
 		$string = ( ! $required ? '<option value="">Select a '.$title.'</option>' : '' );
-		foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
+		
+		if ( $options !== null ) {
+			foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
+		}
+
 		return $string;
 	}
 }
