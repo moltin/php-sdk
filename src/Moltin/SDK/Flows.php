@@ -180,7 +180,7 @@ class Flows
 		$string = ( ! $required ? '<option value="">Select a '.$title.'</option>' : '' );
 		
 		if ( $options !== null ) {
-			foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
+			foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || ( isset($value['data']) && (is_array($value) && in_array($id, $value['data'])) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
 		}
 
 		return $string;
