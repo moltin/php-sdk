@@ -121,7 +121,7 @@ class Flows
 	protected function typeRelationship($a)
 	{
 		if ( is_array($this->args['value']) && isset($this->args['value']['data']['id'])) { $this->args['value'] = $this->args['value']['data']['id']; }
-		$options = $this->_buildOptions(( isset($a['available') ? $a['available'] : null ), $a['name'], $this->args['value'], null, $a['required']);
+		$options = $this->_buildOptions(( isset($a['available']) ? $a['available'] : null ), $a['name'], $this->args['value'], null, $a['required']);
 		return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
 	}
 
