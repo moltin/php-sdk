@@ -164,7 +164,9 @@ class Flows
 	{
 		$string = '';
 		foreach ( $args as $key => $value ) {
-			if ($key != "value" or ! $skipValue) {
+			if ($key == "value" && $value === 0) {
+				$string .= $key.'="0"';
+			} elseif ($key != "value" or ! $skipValue) {
 				if (! empty($value) ) {
 					$string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" ';
 				} elseif ($key != "required" && ! empty($value) ) {
