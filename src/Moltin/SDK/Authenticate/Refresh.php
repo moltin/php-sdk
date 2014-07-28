@@ -20,7 +20,6 @@
 
 namespace Moltin\SDK\Authenticate;
 
-use Moltin\SDK\Exception\InvalidRequestException as InvalidRequest;
 use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
 class Refresh implements \Moltin\SDK\AuthenticateInterface
@@ -67,7 +66,10 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
 
     public function get($key)
     {
-        if ( ! isset($this->data[$key]) ) { return; }
+        if ( ! isset($this->data[$key]) ) {
+            return;
+        }
+
         return $this->data[$key];
     }
 }

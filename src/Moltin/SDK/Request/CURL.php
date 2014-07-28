@@ -57,12 +57,12 @@ class CURL implements \Moltin\SDK\RequestInterface
         }
 
         // Add content-type header
-        if ( $token !== null and $method == 'PUT' ) {
+        if ($token !== null and $method == 'PUT') {
             $headers[] = 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8';
         }
 
         // Add auth header
-        if ( $token !== null ) {
+        if ($token !== null) {
             $headers[] = 'Authorization: Bearer '.$token;
         }
 

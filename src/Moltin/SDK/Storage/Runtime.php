@@ -41,7 +41,7 @@ class Runtime implements \Moltin\SDK\StorageInterface
     /**
      * Retrieves the given item by id
      *
-     * @param  integer $id The id to query by
+     * @param  integer    $id The id to query by
      * @return array|null
      */
     public function get($id)
@@ -58,14 +58,17 @@ class Runtime implements \Moltin\SDK\StorageInterface
      * Inserts data or updates if id is provided.
      *
      * @param  integer [$id] The id to update
-     * @param  array   $data The data to insert/update
+     * @param  array $data The data to insert/update
      * @return $this
      */
     public function insertUpdate($id = null, $data)
     {
         // Update
-        if ( $id !== null ) {
-            if ( ! isset($data['id']) ) { $data['id'] = $id; }
+        if ($id !== null) {
+            if ( ! isset($data['id']) ) {
+                $data['id'] = $id;
+            }
+
             $this->items[$id] = array_merge($this->items[$id], $data);
 
         // Insert
@@ -73,7 +76,9 @@ class Runtime implements \Moltin\SDK\StorageInterface
             $this->items[] = $data;
             $ids = array_keys($this->items);
             $id = end($ids);
-            if ( ! isset($this->items[$id]['id']) ) { $this->items[$id]['id'] = $id; }
+            if ( ! isset($this->items[$id]['id']) ) {
+                $this->items[$id]['id'] = $id;
+            }
         }
 
         return $this;
@@ -88,6 +93,7 @@ class Runtime implements \Moltin\SDK\StorageInterface
     public function remove($id)
     {
         unset($this->items[$id]);
+
         return $this;
     }
 }

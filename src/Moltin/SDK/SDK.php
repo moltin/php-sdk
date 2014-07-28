@@ -47,7 +47,9 @@ class SDK
         $this->request = $request;
 
         // Setup args
-        if ( isset($args['version']) ) { $this->version = $args['version']; }
+        if ( isset($args['version']) ) {
+            $this->version = $args['version'];
+        }
 
         // Retrieve information
         $this->token   = $this->store->get('token');
@@ -58,8 +60,11 @@ class SDK
     public function authenticate(\Moltin\SDK\AuthenticateInterface $auth, $args = array())
     {
         // Skip active auth or refresh current
-        if ( $this->expires > 0 and $this->expires > time() ) { return true; }
-        else if ( $this->expires > 0 and $this->expires < time() ) { return $this->refresh($args); }
+        if ( $this->expires > 0 and $this->expires > time() ) {
+            return true;
+        } elseif ( $this->expires > 0 and $this->expires < time() ) {
+            return $this->refresh($args);
+        }
 
         // Perform authentication
         $auth->authenticate($args, $this);
@@ -86,7 +91,7 @@ class SDK
     {
         // Variables
         $fields = $this->get($type.( $id !== null ? '/'.$id : '' ).'/'.$suffix);
-        $flows       = new Flows($fields['result'], $wrap);
+        $flows = new Flows($fields['result'], $wrap);
 
         // Build and return form
         return $flows->build($fields);
@@ -113,7 +118,7 @@ class SDK
         }
 
         // Check token
-        if ( $this->token === null ) {
+        if ($this->token === null) {
             throw new InvalidRequest('You haven\'t authenticated yet');
         }
 
@@ -124,8 +129,8 @@ class SDK
 
         // Append URL
         if ( $method == 'GET' and ! empty($data) ) {
-        	$url .= '?'.http_build_query($data);
-        	$data = array();
+            $url .= '?'.http_build_query($data);
+            $data = array();
         }
 
         // Start request
@@ -143,7 +148,7 @@ class SDK
             // Format errors
             if ( isset($result['errors']) && is_array($result['errors']) ) {
                 $error = implode("\n", $result['errors']);
-            } else if ( isset($result['error']) && is_array($result['error']) ) {
+            } elseif ( isset($result['error']) && is_array($result['error']) ) {
                 $error = implode("\n", $result['error']);
             } else {
                 $error = $result['error'];
@@ -158,10 +163,13 @@ class SDK
 
     protected function _identifier()
     {
-        if ( isset($_COOKIE['identifier']) ) { return $_COOKIE['identifier']; }
+        if ( isset($_COOKIE['identifier']) ) {
+            return $_COOKIE['identifier'];
+        }
 
         $identifier = md5(uniqid());
         setcookie('identifier', $identifier, strtotime("+30 day"), '/');
+
         return $identifier;
     }
 
@@ -172,17 +180,13 @@ class SDK
         $map   = array('update' => 'put', 'create' => 'post');
 
         // Nice method generation
-        if ( preg_match($regex, $method, $result) )
-        {
+        if ( preg_match($regex, $method, $result) ) {
             // Format result
-            if ( isset($result[4]) )
-            {
+            if ( isset($result[4]) ) {
                 $type   = $result[1];
                 $method = $result[4];
                 $by     = null;
-            }
-            else 
-            {
+            } else {
                 $type   = $result[1];
                 $method = $result[2];
                 $by     = $result[3];
@@ -198,36 +202,31 @@ class SDK
             $post = array();
 
             // Append Id directly to URL
-            if ( isset($args[0]) and ! empty($args[0]) and ( ( $by !== null and $by == 'Id' ) or in_array($type, array('PUT', 'DELETE')) ) )
-            {
+            if ( isset($args[0]) and ! empty($args[0]) and ( ( $by !== null and $by == 'Id' ) or in_array($type, array('PUT', 'DELETE')) ) ) {
                 $url .= '/'.$args[0];
                 array_shift($args);
                 $by = null;
             }
 
             // Append Identifier to Cart
-            if ( strtolower($method) == 'cart' )
-            {
+            if ( strtolower($method) == 'cart' ) {
                 $url .= '/'.$this->_identifier();
             }
 
             // Setup get-by
-            if ( $by !== null )
-            {
+            if ($by !== null) {
                 $post = array(strtolower($by) => $args[0]);
                 array_shift($args);
             }
-            
+
             // Set post
-            if ( ! empty($args) )
-            {
+            if ( ! empty($args) ) {
                 $post = $args[0];
             }
 
         }
         // Base method request
-        else
-        {
+        else {
             // Variables
             $type = strtoupper($method);
             $url  = $this->url.$this->version.'/'.$args[0];

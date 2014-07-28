@@ -62,7 +62,10 @@ class Password implements \Moltin\SDK\AuthenticateInterface
 
     public function get($key)
     {
-        if ( ! isset($this->data[$key]) ) { return; }
+        if ( ! isset($this->data[$key]) ) {
+            return;
+        }
+
         return $this->data[$key];
     }
 }
