@@ -1,7 +1,5 @@
 # PHP SDK
 
-[![Build Status](https://secure.travis-ci.org/moltin/php-sdk.png)](http://travis-ci.org/moltin/php-sdk)
-
 * [Website](http://molt.in)
 * [License](https://github.com/moltin/php-sdk/master/LICENSE)
 * Version: dev
