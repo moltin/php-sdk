@@ -22,8 +22,8 @@ namespace Moltin\SDK\Exception;
 
 class InvalidRequestException extends \Exception
 {
-	public function __toString()
-	{
-	    return $this->message;
-	}
+    public function __toString()
+    {
+        return $this->message;
+    }
 }
