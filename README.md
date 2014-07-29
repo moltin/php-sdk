@@ -97,7 +97,7 @@ $ phpunit
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/moltin/php-sdk/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 
 ## Credits
@@ -108,4 +108,4 @@ Please see [CONTRIBUTING](https://github.com/moltin/php-sdk/blob/master/CONTRIBU
 
 ## License
 
-Please see [License File](https://github.com/moltin/php-sdk/blob/master/LICENSE) for more information.
+Please see [License File](LICENSE) for more information.
