@@ -40,10 +40,10 @@ class Flows
         foreach ($this->fields as &$field) {
 
             // Variables
-            $method = 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
+            $method = 'type' . str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
 
             // Check for method
-            if ( method_exists($this, $method) ) {
+            if (method_exists($this, $method)) {
 
                 // Setup args
                 $this->args = array(
@@ -55,8 +55,8 @@ class Flows
                 );
 
                 // Wrap form value
-                if ( isset($this->wrap) && $this->wrap !== false ) {
-                    $this->args['name'] = $this->wrap.'['.$field['slug'].']';
+                if (isset($this->wrap) && $this->wrap !== false) {
+                    $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
                 }
 
                 // Build input
@@ -64,7 +64,7 @@ class Flows
 
             // Not found
             } else {
-                throw new InvalidFieldType('Field type '.$field['type'].' was not found');
+                throw new InvalidFieldType('Field type ' . $field['type'] . ' was not found');
             }
         }
 
@@ -75,7 +75,7 @@ class Flows
     {
         $this->args['type'] = 'text';
 
-        return '<input '.$this->_buildArgs($this->args).' />';
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
     protected function typeDate($a)
@@ -83,14 +83,14 @@ class Flows
         $this->args['type'] = 'text';
         $this->args['class'][] = 'datepicker';
 
-        return '<input '.$this->_buildArgs($this->args).' />';
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
     protected function typeEmail($a)
     {
         $this->args['type'] = 'email';
 
-        return '<input '.$this->_buildArgs($this->args).' />';
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
     protected function typeSlug($a)
@@ -99,14 +99,14 @@ class Flows
         $this->args['class'][]     = 'slug';
         $this->args['data-parent'] = '#'.$a['options']['parent'];
 
-        return '<input '.$this->_buildArgs($this->args).' />';
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
     protected function typeInteger($a)
     {
         $this->args['type'] = 'text';
 
-        return '<input '.$this->_buildArgs($this->args).' />';
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
     protected function typeDecimal($a)
@@ -115,39 +115,39 @@ class Flows
         $this->args['class'][]     = 'decimal';
         $this->args['data-places'] = $a['options']['decimal_places'];
 
-        return '<input '.$this->_buildArgs($this->args).' />';
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
     protected function typeChoice($a)
     {
-        if ( is_array($this->args['value']) ) {
+        if (is_array($this->args['value'])) {
             $this->args['value'] = $this->args['value']['data']['key'];
         }
 
         $options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], $a['required']);
 
-        return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
+        return '<select ' . $this->_buildArgs($this->args, true) . '>' . $options . '</select>';
     }
 
     protected function typeRelationship($a)
     {
-        if ( is_array($this->args['value']) && isset($this->args['value']['data']['id'])) {
+        if (is_array($this->args['value']) && isset($this->args['value']['data']['id'])) {
             $this->args['value'] = $this->args['value']['data']['id'];
         }
 
         $options = $this->_buildOptions(( isset($a['available']) ? $a['available'] : null ), $a['name'], $this->args['value'], null, $a['required']);
 
-        return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
+        return '<select ' . $this->_buildArgs($this->args, true) . '>' . $options . '</select>';
     }
 
     protected function typeMultiple($a)
     {
-        if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) {
+        if (! isset($_POST[$this->args['name']]) && is_array($this->args['value'])) {
             $this->args['value'] = array_keys($this->args['value']['data']);
         }
 
         $this->args['multiple'] = 'multiple';
-        $this->args['name']    .= '[]';
+        $this->args['name'] .= '[]';
 
         return $this->typeRelationship($a);
     }
@@ -177,7 +177,7 @@ class Flows
         $value = $this->args['value'];
         unset($this->args['value']);
 
-        return '<textarea '.$this->_buildArgs($this->args).'>'.$value.'</textarea>';
+        return '<textarea ' . $this->_buildArgs($this->args) . '>' . $value . '</textarea>';
     }
 
     protected function _buildArgs($args, $skipValue = false)
@@ -185,12 +185,12 @@ class Flows
         $string = '';
         foreach ($args as $key => $value) {
             if ($key == "value" && $value === 0) {
-                $string .= $key.'="0"';
+                $string .= $key . '="0"';
             } elseif ($key != "value" or ! $skipValue) {
-                if (! empty($value) ) {
-                    $string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" ';
-                } elseif ($key != "required" && ! empty($value) ) {
-                    $string .= $key.' ';
+                if ( ! empty($value)) {
+                    $string .= $key . '="' . ( is_array($value) ? implode(' ', $value) : $value ) . '" ';
+                } elseif ($key != "required" && ! empty($value)) {
+                    $string .= $key . ' ';
                 }
             }
         }
@@ -200,11 +200,11 @@ class Flows
 
     protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
     {
-        $string = ( ! $required ? '<option value="">Select a '.$title.'</option>' : '' );
+        $string = ( ! $required ? '<option value="">Select a ' . $title . '</option>' : '' );
 
         if ($options !== null) {
             foreach ($options as $id => $title) {
-                $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || ( isset($value['data']) && (is_array($value) && in_array($id, $value['data'])) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>';
+                $string .= '<option value="' . $id . '"' . ( ( is_array($value) && in_array($id, $value) ) || ( isset($value['data']) && (is_array($value) && in_array($id, $value['data'])) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ) . '>' . $title . '</option>';
             }
         }
 

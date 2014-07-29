@@ -33,7 +33,7 @@ class Runtime implements \Moltin\SDK\StorageInterface
     public function __construct($args = array())
     {
         // Create default item
-        if ( ! isset($this->items) ) {
+        if (! isset($this->items)) {
             $this->items = array();
         }
     }
@@ -47,7 +47,7 @@ class Runtime implements \Moltin\SDK\StorageInterface
     public function get($id)
     {
         // Not found
-        if ( ! isset($this->items[$id]) ) {
+        if (! isset($this->items[$id])) {
             return;
         }
 
@@ -65,7 +65,7 @@ class Runtime implements \Moltin\SDK\StorageInterface
     {
         // Update
         if ($id !== null) {
-            if ( ! isset($data['id']) ) {
+            if (! isset($data['id'])) {
                 $data['id'] = $id;
             }
 
@@ -76,7 +76,7 @@ class Runtime implements \Moltin\SDK\StorageInterface
             $this->items[] = $data;
             $ids = array_keys($this->items);
             $id = end($ids);
-            if ( ! isset($this->items[$id]['id']) ) {
+            if (! isset($this->items[$id]['id'])) {
                 $this->items[$id]['id'] = $id;
             }
         }

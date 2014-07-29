@@ -50,7 +50,7 @@ class CURL implements \Moltin\SDK\RequestInterface
         ));
 
         // Add post
-        if ( ! empty($post) ) {
+        if ( ! empty($post)) {
             $post = ( isset($post['file']) && $post['file'] instanceof \CurlFile ? $post : http_build_query($post) );
             curl_setopt($this->curl, CURLOPT_POST, true);
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
@@ -63,11 +63,11 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         // Add auth header
         if ($token !== null) {
-            $headers[] = 'Authorization: Bearer '.$token;
+            $headers[] = 'Authorization: Bearer ' . $token;
         }
 
         // Add session header
-        $headers[] = 'X-Moltin-Session: '.session_id();
+        $headers[] = 'X-Moltin-Session: ' . session_id();
 
         // Set headers
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
