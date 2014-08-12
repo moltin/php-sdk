@@ -54,10 +54,10 @@ class Flows
                     'class'    => ['form-control']
                 );
 
-				// WYSIWYG argument
-				if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
-					$this->args['class'] = ['form-control wysiwyg'];
-				}
+		// WYSIWYG argument
+		if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
+			$this->args['class'] = ['form-control wysiwyg'];
+		}
 
                 // Wrap form value
                 if (isset($this->wrap) && $this->wrap !== false) {
