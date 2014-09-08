@@ -209,7 +209,7 @@ class Flows
 
         if ($options !== null) {
             foreach ($options as $id => $title) {
-                $string .= '<option value="' . $id . '"' . ( ( is_array($value) && in_array($id, $value) ) || ( isset($value['data']) && $id == $value['data']['slug'] ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ) . '>' . $title . '</option>';
+                $string .= '<option value="' . $id . '"' . ( ( is_array($value) && in_array($id, $value) ) || ( isset($value['data']['code']) && $id == $value['data']['code'] ) || ( isset($value['data']['slug']) && $id == $value['data']['slug'] ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ) . '>' . $title . '</option>';
             }
         }
 
