@@ -14,6 +14,7 @@ Add the following to your project `composer.json` file
 {
     "require": {
         "moltin/php-sdk": "dev-master"
+        "php": ">=5.4"
     }
 }
 ```
