@@ -97,6 +97,18 @@ class SDK
         return $flows->build($fields);
     }
 
+    public function identifier()
+    {
+        if (isset($_COOKIE['identifier'])) {
+            return $_COOKIE['identifier'];
+        }
+
+        $identifier = md5(uniqid());
+        setcookie('identifier', $identifier, strtotime("+30 day"), '/');
+
+        return $identifier;
+    }
+
     protected function _storeToken(\Moltin\SDK\AuthenticateInterface $auth)
     {
         // Get keys
@@ -161,18 +173,6 @@ class SDK
         return $result;
     }
 
-    protected function _identifier()
-    {
-        if (isset($_COOKIE['identifier'])) {
-            return $_COOKIE['identifier'];
-        }
-
-        $identifier = md5(uniqid());
-        setcookie('identifier', $identifier, strtotime("+30 day"), '/');
-
-        return $identifier;
-    }
-
     public function __call($method, $args)
     {
         // Variables
@@ -210,7 +210,7 @@ class SDK
 
             // Append Identifier to Cart
             if (strtolower($method) == 'cart') {
-                $url .= '/' . $this->_identifier();
+                $url .= '/' . $this->identifier();
             }
 
             // Setup get-by
