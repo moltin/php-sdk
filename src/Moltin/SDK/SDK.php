@@ -62,7 +62,7 @@ class SDK
         // Skip active auth or refresh current
         if ($this->expires > 0 and $this->expires > time()) {
             return true;
-        } elseif ($this->expires > 0 and $this->expires < time()) {
+        } else if ($this->expires > 0 and $this->expires < time() and $this->refresh !== null) {
             return $this->refresh($args);
         }
 
