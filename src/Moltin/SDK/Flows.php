@@ -24,167 +24,195 @@ use Moltin\SDK\Exception\InvalidFieldTypeException as InvalidFieldType;
 
 class Flows
 {
-	protected $fields;
-	protected $wrap;
-	protected $args;
+    protected $fields;
+    protected $wrap;
+    protected $args;
 
-	public function __construct($fields, $wrap = false)
-	{
-		$this->fields = $fields;
-		$this->wrap   = $wrap;
-	}
+    public function __construct($fields, $wrap = false)
+    {
+        $this->fields = $fields;
+        $this->wrap   = $wrap;
+    }
 
-	public function build()
-	{
-		// Loop fields
-		foreach ( $this->fields as &$field ) {
+    public function build()
+    {
+        // Loop fields
+        foreach ($this->fields as &$field) {
 
-			// Variables
-			$method = 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
+            // Variables
+            $method = 'type' . str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
 
-			// Check for method
-			if ( method_exists($this, $method) ) {
+            // Check for method
+            if (method_exists($this, $method)) {
 
-				// Setup args
-				$this->args = array(
-					'name'     => $field['slug'],
-					'id'       => $field['slug'],
-					'value'    => ( isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : ( isset($field['value']) ? $field['value'] : null ) ),
-					'required' => ( $field['required'] == 1 ? 'required' : false ),
-					'class'    => ['form-control']
-				);
+                // Setup args
+                $this->args = array(
+                    'name'     => $field['slug'],
+                    'id'       => $field['slug'],
+                    'value'    => ( isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : ( isset($field['value']) ? $field['value'] : null ) ),
+                    'required' => ( $field['required'] == 1 ? 'required' : false ),
+                    'class'    => ['form-control']
+                );
 
-				// Wrap form value
-				if ( isset($this->wrap) && $this->wrap !== false ) { $this->args['name'] = $this->wrap.'['.$field['slug'].']'; }
-
-				// Build input
-				$field['input'] = $this->$method($field);
-
-			// Not found
-			} else {
-				throw new InvalidFieldType('Field type '.$field['type'].' was not found');
-			}
+		// WYSIWYG argument
+		if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
+			$this->args['class'] = ['form-control wysiwyg'];
 		}
 
-		return $this->fields;
-	}
+                // Wrap form value
+                if (isset($this->wrap) && $this->wrap !== false) {
+                    $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
+                }
 
-	protected function typeString($a)
-	{
-		$this->args['type'] = 'text';
-		return '<input '.$this->_buildArgs($this->args).' />';
-	}
+                // Build input
+                $field['input'] = $this->$method($field);
 
-	protected function typeDate($a)
-	{
-		$this->args['type'] = 'text';
-		$this->args['class'][] = 'datepicker';
+            // Not found
+            } else {
+                throw new InvalidFieldType('Field type ' . $field['type'] . ' was not found');
+            }
+        }
 
-		return '<input '.$this->_buildArgs($this->args).' />';
-	}
+        return $this->fields;
+    }
 
-	protected function typeEmail($a)
-	{
-		$this->args['type'] = 'email';
-		return '<input '.$this->_buildArgs($this->args).' />';
-	}
+    protected function typeString($a)
+    {
+        $this->args['type'] = 'text';
 
-	protected function typeSlug($a)
-	{
-		$this->args['type']        = 'text';
-		$this->args['class'][]     = 'slug';
-		$this->args['data-parent'] = '#'.$a['options']['parent'];
-		return '<input '.$this->_buildArgs($this->args).' />';
-	}
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
 
-	protected function typeInteger($a)
-	{
-		$this->args['type'] = 'text';
-		return '<input '.$this->_buildArgs($this->args).' />';
-	}
+    protected function typeDate($a)
+    {
+        $this->args['type'] = 'text';
+        $this->args['class'][] = 'datepicker';
 
-	protected function typeDecimal($a)
-	{
-		$this->args['type']        = 'text';
-		$this->args['class'][]     = 'decimal';
-		$this->args['data-places'] = $a['options']['decimal_places'];
-		return '<input '.$this->_buildArgs($this->args).' />';
-	}
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
 
-	protected function typeChoice($a)
-	{
-		if ( is_array($this->args['value']) ) { $this->args['value'] = $this->args['value']['data']['key']; }
-		$options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], $a['required']);
-		return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
-	}
+    protected function typeEmail($a)
+    {
+        $this->args['type'] = 'email';
 
-	protected function typeRelationship($a)
-	{
-		if ( is_array($this->args['value']) && isset($this->args['value']['data']['id'])) { $this->args['value'] = $this->args['value']['data']['id']; }
-		$options = $this->_buildOptions(( isset($a['available']) ? $a['available'] : null ), $a['name'], $this->args['value'], null, $a['required']);
-		return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
-	}
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
 
-	protected function typeMultiple($a)
-	{
-		if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) { $this->args['value'] = array_keys($this->args['value']['data']); }
-		$this->args['multiple'] = 'multiple';
-		$this->args['name']    .= '[]';
-		return $this->typeRelationship($a);
-	}
+    protected function typeSlug($a)
+    {
+        $this->args['type']        = 'text';
+        $this->args['class'][]     = 'slug';
+        $this->args['data-parent'] = '#'.$a['options']['parent'];
 
-	protected function typeTaxBand($a)
-	{
-		return $this->typeRelationship($a);
-	}
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
 
-	protected function typeCountry($a)
-	{
-		return $this->typeRelationship($a);
-	}
+    protected function typeInteger($a)
+    {
+        $this->args['type'] = 'text';
 
-	protected function typeCurrency($a)
-	{
-		return $this->typeRelationship($a);
-	}
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
 
-	protected function typeGateway($a)
-	{
-		return $this->typeRelationship($a);
-	}
+    protected function typeDecimal($a)
+    {
+        $this->args['type']        = 'text';
+        $this->args['class'][]     = 'decimal';
+        $this->args['data-places'] = $a['options']['decimal_places'];
 
-	protected function typeText($a)
-	{
-		$value = $this->args['value'];
-		unset($this->args['value']);
-		return '<textarea '.$this->_buildArgs($this->args).'>'.$value.'</textarea>';
-	}
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
 
-	protected function _buildArgs($args, $skipValue = false)
-	{
-		$string = '';
-		foreach ( $args as $key => $value ) {
-			if ($key == "value" && $value === 0) {
-				$string .= $key.'="0"';
-			} elseif ($key != "value" or ! $skipValue) {
-				if (! empty($value) ) {
-					$string .= $key.'="'.( is_array($value) ? implode(' ', $value) : $value ).'" ';
-				} elseif ($key != "required" && ! empty($value) ) {
-					$string .= $key.' ';
-				}
-			}
-		}
-		return trim($string);
-	}
+    protected function typeChoice($a)
+    {
+        if (is_array($this->args['value'])) {
+            $this->args['value'] = $this->args['value']['data']['key'];
+        }
 
-	protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
-	{
-		$string = ( ! $required ? '<option value="">Select a '.$title.'</option>' : '' );
-		
-		if ( $options !== null ) {
-			foreach ( $options as $id => $title ) { $string .= '<option value="'.$id.'"'.( ( is_array($value) && in_array($id, $value) ) || ( isset($value['data']) && (is_array($value) && in_array($id, $value['data'])) ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ).'>'.$title.'</option>'; }
-		}
+        $options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], $a['required']);
 
-		return $string;
-	}
+        return '<select ' . $this->_buildArgs($this->args, true) . '>' . $options . '</select>';
+    }
+
+    protected function typeRelationship($a)
+    {
+        if (is_array($this->args['value']) && isset($this->args['value']['data']['id'])) {
+            $this->args['value'] = $this->args['value']['data']['id'];
+        }
+
+        $options = $this->_buildOptions(( isset($a['available']) ? $a['available'] : null ), $a['name'], $this->args['value'], null, $a['required']);
+
+        return '<select ' . $this->_buildArgs($this->args, true) . '>' . $options . '</select>';
+    }
+
+    protected function typeMultiple($a)
+    {
+        if (! isset($_POST[$this->args['name']]) && is_array($this->args['value'])) {
+            $this->args['value'] = array_keys($this->args['value']['data']);
+        }
+
+        $this->args['multiple'] = 'multiple';
+        $this->args['name'] .= '[]';
+
+        return $this->typeRelationship($a);
+    }
+
+    protected function typeTaxBand($a)
+    {
+        return $this->typeRelationship($a);
+    }
+
+    protected function typeCountry($a)
+    {
+        return $this->typeRelationship($a);
+    }
+
+    protected function typeCurrency($a)
+    {
+        return $this->typeRelationship($a);
+    }
+
+    protected function typeGateway($a)
+    {
+        return $this->typeRelationship($a);
+    }
+
+    protected function typeText($a)
+    {
+        $value = $this->args['value'];
+        unset($this->args['value']);
+
+        return '<textarea ' . $this->_buildArgs($this->args) . '>' . $value . '</textarea>';
+    }
+
+    protected function _buildArgs($args, $skipValue = false)
+    {
+        $string = '';
+        foreach ($args as $key => $value) {
+            if ($key == "value" && $value === 0) {
+                $string .= $key . '="0"';
+            } elseif ($key != "value" or ! $skipValue) {
+                if ( ! empty($value)) {
+                    $string .= $key . '="' . ( is_array($value) ? implode(' ', $value) : $value ) . '" ';
+                } elseif ($key != "required" && ! empty($value)) {
+                    $string .= $key . ' ';
+                }
+            }
+        }
+
+        return trim($string);
+    }
+
+    protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
+    {
+        $string = ( ! $required ? '<option value="">Select a ' . $title . '</option>' : '' );
+
+        if ($options !== null) {
+            foreach ($options as $id => $title) {
+                $string .= '<option value="' . $id . '"' . ( ( is_array($value) && in_array($id, $value) ) || ( isset($value['data']['code']) && $id == $value['data']['code'] ) || ( isset($value['data']['slug']) && $id == $value['data']['slug'] ) || $value == $id || ( $value == null && $default == $id ) ? ' selected="selected"' : '' ) . '>' . $title . '</option>';
+            }
+        }
+
+        return $string;
+    }
 }

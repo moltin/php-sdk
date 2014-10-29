@@ -33,7 +33,7 @@ class Session implements \Moltin\SDK\StorageInterface
         session_id() or session_start();
 
         // Create default item
-        if ( ! isset($_SESSION['sdk']) ) {
+        if ( ! isset($_SESSION['sdk'])) {
             $_SESSION['sdk'] = array();
         }
     }
@@ -41,13 +41,13 @@ class Session implements \Moltin\SDK\StorageInterface
     /**
      * Retrieves the given item by id
      *
-     * @param  integer $id The id to query by
+     * @param  integer    $id The id to query by
      * @return array|null
      */
     public function get($id)
     {
         // Not found
-        if ( ! isset($_SESSION['sdk'][$id]) ) {
+        if ( ! isset($_SESSION['sdk'][$id])) {
             return;
         }
 
@@ -58,12 +58,13 @@ class Session implements \Moltin\SDK\StorageInterface
      * Inserts data or updates if id is provided.
      *
      * @param  integer [$id] The id to update
-     * @param  array   $data The data to insert/update
+     * @param  array $data The data to insert/update
      * @return $this
      */
     public function insertUpdate($id = null, $data)
     {
         $_SESSION['sdk'][$id] = $data;
+
         return $this;
     }
 
@@ -76,6 +77,7 @@ class Session implements \Moltin\SDK\StorageInterface
     public function remove($id)
     {
         unset($_SESSION['sdk'][$id]);
+
         return $this;
     }
 }

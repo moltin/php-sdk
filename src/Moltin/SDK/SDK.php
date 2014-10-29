@@ -47,7 +47,9 @@ class SDK
         $this->request = $request;
 
         // Setup args
-        if ( isset($args['version']) ) { $this->version = $args['version']; }
+        if (isset($args['version'])) {
+            $this->version = $args['version'];
+        }
 
         // Retrieve information
         $this->token   = $this->store->get('token');
@@ -58,8 +60,11 @@ class SDK
     public function authenticate(\Moltin\SDK\AuthenticateInterface $auth, $args = array())
     {
         // Skip active auth or refresh current
-        if ( $this->expires > 0 and $this->expires > time() ) { return true; }
-        else if ( $this->expires > 0 and $this->expires < time() ) { return $this->refresh($args); }
+        if ($this->expires > 0 and $this->expires > time()) {
+            return true;
+        } else if ($this->expires > 0 and $this->expires < time() and $this->refresh !== null) {
+            return $this->refresh($args);
+        }
 
         // Perform authentication
         $auth->authenticate($args, $this);
@@ -67,7 +72,7 @@ class SDK
         // Store
         $this->_storeToken($auth);
 
-        return ( $this->token === null ? false : true );
+        return ($this->token === null ? false : true);
     }
 
     public function refresh($args = array())
@@ -79,17 +84,29 @@ class SDK
         // Store
         $this->_storeToken($refresh);
 
-        return ( $this->token === null ? false : true );
+        return ($this->token === null ? false : true);
     }
 
     public function fields($type, $id = null, $wrap = false, $suffix = 'fields')
     {
         // Variables
-        $fields = $this->get($type.( $id !== null ? '/'.$id : '' ).'/'.$suffix);
-        $flows       = new Flows($fields['result'], $wrap);
+        $fields = $this->get($type . ($id !== null ? '/' . $id : '') . '/' . $suffix);
+        $flows = new Flows($fields['result'], $wrap);
 
         // Build and return form
         return $flows->build($fields);
+    }
+
+    public function identifier()
+    {
+        if (isset($_COOKIE['identifier'])) {
+            return $_COOKIE['identifier'];
+        }
+
+        $identifier = md5(uniqid());
+        setcookie('identifier', $identifier, strtotime("+30 day"), '/');
+
+        return $identifier;
     }
 
     protected function _storeToken(\Moltin\SDK\AuthenticateInterface $auth)
@@ -108,24 +125,24 @@ class SDK
     protected function _request($url, $method, $data)
     {
         // Check type
-        if ( ! in_array($method, $this->methods) ) {
-            throw new InvalidRequest('Invalid request type ('.$method.')');
+        if ( ! in_array($method, $this->methods)) {
+            throw new InvalidRequest('Invalid request type (' . $method . ')');
         }
 
         // Check token
-        if ( $this->token === null ) {
+        if ($this->token === null) {
             throw new InvalidRequest('You haven\'t authenticated yet');
         }
 
         // Check token expiration
-        if ( $this->expires !== null and time() > $this->expires ) {
+        if ($this->expires !== null and time() > $this->expires) {
             throw new InvalidRequest('Your current OAuth session has expired');
         }
 
         // Append URL
-        if ( $method == 'GET' and ! empty($data) ) {
-        	$url .= '?'.http_build_query($data);
-        	$data = array();
+        if ($method == 'GET' and ! empty($data)) {
+            $url .= '?' . http_build_query($data);
+            $data = array();
         }
 
         // Start request
@@ -138,12 +155,12 @@ class SDK
         $result = json_decode($result, true);
 
         // Check JSON for error
-        if ( isset($result['status']) and ! $result['status'] ) {
+        if (isset($result['status']) and ! $result['status']) {
 
             // Format errors
-            if ( isset($result['errors']) && is_array($result['errors']) ) {
+            if (isset($result['errors']) && is_array($result['errors'])) {
                 $error = implode("\n", $result['errors']);
-            } else if ( isset($result['error']) && is_array($result['error']) ) {
+            } elseif (isset($result['error']) && is_array($result['error'])) {
                 $error = implode("\n", $result['error']);
             } else {
                 $error = $result['error'];
@@ -156,15 +173,6 @@ class SDK
         return $result;
     }
 
-    protected function _identifier()
-    {
-        if ( isset($_COOKIE['identifier']) ) { return $_COOKIE['identifier']; }
-
-        $identifier = md5(uniqid());
-        setcookie('identifier', $identifier, strtotime("+30 day"), '/');
-        return $identifier;
-    }
-
     public function __call($method, $args)
     {
         // Variables
@@ -172,17 +180,13 @@ class SDK
         $map   = array('update' => 'put', 'create' => 'post');
 
         // Nice method generation
-        if ( preg_match($regex, $method, $result) )
-        {
+        if (preg_match($regex, $method, $result)) {
             // Format result
-            if ( isset($result[4]) )
-            {
+            if (isset($result[4])) {
                 $type   = $result[1];
                 $method = $result[4];
                 $by     = null;
-            }
-            else 
-            {
+            } else {
                 $type   = $result[1];
                 $method = $result[2];
                 $by     = $result[3];
@@ -194,43 +198,38 @@ class SDK
 
             // Variables
             $type = strtoupper(( array_key_exists($type, $map) ? $map[$type] : $type ));
-            $url  = $this->url.$this->version.'/'.strtolower($method);
+            $url  = $this->url . $this->version . '/' . strtolower($method);
             $post = array();
 
             // Append Id directly to URL
-            if ( isset($args[0]) and ! empty($args[0]) and ( ( $by !== null and $by == 'Id' ) or in_array($type, array('PUT', 'DELETE')) ) )
-            {
-                $url .= '/'.$args[0];
+            if (isset($args[0]) and ! empty($args[0]) and ( ( $by !== null and $by == 'Id' ) or in_array($type, array('PUT', 'DELETE')) )) {
+                $url .= '/' . $args[0];
                 array_shift($args);
                 $by = null;
             }
 
             // Append Identifier to Cart
-            if ( strtolower($method) == 'cart' )
-            {
-                $url .= '/'.$this->_identifier();
+            if (strtolower($method) == 'cart') {
+                $url .= '/' . $this->identifier();
             }
 
             // Setup get-by
-            if ( $by !== null )
-            {
+            if ($by !== null) {
                 $post = array(strtolower($by) => $args[0]);
                 array_shift($args);
             }
-            
+
             // Set post
-            if ( ! empty($args) )
-            {
+            if ( ! empty($args)) {
                 $post = $args[0];
             }
 
         }
         // Base method request
-        else
-        {
+        else {
             // Variables
             $type = strtoupper($method);
-            $url  = $this->url.$this->version.'/'.$args[0];
+            $url  = $this->url.$this->version . '/' . $args[0];
             $post = ( isset($args[1]) ? $args[1] : array() );
         }
 

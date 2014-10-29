@@ -33,7 +33,7 @@ class Password implements \Moltin\SDK\AuthenticateInterface
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
         // Variables
-        $url  = $parent->url.'oauth/access_token';
+        $url  = $parent->url . 'oauth/access_token';
         $data = array(
             'grant_type'    => 'password',
             'username'      => $args['username'],
@@ -50,7 +50,7 @@ class Password implements \Moltin\SDK\AuthenticateInterface
         $result = json_decode($result, true);
 
         // Check JSON for error
-        if ( isset($result['error']) ) {
+        if (isset($result['error'])) {
             throw new InvalidResponse($result['error']);
         }
 
@@ -62,7 +62,10 @@ class Password implements \Moltin\SDK\AuthenticateInterface
 
     public function get($key)
     {
-        if ( ! isset($this->data[$key]) ) { return; }
+        if ( ! isset($this->data[$key])) {
+            return;
+        }
+
         return $this->data[$key];
     }
 }
