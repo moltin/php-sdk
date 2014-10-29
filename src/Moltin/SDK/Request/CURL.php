@@ -45,7 +45,7 @@ class CURL implements \Moltin\SDK\RequestInterface
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_TIMEOUT        => 4,
+            CURLOPT_TIMEOUT        => 40,
             CURLINFO_HEADER_OUT    => true
         ));
 
