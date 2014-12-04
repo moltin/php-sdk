@@ -47,8 +47,8 @@ class SDK
         $this->request = $request;
 
         // Setup args
-        if ( isset($args['url']) ) { $this->url = $args['url']; }
-        if ( isset($args['auth_url']) ) { $this->auth_url = $args['auth_url']; }
+        if ( isset($args['url']) and $args['url'] !== null ) { $this->url = $args['url']; }
+        if ( isset($args['auth_url']) and $args['auth_url'] !== null ) { $this->auth_url = $args['auth_url']; }
 
         // Retrieve information
         $this->currency = $this->currency();
