@@ -66,6 +66,11 @@ class CURL implements \Moltin\SDK\RequestInterface
             $headers[] = 'Authorization: Bearer ' . $token;
         }
 
+        // Add currency header
+        if (isset($_COOKIE['currency']) and $_COOKIE['currency'] !== null) {
+            $headers[] = 'X-Currency: '.$_COOKIE['currency'];
+        }
+
         // Add session header
         $headers[] = 'X-Moltin-Session: ' . session_id();
 

@@ -21,6 +21,7 @@
 namespace Moltin\SDK\Authenticate;
 
 use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
+use Moltin\SDK\Exception\InvalidAuthenticationRequestException as InvalidAuthRequest;
 
 class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 {
@@ -32,6 +33,11 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
+        // Validate
+        if ( ( $valid = $this->validate($args) ) !== true ) {
+            throw new InvalidAuthRequest('Missing required params: '.implode(', ', $valid));
+        }
+
         // Variables
         $url  = $parent->url . 'oauth/access_token';
         $data = array(
@@ -70,5 +76,21 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
         }
 
         return $this->data[$key];
+    }
+
+    protected function validate($args)
+    {
+        // Variables
+        $required = array('client_id', 'client_secret');
+        $keys     = array_keys($args);
+        $diff     = array_diff($required, $keys);
+
+        // Check for empty values
+        foreach ( $required as $key => $value ) {
+            if ( strlen($value) <= 0 ) $diff[] = $key;
+        }
+
+        // Perform check
+        return ( empty($diff) ? true : $diff );
     }
 }
