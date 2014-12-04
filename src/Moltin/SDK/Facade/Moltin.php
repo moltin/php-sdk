@@ -32,8 +32,11 @@ class Moltin
 
 	public static function Authenticate($method, $data = array(), $extra = array())
 	{
+		if ( self::$sdk === null ) {
+			self::$sdk = new \Moltin\SDK\SDK(new \Moltin\SDK\Storage\Session(), new \Moltin\SDK\Request\CURL(), $extra);
+		}
+
 		$method = '\\Moltin\\SDK\\Authenticate\\'.$method;
-		self::$sdk = new \Moltin\SDK\SDK(new \Moltin\SDK\Storage\Session(), new \Moltin\SDK\Request\CURL(), $extra);
 		return self::$sdk->authenticate(new $method(), $data);
 	}
 
