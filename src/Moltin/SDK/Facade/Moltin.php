@@ -25,10 +25,15 @@ class Moltin
 	protected static $methods = array('ClientCredentials', 'Password', 'Refresh');
 	protected static $sdk;
 
-	public static function Authenticate($method, $data = array())
+	public static function init(\Moltin\SDK\SDK $sdk)
+	{
+		self::$sdk = $sdk;
+	}
+
+	public static function Authenticate($method, $data = array(), $extra = array())
 	{
 		$method = '\\Moltin\\SDK\\Authenticate\\'.$method;
-		self::$sdk = new \Moltin\SDK\SDK(new \Moltin\SDK\Storage\Session(), new \Moltin\SDK\Request\CURL());
+		self::$sdk = new \Moltin\SDK\SDK(new \Moltin\SDK\Storage\Session(), new \Moltin\SDK\Request\CURL(), $extra);
 		return self::$sdk->authenticate(new $method(), $data);
 	}
 
