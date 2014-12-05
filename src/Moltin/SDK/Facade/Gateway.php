@@ -46,7 +46,7 @@ class Gateway
 
 	public static function Update($slug, $data)
 	{
-		return self::$sdk->put('gateway/'.$slug, $data);
+		return self::$sdk->put('gateways/'.$slug, $data);
 	}
 
 	public static function Enable($slug)
