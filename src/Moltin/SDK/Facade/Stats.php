@@ -32,22 +32,22 @@ class Stats
 
 	public static function Store($timeframe = null, $to = null)
 	{
-		self::Stats('store', $timeframe, $to);
+		return self::Stats('store', $timeframe, $to);
 	}
 
 	public static function Revenue($timeframe = null, $to = null)
 	{
-		self::Stats('revenue', $timeframe, $to);
+		return self::Stats('revenue', $timeframe, $to);
 	}
 
 	public static function Orders($timeframe = null, $to = null)
 	{
-		self::Stats('orders', $timeframe, $to);
+		return self::Stats('orders', $timeframe, $to);
 	}
 
 	public static function Customers($timeframe = null, $to = null)
 	{
-		self::Stats('customers', $timeframe, $to);
+		return self::Stats('customers', $timeframe, $to);
 	}
 
 	protected static function Stats($type, $timeframe = null, $to = null)
