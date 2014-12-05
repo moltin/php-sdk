@@ -31,7 +31,7 @@ trait FacadeTrait
 
 	public static function Get($id)
 	{
-		return self::$sdk->get(self::$single.'/'.$id);
+		return self::$sdk->get(self::$plural.'/'.$id);
 	}
 
 	public static function Create($data)
@@ -61,6 +61,6 @@ trait FacadeTrait
 
 	public static function Fields($id = null)
 	{
-		return self::$sdk->fields(self::$single.'', $id);
+		return self::$sdk->fields(self::$plural.'', $id);
 	}
 }
