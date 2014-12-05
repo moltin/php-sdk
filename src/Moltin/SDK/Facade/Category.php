@@ -31,4 +31,9 @@ class Category
 	{
 		return self::$sdk->get(self::$plural.'/tree', $terms);
 	}
+
+	public static function Order($data)
+	{
+		return self::$sdk->put(self::$plural.'/order', $data);
+	}
 }
