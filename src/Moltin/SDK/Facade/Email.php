@@ -36,7 +36,7 @@ class Email
 
 	public static function Listing($terms = array())
 	{
-		return self::$sdk->get('email', $terms);
+		return self::$sdk->get('emails', $terms);
 	}
 
 	public static function Create($data)
