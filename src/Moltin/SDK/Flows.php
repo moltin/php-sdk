@@ -157,6 +157,17 @@ class Flows
         return $this->typeRelationship($a);
     }
 
+    protected function typeMoney($a)
+    {
+        $this->args['type'] = 'number';
+
+        $step = ($a['options']['decimal_places'] !== 0) ? 1/(($a['options']['decimal_places']*100)/$a['options']['decimal_places']) : 1;
+        $placeholder = number_format(0,$a['options']['decimal_places']);
+
+        // step should be set depending on number of decimal places to round to for currency formatting
+        return '<input min=0 placeholder=' . $placeholder . ' step=' . $step . ' ' . $this->_buildArgs($this->args) . ' />';
+    }
+
     protected function typeTaxBand($a)
     {
         return $this->typeRelationship($a);
@@ -193,7 +204,11 @@ class Flows
                 $string .= $key . '="0"';
             } elseif ($key != "value" or ! $skipValue) {
                 if ( ! empty($value)) {
-                    $string .= $key . '="' . ( is_array($value) ? implode(' ', $value) : $value ) . '" ';
+                    if(is_array($value) && isset($value['data']['raw']['without_tax'])) {
+                        $string .= $key . '="' . $value['data']['raw']['without_tax'] . '" ';
+                    } else {
+                        $string .= $key . '="' . ( is_array($value) ? implode(' ', $value) : $value ) . '" ';
+                    }
                 } elseif ($key != "required" && ! empty($value)) {
                     $string .= $key . ' ';
                 }
