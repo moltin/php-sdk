@@ -39,6 +39,6 @@ class Product
 
 	public static function Variations($id)
 	{
-		return self::$sdk->get(self::$single.'/'.$id.'/variations');
+		return self::$sdk->get(self::$plural.'/'.$id.'/variations');
 	}
 }
