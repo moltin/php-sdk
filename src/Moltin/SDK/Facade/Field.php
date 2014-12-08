@@ -34,11 +34,6 @@ class Field
 		return self::$sdk->get('flows/'.$slug);
 	}
 
-	public static function Listing($terms = array())
-	{
-		return self::$sdk->get('flows', $terms);
-	}
-
 	public static function Create($flow, $data)
 	{
 		return self::$sdk->post('flows/'.$flow.'/fields', $data);
