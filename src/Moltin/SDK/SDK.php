@@ -32,6 +32,7 @@ class SDK
     // Variables
     public $methods = array('GET', 'POST', 'PUT', 'DELETE');
     public $currency;
+    public $language;
     public $store;
     public $request;
 
@@ -52,6 +53,7 @@ class SDK
 
         // Retrieve information
         $this->currency = $this->currency();
+        $this->language = $this->language();
         $this->token    = $this->store->get('token');
         $this->refresh  = $this->store->get('refresh');
         $this->expires  = $this->store->get('expires');
@@ -138,14 +140,19 @@ class SDK
 
     public function currency($code = null)
     {
-        if ($code === null and isset($_COOKIE['currency'])) {
-            return $_COOKIE['currency'];
-        
-        } else if ( $code !== null ) {
-            $this->currency = $code;
-            setcookie('currency', $code, strtotime("+30 day"), '/');
-            return $code;
-        }
+        return $this->language($code, 'currency');
+    }
+
+    public function language($code = null, $key = 'language')
+    {
+        // Clear it
+        if ( $code === false ) { unset($_SESSION[$key]); $this->$key = null; return true; }
+
+        // Get it
+        if ( $code === null and isset($_SESSION[$key]) ) { return $_SESSION[$key]; }
+
+        // Set it
+        if ( $code !== null ) { $this->$key = $code; $_SESSION[$key] = $code; return $code; }
 
         return false;
     }

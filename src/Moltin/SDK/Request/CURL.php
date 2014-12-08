@@ -67,8 +67,13 @@ class CURL implements \Moltin\SDK\RequestInterface
         }
 
         // Add currency header
-        if (isset($_COOKIE['currency']) and $_COOKIE['currency'] !== null) {
-            $headers[] = 'X-Currency: '.$_COOKIE['currency'];
+        if (isset($_SESSION['currency']) and $_SESSION['currency'] !== null) {
+            $headers[] = 'X-Currency: '.$_SESSION['currency'];
+        }
+
+        // Add language header
+        if (isset($_SESSION['language']) and $_SESSION['language'] !== null) {
+            $headers[] = 'X-Language: '.$_SESSION['language'];
         }
 
         // Add session header
