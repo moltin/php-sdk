@@ -41,7 +41,7 @@ class Entry
 
 	public static function Create($flow, $data)
 	{
-		return self::$sdk->post('flows'.$flow.'/entries', $data);
+		return self::$sdk->post('flows/'.$flow.'/entries', $data);
 	}
 
 	public static function Update($flow, $id, $data)
