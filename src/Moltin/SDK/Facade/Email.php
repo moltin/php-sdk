@@ -31,7 +31,7 @@ class Email
 
 	public static function Get($slug)
 	{
-		return self::$sdk->get('email/'.$slug);
+		return self::$sdk->get('emails/'.$slug);
 	}
 
 	public static function Listing($terms = array())
@@ -41,16 +41,16 @@ class Email
 
 	public static function Create($data)
 	{
-		return self::$sdk->post('email', $data);
+		return self::$sdk->post('emails', $data);
 	}
 
 	public static function Update($slug, $data)
 	{
-		return self::$sdk->put('email/'.$slug, $data);
+		return self::$sdk->put('emails/'.$slug, $data);
 	}
 
 	public static function Delete($slug)
 	{
-		return self::$sdk->delete('email/'.$slug);
+		return self::$sdk->delete('emails/'.$slug);
 	}
 }

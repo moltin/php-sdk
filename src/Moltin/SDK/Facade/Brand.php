@@ -24,6 +24,6 @@ class Brand
 {
 	use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'brand';
+	protected static $single = 'brands';
 	protected static $plural = 'brands';
 }

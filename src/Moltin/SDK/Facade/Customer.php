@@ -24,6 +24,6 @@ class Customer
 {
 	use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'customer';
+	protected static $single = 'customers';
 	protected static $plural = 'customers';
 }

@@ -24,7 +24,7 @@ class Category
 {
 	use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'category';
+	protected static $single = 'categories';
 	protected static $plural = 'categories';
 
 	public static function Tree($terms = array())

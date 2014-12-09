@@ -24,6 +24,6 @@ class Tax
 {
 	use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'tax';
+	protected static $single = 'taxes';
 	protected static $plural = 'taxes';
 }

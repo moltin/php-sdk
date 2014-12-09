@@ -24,7 +24,7 @@ class Order
 {
 	use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'order';
+	protected static $single = 'orders';
 	protected static $plural = 'orders';
 
 	public static function Items($id)

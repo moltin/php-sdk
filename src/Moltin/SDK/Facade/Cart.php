@@ -38,12 +38,12 @@ class Cart
 
 	public static function Contents()
 	{
-		return self::$sdk->get('cart/'.self::$identifier);
+		return self::$sdk->get('carts/'.self::$identifier);
 	}
 
 	public static function Insert($id, $qty = 1, $mods = null)
 	{
-		return self::$sdk->post('cart/'.self::$identifier, array(
+		return self::$sdk->post('carts/'.self::$identifier, array(
 			'id'       => $id,
 			'quantity' => $qty,
 			'modifier' => $mods
@@ -52,37 +52,37 @@ class Cart
 
 	public static function Update($id, $data)
 	{
-		return self::$sdk->put('cart/'.self::$identifier.'/item/'.$id, $data);
+		return self::$sdk->put('carts/'.self::$identifier.'/item/'.$id, $data);
 	}
 
 	public static function Delete()
 	{
-		return self::$sdk->delete('cart/'.self::$identifier);
+		return self::$sdk->delete('carts/'.self::$identifier);
 	}
 
 	public static function Remove($id)
 	{
-		return self::$sdk->delete('cart/'.self::$identifier.'/item/'.$id);
+		return self::$sdk->delete('carts/'.self::$identifier.'/item/'.$id);
 	}
 
 	public static function Item($id)
 	{
-		return self::$sdk->get('cart/'.self::$identifier.'/item/'.$id);
+		return self::$sdk->get('carts/'.self::$identifier.'/item/'.$id);
 	}
 
 	public static function InCart($id)
 	{
-		return self::$sdk->get('cart/'.self::$identifier.'/has/'.$id);
+		return self::$sdk->get('carts/'.self::$identifier.'/has/'.$id);
 	}
 
 	public static function Checkout()
 	{
-		return self::$sdk->get('cart/'.self::$identifier.'/checkout');
+		return self::$sdk->get('carts/'.self::$identifier.'/checkout');
 	}
 
 	public static function Order($data = array())
 	{
-		return self::$sdk->post('cart/'.self::$identifier.'/checkout', $data);
+		return self::$sdk->post('carts/'.self::$identifier.'/checkout', $data);
 	}
 
 }

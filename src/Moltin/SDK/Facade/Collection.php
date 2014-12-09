@@ -24,6 +24,6 @@ class Collection
 {
 	use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'collection';
+	protected static $single = 'collections';
 	protected static $plural = 'collections';
 }

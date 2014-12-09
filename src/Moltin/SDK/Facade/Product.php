@@ -24,7 +24,7 @@ class Product
 {
 	use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'product';
+	protected static $single = 'products';
 	protected static $plural = 'products';
 
 	public static function Search($terms = array())
