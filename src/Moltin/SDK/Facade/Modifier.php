@@ -34,7 +34,7 @@ class Modifier
 		return self::$sdk->get('products/'.$product.'/modifiers/'.$modifier);
 	}
 
-	public static function Create($product, $modifier, $data)
+	public static function Create($product, $data)
 	{
 		return self::$sdk->post('products/'.$product.'/modifiers', $data);
 	}
