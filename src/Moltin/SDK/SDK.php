@@ -209,7 +209,14 @@ class SDK
 
             // Format errors
             if (isset($result['errors']) && is_array($result['errors'])) {
-                $error = implode("\n", $result['errors']);
+                $error = '';
+                foreach ( $result['errors'] as $e ) {
+                    if ( is_array($e) ) {
+                        $error .= implode("\n", $e);
+                    } else {
+                        $error .= "\n".$e;
+                    }
+                }
             } elseif (isset($result['error']) && is_array($result['error'])) {
                 $error = implode("\n", $result['error']);
             } else {
