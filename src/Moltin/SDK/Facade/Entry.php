@@ -36,7 +36,7 @@ class Entry
 
 	public static function Find($flow, $terms = array())
 	{
-		return self::$sdk->get('flows/'.$flow.'/entries', $terms);
+		return self::$sdk->get('flows/'.$flow.'/entries/search', $terms);
 	}
 
 	public static function Listing($flow = null, $terms = array())
