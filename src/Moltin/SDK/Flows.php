@@ -60,6 +60,11 @@ class Flows
 			$this->args['class'] = ['form-control wysiwyg'];
 		}
 
+		// Multilingual argument
+		if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
+			$this->args['class'] = ['form-control multilingual'];
+		}
+
                 // Wrap form value
                 if (isset($this->wrap) && $this->wrap !== false) {
                     $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
