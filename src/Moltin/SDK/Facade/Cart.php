@@ -85,4 +85,14 @@ class Cart
 		return self::$sdk->post('carts/'.self::$identifier.'/checkout', $data);
 	}
 
+	public static function Discount($code = false)
+	{
+		if ( $code === false )
+		{
+			return self::$sdk->delete('cart/'.self::$identifier.'/discount');
+		}
+
+		return self::$sdk->post('cart/'.self::$identifier.'/discount', ['code' => $code]);
+	}
+
 }
