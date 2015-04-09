@@ -114,7 +114,7 @@ class Flows
 
     protected function typeInteger($a)
     {
-        $this->args['type'] = 'text';
+        $this->args['type'] = 'number';
 
         return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
