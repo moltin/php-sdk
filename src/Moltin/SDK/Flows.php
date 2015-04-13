@@ -57,12 +57,12 @@ class Flows
 
 		// WYSIWYG argument
 		if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
-			$this->args['class'] = ['form-control wysiwyg'];
+			$this->args['class'][] = 'wysiwyg';
 		}
 
 		// Multilingual argument
 		if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
-			$this->args['class'] = ['form-control multilingual'];
+			$this->args['class'][] = 'multilingual';
 		}
 
                 // Wrap form value
@@ -166,7 +166,7 @@ class Flows
     protected function typeMoney($a)
     {
         $this->args['type'] = 'number';
-        $this->args['class'] = ['form-control money'];
+        $this->args['class'][] = 'money';
 
         $step = ($a['options']['decimal_places'] !== 0) ? 1/(($a['options']['decimal_places']*100)/$a['options']['decimal_places']) : 1;
         $placeholder = number_format(0,$a['options']['decimal_places']);
