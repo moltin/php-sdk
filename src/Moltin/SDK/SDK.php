@@ -207,20 +207,16 @@ class SDK
         // Check JSON for error
         if (isset($result['status']) and ! $result['status']) {
 
-            // Format errors
-            if (isset($result['errors']) && is_array($result['errors'])) {
-                $error = '';
-                foreach ( $result['errors'] as $e ) {
-                    if ( is_array($e) ) {
-                        $error .= implode("\n", $e);
-                    } else {
-                        $error .= "\n".$e;
-                    }
-                }
-            } elseif (isset($result['error']) && is_array($result['error'])) {
-                $error = implode("\n", $result['error']);
-            } else {
-                $error = $result['error'];
+            $error = "Unknown error";
+
+            // Catch multiple errors
+            if(isset($result['errors'])) {
+                $error = $this->_implodeErrors($result['errors']);
+            }
+
+            // Catch the singular type second
+            if(isset($result['error'])) {
+                $error = $this->_implodeErrors($result['error']);
             }
 
             throw new InvalidResponse($error);
@@ -228,6 +224,29 @@ class SDK
 
         // Return response
         return $result;
+    }
+
+    /**
+     * Squash errors down from arrays if needed
+     *
+     * @param $errors mixed The array or string of errors
+     * @return string
+     */
+    protected function _implodeErrors($errors) {
+        if(is_array($errors)) {
+            $error = '';
+            foreach ( $errors as $e ) {
+                if ( is_array($e) ) {
+                    $error .= implode("\n", $e);
+                } else {
+                    $error .= "\n".$e;
+                }
+            }
+        }else{
+            $error = $errors;
+        }
+
+        return $error;
     }
 
     protected function _registerFacades()
