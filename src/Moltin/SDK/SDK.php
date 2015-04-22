@@ -135,7 +135,7 @@ class SDK
         }
 
         $identifier = md5(uniqid());
-        setcookie('identifier', $identifier, strtotime("+30 day"), '/');
+        setcookie('mcart', $identifier, strtotime("+30 day"), '/');
 
         return $identifier;
     }
