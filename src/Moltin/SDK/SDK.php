@@ -130,8 +130,8 @@ class SDK
 
     public function identifier()
     {
-        if (isset($_COOKIE['identifier'])) {
-            return $_COOKIE['identifier'];
+        if (isset($_COOKIE['mcart'])) {
+            return $_COOKIE['mcart'];
         }
 
         $identifier = md5(uniqid());
