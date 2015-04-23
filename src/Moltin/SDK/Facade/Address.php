@@ -41,7 +41,7 @@ class Address
 
 	public static function Update($customer, $id, $data)
 	{
-		return self::$sdk->put('customers/'.$customer.'/address/'.$id, $data);
+		return self::$sdk->put('customers/'.$customer.'/addresses/'.$id, $data);
 	}
 
 	public static function Find($customer, $terms = array())

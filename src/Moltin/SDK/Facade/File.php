@@ -47,4 +47,10 @@ class File
 	{
 		return self::$sdk->delete('files/'.$id);
 	}
+
+	public static function Order($data)
+	{
+		return self::$sdk->put('files/order', $data);
+	}
+
 }

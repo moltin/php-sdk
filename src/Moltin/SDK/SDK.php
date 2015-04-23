@@ -26,7 +26,8 @@ use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 class SDK
 {
     // Paths
-    public $url      = 'https://v1.api.molt.in/';
+    public $version  = 'v1';
+    public $url      = 'https://api.molt.in/';
     public $auth_url = 'http://auth.molt.in/';
 
     // Variables
@@ -50,6 +51,7 @@ class SDK
         // Setup args
         if ( isset($args['url']) and $args['url'] !== null ) { $this->url = $args['url']; }
         if ( isset($args['auth_url']) and $args['auth_url'] !== null ) { $this->auth_url = $args['auth_url']; }
+        if ( isset($args['version']) and $args['version'] !== null ) { $this->version = $args['version']; }
 
         // Retrieve information
         $this->currency = $this->currency();
@@ -94,25 +96,25 @@ class SDK
 
     public function get($uri, $data = array())
     {
-        $url = $this->url.$uri;
+        $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'GET', $data);
     }
 
     public function post($uri, $data = array())
     {
-        $url = $this->url.$uri;
+        $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'POST', $data);
     }
 
     public function put($uri, $data = array())
     {
-        $url = $this->url.$uri;
+        $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'PUT', $data);
     }
 
     public function delete($uri, $data = array())
     {
-        $url = $this->url.$uri;
+        $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'DELETE', $data);
     }
 
@@ -207,7 +209,14 @@ class SDK
 
             // Format errors
             if (isset($result['errors']) && is_array($result['errors'])) {
-                $error = implode("\n", $result['errors']);
+                $error = '';
+                foreach ( $result['errors'] as $e ) {
+                    if ( is_array($e) ) {
+                        $error .= implode("\n", $e);
+                    } else {
+                        $error .= "\n".$e;
+                    }
+                }
             } elseif (isset($result['error']) && is_array($result['error'])) {
                 $error = implode("\n", $result['error']);
             } else {

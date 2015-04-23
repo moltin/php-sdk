@@ -47,16 +47,22 @@ class Flows
 
                 // Setup args
                 $this->args = array(
-                    'name'     => $field['slug'],
-                    'id'       => $field['slug'],
-                    'value'    => ( isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : ( isset($field['value']) ? $field['value'] : null ) ),
-                    'required' => ( $field['required'] == 1 ? 'required' : false ),
-                    'class'    => ['form-control']
+                    'name'           => $field['slug'],
+                    'id'             => $field['slug'],
+                    'value'          => ( isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : ( isset($field['value']) ? $field['value'] : null ) ),
+                    'required'       => ( $field['required'] == 1 ? 'required' : false ),
+                    'class'          => ['form-control'],
+                    'data-fieldtype' => $field['type']
                 );
 
 		// WYSIWYG argument
 		if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
-			$this->args['class'] = ['form-control wysiwyg'];
+			$this->args['class'][] = 'wysiwyg';
+		}
+
+		// Multilingual argument
+		if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
+			$this->args['class'][] = 'multilingual';
 		}
 
                 // Wrap form value
@@ -109,7 +115,7 @@ class Flows
 
     protected function typeInteger($a)
     {
-        $this->args['type'] = 'text';
+        $this->args['type'] = 'number';
 
         return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
@@ -159,7 +165,8 @@ class Flows
 
     protected function typeMoney($a)
     {
-        $this->args['type'] = 'number';
+        $this->args['type']  = 'number';
+        $this->args['class'][] = 'money';
 
         $step = ($a['options']['decimal_places'] !== 0) ? 1/(($a['options']['decimal_places']*100)/$a['options']['decimal_places']) : 1;
         $placeholder = number_format(0,$a['options']['decimal_places']);

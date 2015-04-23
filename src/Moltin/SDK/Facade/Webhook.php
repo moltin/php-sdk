@@ -31,7 +31,7 @@ class Webhook
 
 	public static function Get($id)
 	{
-		return self::$sdk->get('webhooks/'.$id);
+		return self::$sdk->get('webhook/'.$id);
 	}
 
 	public static function Listing($terms = array())
@@ -41,16 +41,22 @@ class Webhook
 
 	public static function Create($data)
 	{
-		return self::$sdk->post('webhooks', $data);
+		return self::$sdk->post('webhook', $data);
 	}
 
 	public static function Update($id, $data)
 	{
-		return self::$sdk->put('webhooks/'.$id, $data);
+		return self::$sdk->put('webhook/'.$id, $data);
 	}
 
 	public static function Delete($id)
 	{
-		return self::$sdk->delete('webhooks/'.$id);
+		return self::$sdk->delete('webhook/'.$id);
 	}
+
+	public static function Fields($id = null)
+	{
+		return self::$sdk->fields('webhook', $id);
+	}
+
 }
