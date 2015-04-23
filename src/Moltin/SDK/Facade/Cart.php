@@ -99,5 +99,4 @@ class Cart
 	{
 		return self::$sdk->get('carts', $terms);
 	}
-
 }
