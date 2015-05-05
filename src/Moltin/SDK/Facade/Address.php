@@ -60,6 +60,8 @@ class Address
 		
 		if ( $customer > 0 and $id === null ) { $uri .= '/'.$customer.'/addresses'; }
 		else if ( $customer > 0 and $id > 0 ) { $uri .= '/'.$customer.'/addresses/'.$id; }
+		else if ( $customer === null and $id > 0) { $uri = 'addresses/'.$id; }
+		else { $uri = 'addresses'; }
 
 		return self::$sdk->fields($uri);
 	}
