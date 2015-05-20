@@ -41,11 +41,6 @@ If you wish to use another storage or request method simply change the relevant 
 Before you can use the API you will need to authorise, there are a number of ways to this. The simplest of which is to use the "client credentials" method. You can do this as follows:
 
 ``` php
-$result = $moltin->authenticate(new \Moltin\SDK\Authenticate\ClientCredentials(), array(
-	'client_id'     => '<YOUR CLIENT ID>',
-	'client_secret' => '<YOUR CLIENT SECRET>'
-));
-
 $result = \Moltin::Authenticate('ClientCredentials', [
         'client_id'     => '<YOUR CLIENT ID>',
         'client_secret' => '<YOUR CLIENT SECRET>',
