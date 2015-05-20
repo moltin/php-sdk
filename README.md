@@ -57,7 +57,7 @@ After authorising you can start to make calls to the API, there are four simple 
 
 ``` php
 	// Create a product
-	$result = \Product::Create('<ID>', $_POST);
+	$result = \Product::Create($_POST);
 
 	// Update a product
 	$result = \Product::Update('<ID>', array('title' => 'Updated!'));
