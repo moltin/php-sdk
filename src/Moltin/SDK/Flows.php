@@ -153,7 +153,7 @@ class Flows
 
     protected function typeMultiple($a)
     {
-        if (! isset($_POST[$this->args['name']]) && is_array($this->args['value'])) {
+        if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) {
             $this->args['value'] = array_keys($this->args['value']['data']);
         }
 
@@ -165,14 +165,14 @@ class Flows
 
     protected function typeMoney($a)
     {
-        $this->args['type']  = 'number';
+        $this->args['type'] = 'number';
         $this->args['class'][] = 'money';
 
         $step = ($a['options']['decimal_places'] !== 0) ? 1/(($a['options']['decimal_places']*100)/$a['options']['decimal_places']) : 1;
         $placeholder = number_format(0,$a['options']['decimal_places']);
 
         // step should be set depending on number of decimal places to round to for currency formatting
-        return '<input min=0 placeholder=' . $placeholder . ' step=' . $step . ' ' . $this->_buildArgs($this->args) . ' />';
+        return '<input min="0" placeholder="'.$placeholder.'" step="'.$step.'" '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeTaxBand($a)
@@ -208,7 +208,7 @@ class Flows
         $string = '';
         foreach ($args as $key => $value) {
             if ($key == "value" && $value === 0) {
-                $string .= $key . '="0"';
+                $string .= $key . '="0" ';
             } elseif ($key != "value" or ! $skipValue) {
                 if ( ! empty($value)) {
                     if(is_array($value) && isset($value['data']['raw']['without_tax'])) {
