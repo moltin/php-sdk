@@ -207,7 +207,7 @@ class Flows
     {
         $string = '';
         foreach ($args as $key => $value) {
-            if ($key == "value" && $value === 0) {
+            if ($key == "value" && $value === '0') {
                 $string .= $key . '="0" ';
             } elseif ($key != "value" or ! $skipValue) {
                 if ( ! empty($value)) {
