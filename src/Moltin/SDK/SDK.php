@@ -152,7 +152,7 @@ class SDK
         $result = $this->request->make();
 
         // Check response
-        $result = json_decode($result, true);
+        $result = json_decode($result, true, 512, JSON_BIGINT_AS_STRING);
 
         // Check JSON for error
         if (isset($result['status']) and ! $result['status']) {
