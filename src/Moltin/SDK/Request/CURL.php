@@ -28,11 +28,12 @@ class CURL implements \Moltin\SDK\RequestInterface
     public $header;
 
     protected $curl;
+    protected $debug;
 
     public function setup($url, $method, $post = array(), $token = null)
     {
         // Variables
-        $headers    = [];
+        $headers    = array();
         $this->curl = curl_init();
         $this->url  = $url;
 
@@ -80,7 +81,14 @@ class CURL implements \Moltin\SDK\RequestInterface
         $this->code   = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
         $this->time   = curl_getinfo($this->curl, CURLINFO_TOTAL_TIME);
         $this->header = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
-
+        
+        $this->debug = curl_getinfo($this->curl);
+   
         return $result;
+    }
+
+    public function debug()
+    {
+        return $this->debug;
     }
 }

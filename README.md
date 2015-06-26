@@ -13,6 +13,7 @@ Add the following to your project `composer.json` file
 ```
 {
     "require": {
+        "php": ">=5.4",
         "moltin/php-sdk": "dev-master"
     }
 }
