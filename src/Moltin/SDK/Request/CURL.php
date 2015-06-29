@@ -23,6 +23,7 @@ namespace Moltin\SDK\Request;
 class CURL implements \Moltin\SDK\RequestInterface
 {
     public $url;
+    public $method;
     public $code;
     public $time;
     public $header;
@@ -32,9 +33,10 @@ class CURL implements \Moltin\SDK\RequestInterface
     public function setup($url, $method, $post = array(), $token = null)
     {
         // Variables
-        $headers    = [];
-        $this->curl = curl_init();
-        $this->url  = $url;
+        $headers      = [];
+        $this->curl   = curl_init();
+        $this->url    = $url;
+        $this->method = $method;
 
         // Add request settings
         curl_setopt_array($this->curl, array(
@@ -51,14 +53,25 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         // Add post
         if ( ! empty($post)) {
-            $post = ( isset($post['file']) && $post['file'] instanceof \CurlFile ? $post : http_build_query($post) );
+
+            // Merge in files
+            foreach ($_FILES as $key => $data) {
+                if ( ! isset($post[$key]) and strlen($data['tmp_name']) > 0) {
+                    $post[$key] = new \CurlFile($data['tmp_name'], $data['type'], $data['name']);
+                }
+            }
+
+            // Inline arrays
+            foreach ( $post as $key => $value ) {
+                if (is_array($value)) {
+                    foreach ( $value as $k => $v ) $post[$key.'['.$k.']'] = $v;
+                    unset($post[$key]);
+                }
+            }
+            
+            // Assign to curl
             curl_setopt($this->curl, CURLOPT_POST, true);
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
-        }
-
-        // Add content-type header
-        if ($token !== null and $method == 'PUT') {
-            $headers[] = 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8';
         }
 
         // Add auth header

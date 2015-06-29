@@ -193,6 +193,9 @@ class SDK
         if ($method == 'GET' and ! empty($data)) {
             $url .= '?' . http_build_query($data);
             $data = array();
+        } else if ($method == 'PUT') {
+            $url .= (strpos($url, '?') !== false ? '&' : '?').'_method='.$method;
+            $method = 'POST';
         }
 
         // Start request
