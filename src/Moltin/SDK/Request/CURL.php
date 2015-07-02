@@ -64,7 +64,11 @@ class CURL implements \Moltin\SDK\RequestInterface
             // Inline arrays
             foreach ( $post as $key => $value ) {
                 if (is_array($value)) {
-                    foreach ( $value as $k => $v ) $post[$key.'['.$k.']'] = $v;
+                    foreach ( $value as $k => $v ) {
+                        if (isset($v) && !empty($v)) {    
+                            $post[$key.'['.$k.']'] = $v;
+                        }
+                    }
                     unset($post[$key]);
                 }
             }
