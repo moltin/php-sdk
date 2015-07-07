@@ -27,11 +27,18 @@ class Flows implements \IteratorAggregate
     protected $fields;
     protected $wrap;
     protected $args;
+    protected $inputClasses = ['form-control'];
 
     public function __construct($fields, $wrap = false)
     {
         $this->fields = $fields;
         $this->wrap = $wrap;
+    }
+
+    public function setClasses($classes = array())
+    {
+        $this->inputClasses = $classes;
+        return $this;
     }
 
     public function build($old = null)
@@ -55,7 +62,7 @@ class Flows implements \IteratorAggregate
                     'id' => $field['slug'],
                     'value' => (isset($old[$field['slug']]) ? $old[$field['slug']] : (isset($field['value']) ? $field['value'] : null)),
                     'required' => ($field['required'] == 1 ? 'required' : false),
-                    'class' => ['form-control'],
+                    'class' => $this->inputClasses,
                     'data-fieldtype' => $field['type']
                 );
 
