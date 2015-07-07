@@ -125,7 +125,7 @@ class SDK
         $flows = new Flows($fields['result'], $wrap);
 
         // Build and return form
-        return $flows->build($fields);
+        return $flows;
     }
 
     public function identifier()
