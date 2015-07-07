@@ -38,6 +38,7 @@ class Flows implements \IteratorAggregate
     public function setClasses($classes = array())
     {
         $this->inputClasses = $classes;
+
         return $this;
     }
 
@@ -54,40 +55,39 @@ class Flows implements \IteratorAggregate
             $method = 'type' . str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
 
             // Check for method
-            if (method_exists($this, $method)) {
-
-                // Setup args
-                $this->args = array(
-                    'name' => $field['slug'],
-                    'id' => $field['slug'],
-                    'value' => (isset($old[$field['slug']]) ? $old[$field['slug']] : (isset($field['value']) ? $field['value'] : null)),
-                    'required' => ($field['required'] == 1 ? 'required' : false),
-                    'class' => $this->inputClasses,
-                    'data-fieldtype' => $field['type']
-                );
-
-                // WYSIWYG argument
-                if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
-                    $this->args['class'][] = 'wysiwyg';
-                }
-
-                // Multilingual argument
-                if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
-                    $this->args['class'][] = 'multilingual';
-                }
-
-                // Wrap form value
-                if (isset($this->wrap) && $this->wrap !== false) {
-                    $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
-                }
-
-                // Build input
-                $field['input'] = $this->$method($field);
-
-                continue;
+            if (!method_exists($this, $method)) {
+                // not found
+                throw new InvalidFieldType('Field type ' . $field['type'] . ' was not found');
             }
-            throw new InvalidFieldType('Field type ' . $field['type'] . ' was not found');
+            // Setup args
+            $this->args = array(
+                'name' => $field['slug'],
+                'id' => $field['slug'],
+                'value' => (isset($old[$field['slug']]) ? $old[$field['slug']] : (isset($field['value']) ? $field['value'] : null)),
+                'required' => ($field['required'] == 1 ? 'required' : false),
+                'class' => $this->inputClasses,
+                'data-fieldtype' => $field['type']
+            );
+
+            // WYSIWYG argument
+            if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
+                $this->args['class'][] = 'wysiwyg';
+            }
+
+            // Multilingual argument
+            if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
+                $this->args['class'][] = 'multilingual';
+            }
+
+            // Wrap form value
+            if (isset($this->wrap) && $this->wrap !== false) {
+                $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
+            }
+
+            // Build input
+            $field['input'] = $this->$method($field);
         }
+
         // return \ArrayIterator object, mainly for the getIterator() method.
         return new \ArrayIterator($this->fields);
     }
@@ -292,3 +292,4 @@ class Flows implements \IteratorAggregate
         return $string;
     }
 }
+
