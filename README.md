@@ -73,12 +73,12 @@ After authorising you can start to make calls to the API, there are four simple 
 
 To help with the usual CRUD forms we've included an automated form builder to take care of the messy bits for you.
 
-``` php
+```php
 	// Get fields (create)
-	fields = \Product::Fields();
+	$fields = \Product::Fields();
 
 	// Get fields (edit product 1)
-	fields = \Product::Fields('<ID>');
+	$fields = \Product::Fields('<ID>');
 
 	// Show form
 	foreach ($fields as $field) {
@@ -86,6 +86,28 @@ To help with the usual CRUD forms we've included an automated form builder to ta
 		echo $field['input'];
 	}
 ```
+
+You can override the old form data on the input field by calling `->build($oldData)` on the `Fields` call:
+
+```php
+
+$fields = \Product::Fields()->build($oldData);
+
+foreach ($fields as $field) {
+    ...
+}
+
+```
+
+You may also change the classes on the input by calling `->setClasses($classesArray)`
+
+```php
+
+$fields = \Product::Fields()->setClasses(['form-control', 'small-text', 'another-class']);
+
+```
+
+please note that the `setClasses` method MUST be called before the `build` method in order for your classes to be added.
 
 ## Testing
 
