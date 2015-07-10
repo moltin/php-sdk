@@ -37,6 +37,7 @@ class File
 	public static function Upload($id, $file, $mime = null, $name = null)
 	{
         return self::$sdk->post('files', [
+            'file'      => new \CurlFile($file, $mime, $name),
             'name'      => $name,
             'assign_to' => $id
         ]);
