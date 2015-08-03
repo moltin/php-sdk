@@ -89,10 +89,10 @@ class Cart
 	{
 		if ( $code === false )
 		{
-			return self::$sdk->delete('cart/'.self::$identifier.'/discount');
+			return self::$sdk->delete('carts/'.self::$identifier.'/discount');
 		}
 
-		return self::$sdk->post('cart/'.self::$identifier.'/discount', ['code' => $code]);
+		return self::$sdk->post('carts/'.self::$identifier.'/discount', ['code' => $code]);
 	}
 
 	public static function Listing($terms = array())
