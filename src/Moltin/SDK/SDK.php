@@ -128,8 +128,12 @@ class SDK
         return $flows->build($fields);
     }
 
-    public function identifier()
+    public function identifier($reset = false)
     {
+        if ($reset == true) {
+            unset($_COOKIE['mcart']);
+        }
+
         if (isset($_COOKIE['mcart'])) {
             return $_COOKIE['mcart'];
         }
