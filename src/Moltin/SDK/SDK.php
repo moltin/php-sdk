@@ -132,6 +132,7 @@ class SDK
     {
         if ($reset == true) {
             unset($_COOKIE['mcart']);
+            setcookie('mcart', '', time() - 3600, '/');
         }
 
         if (isset($_COOKIE['mcart'])) {
