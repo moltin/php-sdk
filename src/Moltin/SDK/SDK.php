@@ -130,9 +130,9 @@ class SDK
 
     public function identifier($reset = false)
     {
-        if ($reset == true) {
+        if ($reset) {
+            setcookie('mcart', null, -1, '/');
             unset($_COOKIE['mcart']);
-            setcookie('mcart', '', time() - 3600, '/');
         }
 
         if (isset($_COOKIE['mcart'])) {
