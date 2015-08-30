@@ -65,8 +65,8 @@ class Moltin
 		return self::$sdk->fields($type, $id, $wrap, $suffix);
 	}
 
-	public static function Identifier()
+	public static function Identifier($reset = false)
 	{
-		return self::$sdk->identifier();
+		return self::$sdk->identifier($reset);
 	}
 }
