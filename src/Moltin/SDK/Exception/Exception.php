@@ -12,7 +12,7 @@
 *
 * @package moltin/php-sdk
 * @author Jamie Holdroyd <jamie@molt.in>
-* @copyright 2013 Moltin Ltd.
+* @copyright 2015 Moltin Ltd.
 * @version dev
 * @link http://github.com/moltin/php-sdk
 *
@@ -20,10 +20,6 @@
 
 namespace Moltin\SDK\Exception;
 
-class InvalidAuthenticationRequestException extends \RuntimeException implements Exception
+interface Exception
 {
-    public function __toString()
-    {
-        return $this->message;
-    }
 }

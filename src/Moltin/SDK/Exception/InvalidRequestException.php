@@ -20,7 +20,7 @@
 
 namespace Moltin\SDK\Exception;
 
-class InvalidRequestException extends \Exception
+class InvalidRequestException extends \RuntimeException implements Exception
 {
     public function __toString()
     {
