@@ -53,7 +53,27 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         // Add post
         if ( ! empty($post)) {
-            $post = ( isset($post['file']) && $post['file'] instanceof \CurlFile ? $post : http_build_query($post) );
+
+            // Merge in files
+            foreach ($_FILES as $key => $data) {
+                if ( ! isset($post[$key]) and strlen($data['tmp_name']) > 0) {
+                    $post[$key] = new \CurlFile($data['tmp_name'], $data['type'], $data['name']);
+                }
+            }
+
+            // Inline arrays
+            foreach ( $post as $key => $value ) {
+                if (is_array($value)) {
+                    foreach ( $value as $k => $v ) {
+                        if (isset($v) && !empty($v)) {    
+                            $post[$key.'['.$k.']'] = $v;
+                        }
+                    }
+                    unset($post[$key]);
+                }
+            }
+            
+            // Assign to curl
             curl_setopt($this->curl, CURLOPT_POST, true);
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
         }
