@@ -63,10 +63,19 @@ class CURL implements \Moltin\SDK\RequestInterface
 
             // Inline arrays
             foreach ( $post as $key => $value ) {
+                // $key => order
+                // $value => array with all the parents and children
                 if (is_array($value)) {
                     foreach ( $value as $k => $v ) {
-                        if (isset($v) && !empty($v)) {    
-                            $post[$key.'['.$k.']'] = $v;
+                        // $k => id parent or children
+                        // $v => parent or children information
+                        if (isset($v) && !empty($v)) {
+                            if (empty($v['parent'])) {
+                                $post[$key.'['.$k.'][order]'] = $v['order'];
+                            } elseif(!empty($v['parent'])) {
+                                $post[$key.'['.$k.'][order]'] = $v['order'];
+                                $post[$key.'['.$k.'][parent]'] = $v['parent'];
+                            }
                         }
                     }
                     unset($post[$key]);
