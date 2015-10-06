@@ -128,7 +128,7 @@ class SDK
         return $flows->build($fields);
     }
 
-    public function identifier($reset = false)
+    public function identifier($reset = false, $identifier = null)
     {
         if ($reset) {
             setcookie('mcart', null, -1, '/');
@@ -138,8 +138,11 @@ class SDK
         if (isset($_COOKIE['mcart'])) {
             return $_COOKIE['mcart'];
         }
-
-        $identifier = md5(uniqid());
+        
+        if(! $identifier) {
+            $identifier = md5(uniqid());
+        }
+        
         setcookie('mcart', $identifier, strtotime("+30 day"), '/');
 
         return $identifier;
