@@ -1,5 +1,7 @@
 <?php
 
+namespace Moltin\SDK\Tests;
+
 use Moltin\SDK\Flows;
 
 class FlowsTest extends \PHPUnit_Framework_TestCase
