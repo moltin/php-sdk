@@ -24,8 +24,13 @@
         "mockery/mockery": "0.7.*"
     },
     "autoload": {
-        "psr-0": {
-            "Moltin": "src/"
+        "psr-4": {
+            "Moltin\\SDK\\": "src/"
+        }
+    },
+    "autoload-dev" : {
+        "psr-4": { 
+            "Moltin\\SDK\\Tests\\" : "tests/"
         }
     }
 }
