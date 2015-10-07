@@ -20,7 +20,7 @@
 
 namespace Moltin\SDK\Exception;
 
-class InvalidResponseException extends \Exception
+class InvalidResponseException extends \RuntimeException implements Exception
 {
     public function __toString()
     {

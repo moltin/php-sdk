@@ -31,52 +31,44 @@ class Flows
     public function __construct($fields, $wrap = false)
     {
         $this->fields = $fields;
-        $this->wrap   = $wrap;
+        $this->wrap = $wrap;
     }
 
     public function build()
     {
         // Loop fields
         foreach ($this->fields as &$field) {
-
-            // Variables
-            $method = 'type' . str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
-
-            // Check for method
-            if (method_exists($this, $method)) {
+            if (!$this->_isValidType($field['type'])) {
+                throw new InvalidFieldType('Field type '.$field['type'].' was not found');
+            }
 
                 // Setup args
-                $this->args = array(
-                    'name'           => $field['slug'],
-                    'id'             => $field['slug'],
-                    'value'          => ( isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : ( isset($field['value']) ? $field['value'] : null ) ),
-                    'required'       => ( $field['required'] == 1 ? 'required' : false ),
-                    'class'          => ['form-control'],
-                    'data-fieldtype' => $field['type']
-                );
+            $this->args = array(
+                'name' => $field['slug'],
+                'id' => $field['slug'],
+                'value' => (isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : (isset($field['value']) ? $field['value'] : null)),
+                'required' => ($field['required'] == 1 ? 'required' : false),
+                'class' => ['form-control'],
+                'data-fieldtype' => $field['type'],
+            );
 
-                // WYSIWYG argument
-                if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
-                    $this->args['class'][] = 'wysiwyg';
-                }
-
-                // Multilingual argument
-                if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
-                    $this->args['class'][] = 'multilingual';
-                }
-
-                // Wrap form value
-                if (isset($this->wrap) && $this->wrap !== false) {
-                    $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
-                }
-
-                // Build input
-                $field['input'] = $this->$method($field);
-
-            // Not found
-            } else {
-                throw new InvalidFieldType('Field type ' . $field['type'] . ' was not found');
+            // WYSIWYG argument
+            if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
+                $this->args['class'][] = 'wysiwyg';
             }
+
+            // Multilingual argument
+            if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
+                $this->args['class'][] = 'multilingual';
+            }
+
+            // Wrap form value
+            if (isset($this->wrap) && $this->wrap !== false) {
+                $this->args['name'] = $this->wrap.'['.$field['slug'].']';
+            }
+
+            // Build input
+            $field['input'] = $this->_getInputForField($field);
         }
 
         return $this->fields;
@@ -251,5 +243,22 @@ class Flows
         }
 
         return $string;
+    }
+
+    protected function _getMethodForType($type)
+    {
+        return 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $type)));
+    }
+
+    protected function _isValidType($type)
+    {
+        return method_exists($this, $this->_getMethodForType($type));
+    }
+
+    protected function _getInputForField($field)
+    {
+        $method = $this->_getMethodForType($field['type']);
+
+        return $this->{$method}($field);
     }
 }
