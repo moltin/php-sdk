@@ -22,45 +22,45 @@ namespace Moltin\SDK\Facade;
 
 class Entry
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Get($flow, $id)
-	{
-		return self::$sdk->get('flows/'.$flow.'/entries/'.$id);
-	}
+    public static function Get($flow, $id)
+    {
+        return self::$sdk->get('flows/' . $flow . '/entries/' . $id);
+    }
 
-	public static function Find($flow, $terms = array())
-	{
-		return self::$sdk->get('flows/'.$flow.'/entries/search', $terms);
-	}
+    public static function Find($flow, $terms = [])
+    {
+        return self::$sdk->get('flows/' . $flow . '/entries/search', $terms);
+    }
 
-	public static function Listing($flow = null, $terms = array())
-	{
-		return self::$sdk->get('flows/'.$flow.'/entries', $terms);
-	}	
+    public static function Listing($flow = null, $terms = [])
+    {
+        return self::$sdk->get('flows/' . $flow . '/entries', $terms);
+    }
 
-	public static function Create($flow, $data)
-	{
-		return self::$sdk->post('flows/'.$flow.'/entries', $data);
-	}
+    public static function Create($flow, $data)
+    {
+        return self::$sdk->post('flows/' . $flow . '/entries', $data);
+    }
 
-	public static function Update($flow, $id, $data)
-	{
-		return self::$sdk->put('flows/'.$flow.'/entries/'.$id, $data);
-	}
+    public static function Update($flow, $id, $data)
+    {
+        return self::$sdk->put('flows/' . $flow . '/entries/' . $id, $data);
+    }
 
-	public static function Fields($flow = null, $id)
-	{
-		return self::$sdk->fields('flows/'.$flow.'/entries', $id);
-	}
+    public static function Fields($flow = null, $id)
+    {
+        return self::$sdk->fields('flows/' . $flow . '/entries', $id);
+    }
 
-	public static function Delete($flow, $id)
-	{
-		return self::$sdk->delete('flows/'.$flow.'/entries/'.$id);
-	}
+    public static function Delete($flow, $id)
+    {
+        return self::$sdk->delete('flows/' . $flow . '/entries/' . $id);
+    }
 }

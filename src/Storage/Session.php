@@ -28,13 +28,13 @@ class Session implements \Moltin\SDK\StorageInterface
      *
      * @param array [$args] Optional array of arguments
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
         session_id() or session_start();
 
         // Create default item
-        if ( ! isset($_SESSION['sdk'])) {
-            $_SESSION['sdk'] = array();
+        if (! isset($_SESSION['sdk'])) {
+            $_SESSION['sdk'] = [];
         }
     }
 
@@ -47,7 +47,7 @@ class Session implements \Moltin\SDK\StorageInterface
     public function get($id)
     {
         // Not found
-        if ( ! isset($_SESSION['sdk'][$id])) {
+        if (! isset($_SESSION['sdk'][$id])) {
             return;
         }
 

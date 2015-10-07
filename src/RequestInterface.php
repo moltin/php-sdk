@@ -22,7 +22,7 @@ namespace Moltin\SDK;
 
 interface RequestInterface
 {
-    public function setup($token, $url, $method, $post = array());
+    public function setup($token, $url, $method, $post = []);
 
     public function make();
 }

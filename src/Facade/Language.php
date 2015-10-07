@@ -22,13 +22,13 @@ namespace Moltin\SDK\Facade;
 
 class Language
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'languages';
-	protected static $plural = 'languages';
+    protected static $single = 'languages';
+    protected static $plural = 'languages';
 
-	public static function Set($code)
-	{
-		return self::$sdk->language($code);
-	}
+    public static function Set($code)
+    {
+        return self::$sdk->language($code);
+    }
 }

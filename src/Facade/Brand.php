@@ -22,8 +22,8 @@ namespace Moltin\SDK\Facade;
 
 class Brand
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'brands';
-	protected static $plural = 'brands';
+    protected static $single = 'brands';
+    protected static $plural = 'brands';
 }

@@ -22,23 +22,23 @@ namespace Moltin\SDK\Facade;
 
 class Product
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'products';
-	protected static $plural = 'products';
+    protected static $single = 'products';
+    protected static $plural = 'products';
 
-	public static function Search($terms = array())
-	{
-		return self::$sdk->get(self::$plural.'/search', $terms);
-	}
+    public static function Search($terms = [])
+    {
+        return self::$sdk->get(self::$plural . '/search', $terms);
+    }
 
-	public static function Modifiers($id)
-	{
-		return self::$sdk->get(self::$single.'/'.$id.'/modifiers');
-	}
+    public static function Modifiers($id)
+    {
+        return self::$sdk->get(self::$single . '/' . $id . '/modifiers');
+    }
 
-	public static function Variations($id)
-	{
-		return self::$sdk->get(self::$plural.'/'.$id.'/variations');
-	}
+    public static function Variations($id)
+    {
+        return self::$sdk->get(self::$plural . '/' . $id . '/variations');
+    }
 }

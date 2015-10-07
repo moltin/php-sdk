@@ -22,35 +22,35 @@ namespace Moltin\SDK\Facade;
 
 class Variation
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Get($product, $modifier, $id)
-	{
-		return self::$sdk->get('products/'.$product.'/modifiers/'.$modifier.'/variations/'.$id);
-	}
+    public static function Get($product, $modifier, $id)
+    {
+        return self::$sdk->get('products/' . $product . '/modifiers/' . $modifier . '/variations/' . $id);
+    }
 
-	public static function Create($product, $modifier, $data)
-	{
-		return self::$sdk->post('products/'.$product.'/modifiers/'.$modifier.'/variations', $data);
-	}
+    public static function Create($product, $modifier, $data)
+    {
+        return self::$sdk->post('products/' . $product . '/modifiers/' . $modifier . '/variations', $data);
+    }
 
-	public static function Update($product, $modifier, $id, $data)
-	{
-		return self::$sdk->put('products/'.$product.'/modifiers/'.$modifier.'/variations/'.$id, $data);
-	}
+    public static function Update($product, $modifier, $id, $data)
+    {
+        return self::$sdk->put('products/' . $product . '/modifiers/' . $modifier . '/variations/' . $id, $data);
+    }
 
-	public static function Fields($product, $modifier, $id = null)
-	{
-		return self::$sdk->fields('products/'.$product.'/modifiers/'.$modifier.'/variations'. (($id) ? '/'.$id : '') );
-	}
+    public static function Fields($product, $modifier, $id = null)
+    {
+        return self::$sdk->fields('products/' . $product . '/modifiers/' . $modifier . '/variations' . (($id) ? '/' . $id : ''));
+    }
 
-	public static function Delete($product, $modifier, $id)
-	{
-		return self::$sdk->delete('products/'.$product.'/modifiers/'.$modifier.'/variations/'.$id);
-	}
+    public static function Delete($product, $modifier, $id)
+    {
+        return self::$sdk->delete('products/' . $product . '/modifiers/' . $modifier . '/variations/' . $id);
+    }
 }

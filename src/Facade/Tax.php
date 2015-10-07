@@ -22,8 +22,8 @@ namespace Moltin\SDK\Facade;
 
 class Tax
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'taxes';
-	protected static $plural = 'taxes';
+    protected static $single = 'taxes';
+    protected static $plural = 'taxes';
 }

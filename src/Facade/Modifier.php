@@ -22,35 +22,35 @@ namespace Moltin\SDK\Facade;
 
 class Modifier
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Get($product, $modifier)
-	{
-		return self::$sdk->get('products/'.$product.'/modifiers/'.$modifier);
-	}
+    public static function Get($product, $modifier)
+    {
+        return self::$sdk->get('products/' . $product . '/modifiers/' . $modifier);
+    }
 
-	public static function Create($product, $data)
-	{
-		return self::$sdk->post('products/'.$product.'/modifiers', $data);
-	}
+    public static function Create($product, $data)
+    {
+        return self::$sdk->post('products/' . $product . '/modifiers', $data);
+    }
 
-	public static function Update($product, $modifier, $data)
-	{
-		return self::$sdk->put('products/'.$product.'/modifiers/'.$modifier, $data);
-	}
+    public static function Update($product, $modifier, $data)
+    {
+        return self::$sdk->put('products/' . $product . '/modifiers/' . $modifier, $data);
+    }
 
-	public static function Fields($product, $modifier = null)
-	{
-		return self::$sdk->fields('products/'.$product.'/modifiers'. (($modifier) ? '/'.$modifier : '') );
-	}
+    public static function Fields($product, $modifier = null)
+    {
+        return self::$sdk->fields('products/' . $product . '/modifiers' . (($modifier) ? '/' . $modifier : ''));
+    }
 
-	public static function Delete($product, $modifier)
-	{
-		return self::$sdk->delete('products/'.$product.'/modifiers/'.$modifier);
-	}
+    public static function Delete($product, $modifier)
+    {
+        return self::$sdk->delete('products/' . $product . '/modifiers/' . $modifier);
+    }
 }
