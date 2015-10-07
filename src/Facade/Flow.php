@@ -34,7 +34,7 @@ class Flow
 		return self::$sdk->get('flows/'.$slug);
 	}
 
-	public static function Listing($terms = array())
+	public static function Listing($terms = [])
 	{
 		return self::$sdk->get('flows', $terms);
 	}
@@ -54,7 +54,7 @@ class Flow
 		return self::$sdk->fields('flows', $slug);
 	}
 
-	public static function Entries($slug = null, $terms = array())
+	public static function Entries($slug = null, $terms = [])
 	{
 		return self::$sdk->get('flows/'.$slug.'/entries', $terms);
 	}

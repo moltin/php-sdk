@@ -24,24 +24,24 @@ use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
 class Password implements \Moltin\SDK\AuthenticateInterface
 {
-    protected $data = array(
+    protected $data = [
         'token'   => null,
         'refresh' => null,
         'expires' => null
-    );
+    ];
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
         // Variables
         $url  = $parent->url . 'oauth/access_token';
-        $data = array(
+        $data = [
             'grant_type'    => 'password',
             'username'      => $args['username'],
             'password'      => $args['password'],
             'client_id'     => $args['client_id'],
             'client_secret' => $args['client_secret'],
             'redirect_uri'  => $args['redirect_uri']
-        );
+        ];
 
         $parent->request->setup($url, 'POST', $data);
         $result = $parent->request->make();

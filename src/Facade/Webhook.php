@@ -34,7 +34,7 @@ class Webhook
 		return self::$sdk->get('webhooks/'.$id);
 	}
 
-	public static function Listing($terms = array())
+	public static function Listing($terms = [])
 	{
 		return self::$sdk->get('webhooks', $terms);
 	}

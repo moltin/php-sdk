@@ -30,7 +30,7 @@ class CURL implements \Moltin\SDK\RequestInterface
 
     protected $curl;
 
-    public function setup($url, $method, $post = array(), $token = null)
+    public function setup($url, $method, $post = [], $token = null)
     {
         // Variables
         $headers      = [];
@@ -39,7 +39,7 @@ class CURL implements \Moltin\SDK\RequestInterface
         $this->method = $method;
 
         // Add request settings
-        curl_setopt_array($this->curl, array(
+        curl_setopt_array($this->curl, [
             CURLOPT_URL            => $url,
             CURLOPT_CUSTOMREQUEST  => $method,
             CURLOPT_HEADER         => false,
@@ -49,7 +49,7 @@ class CURL implements \Moltin\SDK\RequestInterface
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_TIMEOUT        => 40,
             CURLINFO_HEADER_OUT    => true
-        ));
+        ]);
 
         // Add post
         if ( ! empty($post)) {

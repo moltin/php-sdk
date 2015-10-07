@@ -31,7 +31,7 @@ class SDK
     public $auth_url = 'http://auth.molt.in/';
 
     // Variables
-    public $methods = array('GET', 'POST', 'PUT', 'DELETE');
+    public $methods = ['GET', 'POST', 'PUT', 'DELETE'];
     public $currency;
     public $language;
     public $store;
@@ -42,7 +42,7 @@ class SDK
     protected $refresh;
     protected $expires;
 
-    public function __construct(\Moltin\SDK\StorageInterface $store, \Moltin\SDK\RequestInterface $request, $args = array())
+    public function __construct(\Moltin\SDK\StorageInterface $store, \Moltin\SDK\RequestInterface $request, $args = [])
     {
         // Make global
         $this->store   = $store;
@@ -64,7 +64,7 @@ class SDK
         $this->_registerFacades();
     }
 
-    public function authenticate(\Moltin\SDK\AuthenticateInterface $auth, $args = array())
+    public function authenticate(\Moltin\SDK\AuthenticateInterface $auth, $args = [])
     {
         // Skip active auth or refresh current
         if ($this->expires > 0 and $this->expires > time()) {
@@ -82,7 +82,7 @@ class SDK
         return ($this->token === null ? false : true);
     }
 
-    public function refresh($args = array())
+    public function refresh($args = [])
     {
         // Perform refresh
         $refresh = new Authenticate\Refresh();
@@ -94,25 +94,25 @@ class SDK
         return ($this->token === null ? false : true);
     }
 
-    public function get($uri, $data = array())
+    public function get($uri, $data = [])
     {
         $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'GET', $data);
     }
 
-    public function post($uri, $data = array())
+    public function post($uri, $data = [])
     {
         $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'POST', $data);
     }
 
-    public function put($uri, $data = array())
+    public function put($uri, $data = [])
     {
         $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'PUT', $data);
     }
 
-    public function delete($uri, $data = array())
+    public function delete($uri, $data = [])
     {
         $url = $this->url.$this->version.'/'.$uri;
         return $this->_request($url, 'DELETE', $data);
@@ -200,7 +200,7 @@ class SDK
         // Append URL
         if ($method == 'GET' and ! empty($data)) {
             $url .= '?' . http_build_query($data);
-            $data = array();
+            $data = [];
         } else if ($method == 'PUT') {
             $url .= (strpos($url, '?') !== false ? '&' : '?').'_method='.$method;
             $method = 'POST';

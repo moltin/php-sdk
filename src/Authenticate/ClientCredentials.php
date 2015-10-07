@@ -25,11 +25,11 @@ use Moltin\SDK\Exception\InvalidAuthenticationRequestException as InvalidAuthReq
 
 class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 {
-    protected $data = array(
+    protected $data = [
         'token'   => null,
         'refresh' => null,
         'expires' => null
-    );
+    ];
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
@@ -40,11 +40,11 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 
         // Variables
         $url  = $parent->url . 'oauth/access_token';
-        $data = array(
+        $data = [
             'grant_type'    => 'client_credentials',
             'client_id'     => $args['client_id'],
             'client_secret' => $args['client_secret']
-        );
+        ];
 
         // Make request
         $parent->request->setup($url, 'POST', $data);
@@ -81,7 +81,7 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
     protected function validate($args)
     {
         // Variables
-        $required = array('client_id', 'client_secret');
+        $required = ['client_id', 'client_secret'];
         $keys     = array_keys($args);
         $diff     = array_diff($required, $keys);
 

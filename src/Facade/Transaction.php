@@ -34,7 +34,7 @@ class Transaction
 		return self::$sdk->get('transactions/'.$slug);
 	}
 
-	public static function Listing($terms = array())
+	public static function Listing($terms = [])
 	{
 		return self::$sdk->get('transactions', $terms);
 	}

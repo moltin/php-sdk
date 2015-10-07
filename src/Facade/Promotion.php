@@ -27,7 +27,7 @@ class Promotion
 	protected static $single = 'promotions/cart';
 	protected static $plural = 'promotions/cart';
 
-	public static function Search($terms = array())
+	public static function Search($terms = [])
 	{
 		return self::$sdk->get(self::$plural.'/search', $terms);
 	}
