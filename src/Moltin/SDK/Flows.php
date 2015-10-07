@@ -55,15 +55,15 @@ class Flows
                     'data-fieldtype' => $field['type']
                 );
 
-		// WYSIWYG argument
-		if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
-			$this->args['class'][] = 'wysiwyg';
-		}
+                // WYSIWYG argument
+                if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
+                    $this->args['class'][] = 'wysiwyg';
+                }
 
-		// Multilingual argument
-		if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
-			$this->args['class'][] = 'multilingual';
-		}
+                // Multilingual argument
+                if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
+                    $this->args['class'][] = 'multilingual';
+                }
 
                 // Wrap form value
                 if (isset($this->wrap) && $this->wrap !== false) {
@@ -187,7 +187,7 @@ class Flows
         $placeholder = number_format(0,$a['options']['decimal_places']);
 
         // step should be set depending on number of decimal places to round to for currency formatting
-        return '<input min=0 placeholder=' . $placeholder . ' step=' . $step . ' ' . $this->_buildArgs($this->args) . ' />';
+        return '<input min="0" placeholder="' . $placeholder . '" step="' . $step . '" ' . $this->_buildArgs($this->args).' />';
     }
 
     protected function typeTaxBand($a)
