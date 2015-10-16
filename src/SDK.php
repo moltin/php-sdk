@@ -138,11 +138,11 @@ class SDK
         if (isset($_COOKIE['mcart'])) {
             return $_COOKIE['mcart'];
         }
-        
+
         if(! $identifier) {
             $identifier = md5(uniqid());
         }
-        
+
         setcookie('mcart', $identifier, strtotime("+30 day"), '/');
 
         return $identifier;
@@ -252,61 +252,6 @@ class SDK
                 } else {
                     $error .= "\n".$e;
                 }
-<<<<<<< HEAD:src/Moltin/SDK/SDK.php
-            }
-        }else{
-            $error = $errors;
-        }
-
-        return $error;
-    }
-
-    public function __call($method, $args)
-    {
-        // Variables
-        $regex = "/(get|delete|update|create)(?:(\w+)By(\w+)|(\w+))/i";
-        $map   = array('update' => 'put', 'create' => 'post');
-
-        // Nice method generation
-        if (preg_match($regex, $method, $result)) {
-            // Format result
-            if (isset($result[4])) {
-                $type   = $result[1];
-                $method = $result[4];
-                $by     = null;
-            } else {
-                $type   = $result[1];
-                $method = $result[2];
-                $by     = $result[3];
-            }
-
-            // Sub-items
-            $pieces = array_filter(preg_split('/(?=[A-Z])/', $method));
-            $method = implode('/', $pieces);
-
-            // Variables
-            $type = strtoupper(( array_key_exists($type, $map) ? $map[$type] : $type ));
-            $url  = $this->url . $this->version . '/' . strtolower($method);
-            $post = array();
-
-            // Append Id directly to URL
-            if (isset($args[0]) and ! empty($args[0]) and ( ( $by !== null and $by == 'Id' ) or in_array($type, array('PUT', 'DELETE')) )) {
-                $url .= '/' . $args[0];
-                array_shift($args);
-                $by = null;
-            }
-
-            // Append Identifier to Cart
-            if (strtolower($method) == 'cart') {
-                $url .= '/' . $this->identifier();
-            }
-
-            // Setup get-by
-            if ($by !== null) {
-                $post = array(strtolower($by) => $args[0]);
-                array_shift($args);
-=======
->>>>>>> version1:src/SDK.php
             }
         }else{
             $error = $errors;
