@@ -34,7 +34,7 @@ class Email
 		return self::$sdk->get('emails/'.$slug);
 	}
 
-	public static function Listing($terms = array())
+	public static function Listing($terms = [])
 	{
 		return self::$sdk->get('emails', $terms);
 	}

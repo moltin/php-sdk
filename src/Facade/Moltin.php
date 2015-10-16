@@ -22,7 +22,7 @@ namespace Moltin\SDK\Facade;
 
 class Moltin
 {
-	protected static $methods = array('ClientCredentials', 'Password', 'Refresh');
+	protected static $methods = ['ClientCredentials', 'Password', 'Refresh'];
 	protected static $sdk;
 
 	public static function init(\Moltin\SDK\SDK $sdk)
@@ -30,7 +30,7 @@ class Moltin
 		self::$sdk = $sdk;
 	}
 
-	public static function Authenticate($method, $data = array(), $extra = array())
+	public static function Authenticate($method, $data = [], $extra = [])
 	{
 		if ( self::$sdk === null ) {
 			self::$sdk = new \Moltin\SDK\SDK(new \Moltin\SDK\Storage\Session(), new \Moltin\SDK\Request\CURL(), $extra);
@@ -40,22 +40,22 @@ class Moltin
 		return self::$sdk->authenticate(new $method(), $data);
 	}
 
-	public static function Get($uri, $data = array())
+	public static function Get($uri, $data = [])
 	{
 		return self::$sdk->get($uri, $data);
 	}
 
-	public static function Post($uri, $data = array())
+	public static function Post($uri, $data = [])
 	{
 		return self::$sdk->post($uri, $data);
 	}
 
-	public static function Put($uri, $data = array())
+	public static function Put($uri, $data = [])
 	{
 		return self::$sdk->put($uri, $data);
 	}
 
-	public static function Delete($uri, $data = array())
+	public static function Delete($uri, $data = [])
 	{
 		return self::$sdk->delete($uri, $data);
 	}

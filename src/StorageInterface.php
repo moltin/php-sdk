@@ -22,7 +22,7 @@ namespace Moltin\SDK;
 
 interface StorageInterface
 {
-    public function __construct($args = array());
+    public function __construct($args = []);
 
     public function get($id);
 

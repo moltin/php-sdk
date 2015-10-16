@@ -43,11 +43,11 @@ class Cart
 
 	public static function Insert($id, $qty = 1, $mods = null)
 	{
-		return self::$sdk->post('carts/'.self::$identifier, array(
+		return self::$sdk->post('carts/'.self::$identifier, [
 			'id'       => $id,
 			'quantity' => $qty,
 			'modifier' => $mods
-		));
+		]);
 	}
 
 	public static function Update($id, $data)
@@ -80,7 +80,7 @@ class Cart
 		return self::$sdk->get('carts/'.self::$identifier.'/checkout');
 	}
 
-	public static function Order($data = array())
+	public static function Order($data = [])
 	{
 		return self::$sdk->post('carts/'.self::$identifier.'/checkout', $data);
 	}
@@ -95,7 +95,7 @@ class Cart
 		return self::$sdk->post('carts/'.self::$identifier.'/discount', ['code' => $code]);
 	}
 
-	public static function Listing($terms = array())
+	public static function Listing($terms = [])
 	{
 		return self::$sdk->get('carts', $terms);
 	}

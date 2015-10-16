@@ -25,11 +25,11 @@ use Moltin\SDK\Exception\InvalidAuthenticationRequestException as InvalidAuthReq
 
 class Refresh implements \Moltin\SDK\AuthenticateInterface
 {
-    protected $data = array(
+    protected $data = [
         'token'   => null,
         'refresh' => null,
         'expires' => null
-    );
+    ];
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
@@ -40,12 +40,12 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
 
         // Variables
         $url  = $parent->url . 'oauth/access_token';
-        $data = array(
+        $data = [
             'grant_type'    => 'refresh_token',
             'client_id'     => $args['client_id'],
             'client_secret' => $args['client_secret'],
             'refresh_token' => $args['refresh_token']
-        );
+        ];
 
         // Make request
         $parent->request->setup($url, 'POST', $data);
@@ -77,7 +77,7 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
     protected function validate($args)
     {
         // Variables
-        $required = array('client_id', 'client_secret', 'refresh_token');
+        $required = ['client_id', 'client_secret', 'refresh_token'];
         $keys     = array_keys($args);
         $diff     = array_diff($required, $keys);
 

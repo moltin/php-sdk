@@ -29,7 +29,7 @@ class Checkout
 		self::$sdk = $sdk;
 	}
 
-	public static function Payment($method, $order, $data = array())
+	public static function Payment($method, $order, $data = [])
 	{
 		return self::$sdk->post('checkout/payment/'.$method.'/'.$order, $data);
 	}
