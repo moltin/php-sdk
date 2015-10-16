@@ -22,25 +22,25 @@ namespace Moltin\SDK\Facade;
 
 class Cache
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Listing($data = array())
-	{
-		return self::$sdk->get('cache', $data);
-	}
+    public static function Listing($data = [])
+    {
+        return self::$sdk->get('cache', $data);
+    }
 
-	public static function Clear($resource)
-	{
-		return self::$sdk->delete('cache/'.$resource);
-	}
+    public static function Clear($resource)
+    {
+        return self::$sdk->delete('cache/' . $resource);
+    }
 
-	public static function Purge()
-	{
-		return self::$sdk->delete('cache/all');
-	}
+    public static function Purge()
+    {
+        return self::$sdk->delete('cache/all');
+    }
 }

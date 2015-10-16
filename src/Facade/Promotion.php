@@ -22,14 +22,13 @@ namespace Moltin\SDK\Facade;
 
 class Promotion
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'promotions/cart';
-	protected static $plural = 'promotions/cart';
+    protected static $single = 'promotions/cart';
+    protected static $plural = 'promotions/cart';
 
-	public static function Search($terms = array())
-	{
-		return self::$sdk->get(self::$plural.'/search', $terms);
-	}
-
+    public static function Search($terms = [])
+    {
+        return self::$sdk->get(self::$plural . '/search', $terms);
+    }
 }

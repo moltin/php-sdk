@@ -22,8 +22,8 @@ namespace Moltin\SDK\Facade;
 
 class Shipping
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'shipping';
-	protected static $plural = 'shipping';
+    protected static $single = 'shipping';
+    protected static $plural = 'shipping';
 }

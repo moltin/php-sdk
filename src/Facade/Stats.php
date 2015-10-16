@@ -22,43 +22,48 @@ namespace Moltin\SDK\Facade;
 
 class Stats
 {
-	protected static $sdk;
-	protected static $available = ['24hours', '7days', '30days'];
+    protected static $sdk;
+    protected static $available = ['24hours', '7days', '30days'];
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Store($timeframe = null, $to = null)
-	{
-		return self::Stats('store', $timeframe, $to);
-	}
+    public static function Store($timeframe = null, $to = null)
+    {
+        return self::Stats('store', $timeframe, $to);
+    }
 
-	public static function Revenue($timeframe = null, $to = null)
-	{
-		return self::Stats('revenue', $timeframe, $to);
-	}
+    public static function Revenue($timeframe = null, $to = null)
+    {
+        return self::Stats('revenue', $timeframe, $to);
+    }
 
-	public static function Orders($timeframe = null, $to = null)
-	{
-		return self::Stats('orders', $timeframe, $to);
-	}
+    public static function Orders($timeframe = null, $to = null)
+    {
+        return self::Stats('orders', $timeframe, $to);
+    }
 
-	public static function Customers($timeframe = null, $to = null)
-	{
-		return self::Stats('customers', $timeframe, $to);
-	}
+    public static function Customers($timeframe = null, $to = null)
+    {
+        return self::Stats('customers', $timeframe, $to);
+    }
 
-	protected static function Stats($type, $timeframe = null, $to = null)
-	{
-		$data = [];
-		
-		if ( in_array($timeframe, self::$available) ) { $data['timeframe'] = $timeframe; }
-		else if ( $timeframe !== null ) { $data['from'] = $timeframe; }
+    protected static function Stats($type, $timeframe = null, $to = null)
+    {
+        $data = [];
 
-		if ( $to !== null ) { $data['to'] = $to; }
+        if (in_array($timeframe, self::$available)) {
+            $data['timeframe'] = $timeframe;
+        } elseif ($timeframe !== null) {
+            $data['from'] = $timeframe;
+        }
 
-		return self::$sdk->get('statistics/'.$type, $data);
-	}
+        if ($to !== null) {
+            $data['to'] = $to;
+        }
+
+        return self::$sdk->get('statistics/' . $type, $data);
+    }
 }

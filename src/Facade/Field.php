@@ -22,50 +22,50 @@ namespace Moltin\SDK\Facade;
 
 class Field
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Get($slug)
-	{
-		return self::$sdk->get('flows/'.$slug);
-	}
+    public static function Get($slug)
+    {
+        return self::$sdk->get('flows/' . $slug);
+    }
 
-	public static function Create($flow, $data)
-	{
-		return self::$sdk->post('flows/'.$flow.'/fields', $data);
-	}
+    public static function Create($flow, $data)
+    {
+        return self::$sdk->post('flows/' . $flow . '/fields', $data);
+    }
 
-	public static function Update($flow, $slug, $data)
-	{
-		return self::$sdk->put('flows/'.$flow.'/fields/'.$slug, $data);
-	}
+    public static function Update($flow, $slug, $data)
+    {
+        return self::$sdk->put('flows/' . $flow . '/fields/' . $slug, $data);
+    }
 
-	public static function Fields($slug = null)
-	{
-		return self::$sdk->fields('flows', $slug);
-	}
+    public static function Fields($slug = null)
+    {
+        return self::$sdk->fields('flows', $slug);
+    }
 
-	public static function Types()
-	{
-		return self::$sdk->get('flows/types');
-	}
+    public static function Types()
+    {
+        return self::$sdk->get('flows/types');
+    }
 
-	public static function Type($flow, $type)
-	{
-		return self::$sdk->fields('flows/'.$flow.'/types', $type, 'options', 'options');
-	}
+    public static function Type($flow, $type)
+    {
+        return self::$sdk->fields('flows/' . $flow . '/types', $type, 'options', 'options');
+    }
 
-	public static function Options($flow, $slug)
-	{
-		return self::$sdk->fields('flows/'.$flow.'/fields', $slug, 'options', 'options');
-	}
+    public static function Options($flow, $slug)
+    {
+        return self::$sdk->fields('flows/' . $flow . '/fields', $slug, 'options', 'options');
+    }
 
-	public static function Delete($flow, $slug)
-	{
-		return self::$sdk->delete('flows/'.$flow.'/fields/'.$slug);
-	}
+    public static function Delete($flow, $slug)
+    {
+        return self::$sdk->delete('flows/' . $flow . '/fields/' . $slug);
+    }
 }

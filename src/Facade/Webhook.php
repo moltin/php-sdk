@@ -22,41 +22,40 @@ namespace Moltin\SDK\Facade;
 
 class Webhook
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Get($id)
-	{
-		return self::$sdk->get('webhooks/'.$id);
-	}
+    public static function Get($id)
+    {
+        return self::$sdk->get('webhooks/' . $id);
+    }
 
-	public static function Listing($terms = array())
-	{
-		return self::$sdk->get('webhooks', $terms);
-	}
+    public static function Listing($terms = [])
+    {
+        return self::$sdk->get('webhooks', $terms);
+    }
 
-	public static function Create($data)
-	{
-		return self::$sdk->post('webhooks', $data);
-	}
+    public static function Create($data)
+    {
+        return self::$sdk->post('webhooks', $data);
+    }
 
-	public static function Update($id, $data)
-	{
-		return self::$sdk->put('webhooks/'.$id, $data);
-	}
+    public static function Update($id, $data)
+    {
+        return self::$sdk->put('webhooks/' . $id, $data);
+    }
 
-	public static function Delete($id)
-	{
-		return self::$sdk->delete('webhooks/'.$id);
-	}
+    public static function Delete($id)
+    {
+        return self::$sdk->delete('webhooks/' . $id);
+    }
 
-	public static function Fields($id = null)
-	{
-		return self::$sdk->fields('webhooks', $id);
-	}
-
+    public static function Fields($id = null)
+    {
+        return self::$sdk->fields('webhooks', $id);
+    }
 }

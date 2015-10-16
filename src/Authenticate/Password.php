@@ -24,24 +24,24 @@ use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
 class Password implements \Moltin\SDK\AuthenticateInterface
 {
-    protected $data = array(
-        'token'   => null,
+    protected $data = [
+        'token' => null,
         'refresh' => null,
-        'expires' => null
-    );
+        'expires' => null,
+    ];
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
         // Variables
-        $url  = $parent->url . 'oauth/access_token';
-        $data = array(
-            'grant_type'    => 'password',
-            'username'      => $args['username'],
-            'password'      => $args['password'],
-            'client_id'     => $args['client_id'],
+        $url = $parent->url . 'oauth/access_token';
+        $data = [
+            'grant_type' => 'password',
+            'username' => $args['username'],
+            'password' => $args['password'],
+            'client_id' => $args['client_id'],
             'client_secret' => $args['client_secret'],
-            'redirect_uri'  => $args['redirect_uri']
-        );
+            'redirect_uri' => $args['redirect_uri'],
+        ];
 
         $parent->request->setup($url, 'POST', $data);
         $result = $parent->request->make();
@@ -55,14 +55,14 @@ class Password implements \Moltin\SDK\AuthenticateInterface
         }
 
         // Set data
-        $this->data['token']   = $result['access_token'];
+        $this->data['token'] = $result['access_token'];
         $this->data['refresh'] = $result['refresh_token'];
         $this->data['expires'] = $result['expires'];
     }
 
     public function get($key)
     {
-        if ( ! isset($this->data[$key])) {
+        if (! isset($this->data[$key])) {
             return;
         }
 

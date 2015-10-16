@@ -17,6 +17,7 @@
  *
  * @link http://github.com/moltin/php-sdk
  */
+
 namespace Moltin\SDK\Request;
 
 class CURL implements \Moltin\SDK\RequestInterface
@@ -29,7 +30,7 @@ class CURL implements \Moltin\SDK\RequestInterface
 
     protected $curl;
 
-    public function setup($url, $method, $post = array(), $token = null)
+    public function setup($url, $method, $post = [], $token = null)
     {
         // Variables
         $headers = [];
@@ -38,7 +39,7 @@ class CURL implements \Moltin\SDK\RequestInterface
         $this->method = $method;
 
         // Add request settings
-        curl_setopt_array($this->curl, array(
+        curl_setopt_array($this->curl, [
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HEADER => false,
@@ -48,7 +49,7 @@ class CURL implements \Moltin\SDK\RequestInterface
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_TIMEOUT => 40,
             CURLINFO_HEADER_OUT => true,
-        ));
+        ]);
 
         // Add post
         if (!empty($post)) {
@@ -61,21 +62,21 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         // Add auth header
         if ($token !== null) {
-            $headers[] = 'Authorization: Bearer '.$token;
+            $headers[] = 'Authorization: Bearer ' . $token;
         }
 
         // Add currency header
         if (isset($_SESSION['currency']) and $_SESSION['currency'] !== null) {
-            $headers[] = 'X-Currency: '.$_SESSION['currency'];
+            $headers[] = 'X-Currency: ' . $_SESSION['currency'];
         }
 
         // Add language header
         if (isset($_SESSION['language']) and $_SESSION['language'] !== null) {
-            $headers[] = 'X-Language: '.$_SESSION['language'];
+            $headers[] = 'X-Language: ' . $_SESSION['language'];
         }
 
         // Add session header
-        $headers[] = 'X-Moltin-Session: '.session_id();
+        $headers[] = 'X-Moltin-Session: ' . session_id();
 
         // Set headers
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
@@ -99,7 +100,7 @@ class CURL implements \Moltin\SDK\RequestInterface
      * @param $post array
      * @param $files array
      */
-    protected function toFormattedPostData(array $post, array $files = array())
+    protected function toFormattedPostData(array $post, array $files = [])
     {
         // Merge in files
         foreach ($files as $key => $data) {
@@ -118,10 +119,10 @@ class CURL implements \Moltin\SDK\RequestInterface
                     // $v => parent or children information
                     if (isset($v) && !empty($v)) {
                         if (empty($v['parent'])) {
-                            $post[$key.'['.$k.'][order]'] = $v['order'];
+                            $post[$key . '[' . $k . '][order]'] = $v['order'];
                         } elseif (!empty($v['parent'])) {
-                            $post[$key.'['.$k.'][order]'] = $v['order'];
-                            $post[$key.'['.$k.'][parent]'] = $v['parent'];
+                            $post[$key . '[' . $k . '][order]'] = $v['order'];
+                            $post[$key . '[' . $k . '][parent]'] = $v['parent'];
                         }
                     }
                 }

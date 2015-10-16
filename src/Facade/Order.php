@@ -22,28 +22,28 @@ namespace Moltin\SDK\Facade;
 
 class Order
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'orders';
-	protected static $plural = 'orders';
+    protected static $single = 'orders';
+    protected static $plural = 'orders';
 
-	public static function Items($id)
-	{
-		return self::$sdk->get('orders/'.$id.'/items');
-	}
+    public static function Items($id)
+    {
+        return self::$sdk->get('orders/' . $id . '/items');
+    }
 
-	public static function AddItem($order, $data)
-	{
-		return self::$sdk->post('orders/'.$order.'/items', $data);
-	}
+    public static function AddItem($order, $data)
+    {
+        return self::$sdk->post('orders/' . $order . '/items', $data);
+    }
 
-	public static function UpdateItem($order, $data)
-	{
-		return self::$sdk->put('orders/'.$order.'/items', $data);
-	}
+    public static function UpdateItem($order, $data)
+    {
+        return self::$sdk->put('orders/' . $order . '/items', $data);
+    }
 
-	public static function RemoveItem($order, $id)
-	{
-		return self::$sdk->delete('orders/'.$order.'/items/'.$id);
-	}
+    public static function RemoveItem($order, $id)
+    {
+        return self::$sdk->delete('orders/' . $order . '/items/' . $id);
+    }
 }

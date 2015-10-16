@@ -24,20 +24,20 @@ use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
 class Implicit implements \Moltin\SDK\AuthenticateInterface
 {
-    protected $data = array(
-        'token'   => null,
+    protected $data = [
+        'token' => null,
         'refresh' => null,
-        'expires' => null
-    );
+        'expires' => null,
+    ];
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
         // Variables
-        $url  = $parent->url . 'oauth/access_token';
-        $data = array(
+        $url = $parent->url . 'oauth/access_token';
+        $data = [
             'grant_type' => 'implicit',
-            'client_id'  => $args['client_id']
-        );
+            'client_id' => $args['client_id'],
+        ];
 
         $parent->request->setup($url, 'POST', $data);
         $result = $parent->request->make();
@@ -51,14 +51,14 @@ class Implicit implements \Moltin\SDK\AuthenticateInterface
         }
 
         // Set data
-        $this->data['token']   = $result['access_token'];
+        $this->data['token'] = $result['access_token'];
         $this->data['refresh'] = $result['refresh_token'];
         $this->data['expires'] = $result['expires'];
     }
 
     public function get($key)
     {
-        if ( ! isset($this->data[$key])) {
+        if (! isset($this->data[$key])) {
             return;
         }
 

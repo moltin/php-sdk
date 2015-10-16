@@ -1,6 +1,6 @@
 <?php
 
-namespace Moltin\SDK\Tests;
+namespace Moltin\SDK\tests;
 
 use Moltin\SDK\Flows;
 
@@ -8,13 +8,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 {
     public function test_string_type()
     {
-        $field = array(
+        $field = [
             'name' => 'Title',
             'slug' => 'title',
             'type' => 'string',
-            'options' => array(),
+            'options' => [],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -29,13 +29,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     public function test_date_type()
     {
-        $field = array(
+        $field = [
             'name' => 'When',
             'slug' => 'when',
             'type' => 'date',
-            'options' => array(),
+            'options' => [],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -50,13 +50,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     public function test_email_type()
     {
-        $field = array(
+        $field = [
             'name' => 'Email',
             'slug' => 'email',
             'type' => 'email',
-            'options' => array(),
+            'options' => [],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -71,13 +71,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     public function test_slug_type()
     {
-        $field = array(
+        $field = [
             'name' => 'Slug',
             'slug' => 'slug',
             'type' => 'slug',
-            'options' => array('parent' => 'parent'),
+            'options' => ['parent' => 'parent'],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -92,13 +92,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     public function test_integer_type()
     {
-        $field = array(
+        $field = [
             'name' => 'Age',
             'slug' => 'age',
             'type' => 'integer',
-            'options' => array(),
+            'options' => [],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -113,13 +113,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     public function test_decimal_type()
     {
-        $field = array(
+        $field = [
             'name' => 'Weight',
             'slug' => 'weight',
             'type' => 'decimal',
-            'options' => array('decimal_places' => 5),
+            'options' => ['decimal_places' => 5],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -134,13 +134,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     public function test_choice_type()
     {
-        $field = array(
+        $field = [
             'name' => 'Colour',
             'slug' => 'color',
             'type' => 'choice',
-            'options' => array('choices' => array('red' => 'Red', 'green' => 'Green'), 'default' => 'red'),
+            'options' => ['choices' => ['red' => 'Red', 'green' => 'Green'], 'default' => 'red'],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -155,13 +155,13 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     public function test_money_type()
     {
-        $field = array(
+        $field = [
             'name' => 'Value',
             'slug' => 'value',
             'type' => 'money',
-            'options' => array('decimal_places' => 2),
+            'options' => ['decimal_places' => 2],
             'required' => false,
-        );
+        ];
 
         $flow = $this->newBuiltFlowTypeFromField($field);
 
@@ -176,7 +176,7 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
 
     private function newBuiltFlowTypeFromField($field, $wrap = false)
     {
-        $flows = $this->newFlowsInstance(array($field), $wrap);
+        $flows = $this->newFlowsInstance([$field], $wrap);
         $fields = $flows->build();
 
         return current($fields);

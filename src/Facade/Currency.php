@@ -22,13 +22,13 @@ namespace Moltin\SDK\Facade;
 
 class Currency
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'currencies';
-	protected static $plural = 'currencies';
+    protected static $single = 'currencies';
+    protected static $plural = 'currencies';
 
-	public static function Set($code)
-	{
-		return self::$sdk->currency($code);
-	}
+    public static function Set($code)
+    {
+        return self::$sdk->currency($code);
+    }
 }
