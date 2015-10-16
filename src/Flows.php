@@ -48,7 +48,7 @@ class Flows
                 'id' => $field['slug'],
                 'value' => (isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : (isset($field['value']) ? $field['value'] : null)),
                 'required' => ($field['required'] == 1 ? 'required' : false),
-                'class' => ['form-control'],
+                'class' => array('form-control'),
                 'data-fieldtype' => $field['type'],
             );
 
