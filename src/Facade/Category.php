@@ -22,18 +22,18 @@ namespace Moltin\SDK\Facade;
 
 class Category
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'categories';
-	protected static $plural = 'categories';
+    protected static $single = 'categories';
+    protected static $plural = 'categories';
 
-	public static function Tree($terms = array())
-	{
-		return self::$sdk->get(self::$plural.'/tree', $terms);
-	}
+    public static function Tree($terms = [])
+    {
+        return self::$sdk->get(self::$plural . '/tree', $terms);
+    }
 
-	public static function Order($data)
-	{
-		return self::$sdk->put(self::$plural.'/order', $data);
-	}
+    public static function Order($data)
+    {
+        return self::$sdk->put(self::$plural . '/order', $data);
+    }
 }

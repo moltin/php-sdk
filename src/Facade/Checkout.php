@@ -22,15 +22,15 @@ namespace Moltin\SDK\Facade;
 
 class Checkout
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Payment($method, $order, $data = array())
-	{
-		return self::$sdk->post('checkout/payment/'.$method.'/'.$order, $data);
-	}
+    public static function Payment($method, $order, $data = [])
+    {
+        return self::$sdk->post('checkout/payment/' . $method . '/' . $order, $data);
+    }
 }

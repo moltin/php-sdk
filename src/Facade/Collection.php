@@ -22,8 +22,8 @@ namespace Moltin\SDK\Facade;
 
 class Collection
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'collections';
-	protected static $plural = 'collections';
+    protected static $single = 'collections';
+    protected static $plural = 'collections';
 }

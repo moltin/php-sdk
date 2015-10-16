@@ -22,35 +22,34 @@ namespace Moltin\SDK\Facade;
 
 class File
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Get($id)
-	{
-		return self::$sdk->delete('files/'.$id);
-	}
+    public static function Get($id)
+    {
+        return self::$sdk->delete('files/' . $id);
+    }
 
-	public static function Upload($id, $file, $mime = null, $name = null)
-	{
+    public static function Upload($id, $file, $mime = null, $name = null)
+    {
         return self::$sdk->post('files', [
-            'file'      => new \CurlFile($file, $mime, $name),
-            'name'      => $name,
-            'assign_to' => $id
+            'file' => new \CurlFile($file, $mime, $name),
+            'name' => $name,
+            'assign_to' => $id,
         ]);
-	}
+    }
 
-	public static function Delete($id)
-	{
-		return self::$sdk->delete('files/'.$id);
-	}
+    public static function Delete($id)
+    {
+        return self::$sdk->delete('files/' . $id);
+    }
 
-	public static function Order($data)
-	{
-		return self::$sdk->put('files/order', $data);
-	}
-
+    public static function Order($data)
+    {
+        return self::$sdk->put('files/order', $data);
+    }
 }

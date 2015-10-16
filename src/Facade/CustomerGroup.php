@@ -22,8 +22,8 @@ namespace Moltin\SDK\Facade;
 
 class CustomerGroup
 {
-	use \Moltin\SDK\FacadeTrait;
+    use \Moltin\SDK\FacadeTrait;
 
-	protected static $single = 'customers/groups';
-	protected static $plural = 'customers/groups';
+    protected static $single = 'customers/groups';
+    protected static $plural = 'customers/groups';
 }

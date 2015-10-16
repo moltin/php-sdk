@@ -22,21 +22,20 @@ namespace Moltin\SDK\Facade;
 
 class Transaction
 {
-	protected static $sdk;
+    protected static $sdk;
 
-	public static function init(\Moltin\SDK\SDK $sdk)
-	{
-		self::$sdk = $sdk;
-	}
+    public static function init(\Moltin\SDK\SDK $sdk)
+    {
+        self::$sdk = $sdk;
+    }
 
-	public static function Get($slug)
-	{
-		return self::$sdk->get('transactions/'.$slug);
-	}
+    public static function Get($slug)
+    {
+        return self::$sdk->get('transactions/' . $slug);
+    }
 
-	public static function Listing($terms = array())
-	{
-		return self::$sdk->get('transactions', $terms);
-	}
-
+    public static function Listing($terms = [])
+    {
+        return self::$sdk->get('transactions', $terms);
+    }
 }
