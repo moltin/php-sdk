@@ -43,14 +43,14 @@ class Flows
             }
 
                 // Setup args
-            $this->args = [
+            $this->args = array(
                 'name' => $field['slug'],
                 'id' => $field['slug'],
                 'value' => (isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : (isset($field['value']) ? $field['value'] : null)),
                 'required' => ($field['required'] == 1 ? 'required' : false),
                 'class' => ['form-control'],
                 'data-fieldtype' => $field['type'],
-            ];
+            );
 
             // WYSIWYG argument
             if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {

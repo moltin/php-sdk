@@ -22,7 +22,7 @@ namespace Moltin\SDK\Storage;
 
 class Runtime implements \Moltin\SDK\StorageInterface
 {
-    protected $items = [];
+    protected $items = array();
 
     /**
      * Creates session or respawns previous instance, also created the default
@@ -30,11 +30,11 @@ class Runtime implements \Moltin\SDK\StorageInterface
      *
      * @param array [$args] Optional array of arguments
      */
-    public function __construct($args = [])
+    public function __construct($args = array())
     {
         // Create default item
         if (! isset($this->items)) {
-            $this->items = [];
+            $this->items = array();
         }
     }
 

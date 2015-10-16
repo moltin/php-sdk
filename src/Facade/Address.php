@@ -44,12 +44,12 @@ class Address
 		return self::$sdk->put('customers/'.$customer.'/addresses/'.$id, $data);
 	}
 
-	public static function Find($customer, $terms = [])
+	public static function Find($customer, $terms = array())
 	{
 		return self::$sdk->get('customers/'.$customer.'/addresses', $terms);
 	}
 
-	public static function Listing($customer, $terms = [])
+	public static function Listing($customer, $terms = array())
 	{
 		return self::$sdk->get('customers/'.$customer.'/addresses', $terms);
 	}

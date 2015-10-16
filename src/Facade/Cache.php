@@ -29,7 +29,7 @@ class Cache
 		self::$sdk = $sdk;
 	}
 
-	public static function Listing($data = [])
+	public static function Listing($data = array())
 	{
 		return self::$sdk->get('cache', $data);
 	}

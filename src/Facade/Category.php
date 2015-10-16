@@ -27,7 +27,7 @@ class Category
 	protected static $single = 'categories';
 	protected static $plural = 'categories';
 
-	public static function Tree($terms = [])
+	public static function Tree($terms = array())
 	{
 		return self::$sdk->get(self::$plural.'/tree', $terms);
 	}

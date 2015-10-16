@@ -49,12 +49,12 @@ trait FacadeTrait
 		return self::$sdk->delete(self::$single.'/'.$id);
 	}
 
-	public static function Find($terms = [])
+	public static function Find($terms = array())
 	{
 		return self::$sdk->get(self::$single.'', $terms);
 	}
 
-	public static function Listing($terms = [])
+	public static function Listing($terms = array())
 	{
 		return self::$sdk->get(self::$plural, $terms);
 	}

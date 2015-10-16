@@ -27,7 +27,7 @@ class Product
 	protected static $single = 'products';
 	protected static $plural = 'products';
 
-	public static function Search($terms = [])
+	public static function Search($terms = array())
 	{
 		return self::$sdk->get(self::$plural.'/search', $terms);
 	}
