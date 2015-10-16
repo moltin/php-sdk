@@ -31,52 +31,44 @@ class Flows
     public function __construct($fields, $wrap = false)
     {
         $this->fields = $fields;
-        $this->wrap   = $wrap;
+        $this->wrap = $wrap;
     }
 
     public function build()
     {
         // Loop fields
         foreach ($this->fields as &$field) {
-
-            // Variables
-            $method = 'type' . str_replace(' ', '', ucwords(str_replace('-', ' ', $field['type'])));
-
-            // Check for method
-            if (method_exists($this, $method)) {
+            if (!$this->_isValidType($field['type'])) {
+                throw new InvalidFieldType('Field type '.$field['type'].' was not found');
+            }
 
                 // Setup args
-                $this->args = array(
-                    'name'           => $field['slug'],
-                    'id'             => $field['slug'],
-                    'value'          => ( isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : ( isset($field['value']) ? $field['value'] : null ) ),
-                    'required'       => ( $field['required'] == 1 ? 'required' : false ),
-                    'class'          => ['form-control'],
-                    'data-fieldtype' => $field['type']
-                );
+            $this->args = array(
+                'name' => $field['slug'],
+                'id' => $field['slug'],
+                'value' => (isset($_POST[$field['slug']]) ? $_POST[$field['slug']] : (isset($field['value']) ? $field['value'] : null)),
+                'required' => ($field['required'] == 1 ? 'required' : false),
+                'class' => array('form-control'),
+                'data-fieldtype' => $field['type'],
+            );
 
-		// WYSIWYG argument
-		if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
-			$this->args['class'][] = 'wysiwyg';
-		}
-
-		// Multilingual argument
-		if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
-			$this->args['class'][] = 'multilingual';
-		}
-
-                // Wrap form value
-                if (isset($this->wrap) && $this->wrap !== false) {
-                    $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
-                }
-
-                // Build input
-                $field['input'] = $this->$method($field);
-
-            // Not found
-            } else {
-                throw new InvalidFieldType('Field type ' . $field['type'] . ' was not found');
+            // WYSIWYG argument
+            if (isset($field['options']['wysiwyg']) && $field['options']['wysiwyg'] == 1) {
+                $this->args['class'][] = 'wysiwyg';
             }
+
+            // Multilingual argument
+            if (isset($field['options']['multilingual']) && $field['options']['multilingual'] == 1) {
+                $this->args['class'][] = 'multilingual';
+            }
+
+            // Wrap form value
+            if (isset($this->wrap) && $this->wrap !== false) {
+                $this->args['name'] = $this->wrap.'['.$field['slug'].']';
+            }
+
+            // Build input
+            $field['input'] = $this->_getInputForField($field);
         }
 
         return $this->fields;
@@ -87,6 +79,21 @@ class Flows
         $this->args['type'] = 'text';
 
         return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
+
+    protected function typeFile($a)
+    {
+        $this->args['accept'] = '';
+        $this->args['type']   = 'file';
+        $this->args['value']  = $a['value']['value'];
+
+        foreach ( explode(',', $a['options']['allowed']) as $option ) $this->args['accept'] .= ( strlen($this->args['accept']) > 0 ? ', ' : '' ).'.'.trim($option);
+
+        if ( $this->args['value'] > 0 ) {
+            $img = '<img src="https://'.$a['value']['data']['segments']['domain'].'/w64/h64/'.$a['value']['data']['segments']['suffix'].'" alt="'.$a['value']['value'].'" />';
+        }
+
+        return ( isset($img) ? $img : '' ).'<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
     protected function typeDate($a)
@@ -153,7 +160,7 @@ class Flows
 
     protected function typeMultiple($a)
     {
-        if ( ! isset($_POST[$this->args['name']]) && is_array($this->args['value']) ) {
+        if (! isset($_POST[$this->args['name']]) && is_array($this->args['value'])) {
             $this->args['value'] = array_keys($this->args['value']['data']);
         }
 
@@ -165,14 +172,14 @@ class Flows
 
     protected function typeMoney($a)
     {
-        $this->args['type'] = 'number';
+        $this->args['type']  = 'number';
         $this->args['class'][] = 'money';
 
         $step = ($a['options']['decimal_places'] !== 0) ? 1/(($a['options']['decimal_places']*100)/$a['options']['decimal_places']) : 1;
         $placeholder = number_format(0,$a['options']['decimal_places']);
 
         // step should be set depending on number of decimal places to round to for currency formatting
-        return '<input min="0" placeholder="'.$placeholder.'" step="'.$step.'" '.$this->_buildArgs($this->args).' />';
+        return '<input min="0" placeholder="' . $placeholder . '" step="' . $step . '" ' . $this->_buildArgs($this->args).' />';
     }
 
     protected function typeTaxBand($a)
@@ -207,8 +214,8 @@ class Flows
     {
         $string = '';
         foreach ($args as $key => $value) {
-            if ($key == "value" && $value === '0') {
-                $string .= $key . '="0" ';
+            if ($key == "value" && $value === 0) {
+                $string .= $key . '="0"';
             } elseif ($key != "value" or ! $skipValue) {
                 if ( ! empty($value)) {
                     if(is_array($value) && isset($value['data']['raw']['without_tax'])) {
@@ -236,5 +243,22 @@ class Flows
         }
 
         return $string;
+    }
+
+    protected function _getMethodForType($type)
+    {
+        return 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $type)));
+    }
+
+    protected function _isValidType($type)
+    {
+        return method_exists($this, $this->_getMethodForType($type));
+    }
+
+    protected function _getInputForField($field)
+    {
+        $method = $this->_getMethodForType($field['type']);
+
+        return $this->{$method}($field);
     }
 }

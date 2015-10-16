@@ -1,6 +1,6 @@
 # PHP SDK
 
-* [Website](http://molt.in)
+* [Website](http://moltin.com)
 * [License](https://github.com/moltin/php-sdk/master/LICENSE)
 * Version: dev
 
@@ -13,7 +13,7 @@ Add the following to your project `composer.json` file
 ```
 {
     "require": {
-        "moltin/php-sdk": "dev-master"
+        "moltin/php-sdk": "dev-version1"
     }
 }
 ```
@@ -41,10 +41,10 @@ If you wish to use another storage or request method simply change the relevant 
 Before you can use the API you will need to authorise, there are a number of ways to this. The simplest of which is to use the "client credentials" method. You can do this as follows:
 
 ``` php
-$result = $moltin->authenticate(new \Moltin\SDK\Authenticate\ClientCredentials(), array(
-	'client_id'     => '<YOUR CLIENT ID>',
-	'client_secret' => '<YOUR CLIENT SECRET>'
-));
+$result = \Moltin::Authenticate('ClientCredentials', [
+        'client_id'     => '<YOUR CLIENT ID>',
+        'client_secret' => '<YOUR CLIENT SECRET>',
+]);
 ```
 
 Once this is done your token will be stored in your selected storage method and passed automatically to all subsequent calls.
@@ -57,16 +57,16 @@ After authorising you can start to make calls to the API, there are four simple 
 
 ``` php
 	// Create a product
-	$result = $moltin->post('product', $_POST);
+	$result = \Product::Create($_POST);
 
 	// Update a product
-	$result = $moltin->put('product/1', array('title' => 'Updated!'));
+	$result = \Product::Update('<ID>', array('title' => 'Updated!'));
 
 	// Get a product
-	$result = $moltin->get('product/1');
+	$result = Product::Get('<ID>');
 
 	// Delete a product
-	$result = $moltin->delete('product/1');
+	$result = Product::Delete('<ID>');
 ```
 
 ### Building a Form
@@ -75,10 +75,10 @@ To help with the usual CRUD forms we've included an automated form builder to ta
 
 ``` php
 	// Get fields (create)
-	$fields = $moltin->fields('products');
+	fields = \Product::Fields();
 
 	// Get fields (edit product 1)
-	$fields = $moltin->fields('products', 1);
+	fields = \Product::Fields('<ID>');
 
 	// Show form
 	foreach ($fields as $field) {

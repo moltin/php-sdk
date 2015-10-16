@@ -22,7 +22,7 @@ namespace Moltin\SDK\Authenticate;
 
 use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 
-class Refresh implements \Moltin\SDK\AuthenticateInterface
+class Implicit implements \Moltin\SDK\AuthenticateInterface
 {
     protected $data = array(
         'token'   => null,
@@ -32,21 +32,13 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
 
     public function authenticate($args, \Moltin\SDK\SDK $parent)
     {
-        // Check refresh token
-        if ( ! isset($args['refresh_token']) or empty($data['refresh_token'])) {
-            return false;
-        }
-
         // Variables
         $url  = $parent->url . 'oauth/access_token';
         $data = array(
-            'grant_type'    => 'refresh_token',
-            'client_id'     => $args['client_id'],
-            'client_secret' => $args['client_secret'],
-            'refresh_token' => $args['refresh_token']
+            'grant_type' => 'implicit',
+            'client_id'  => $args['client_id']
         );
 
-        // Make request
         $parent->request->setup($url, 'POST', $data);
         $result = $parent->request->make();
 
@@ -60,7 +52,7 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
 
         // Set data
         $this->data['token']   = $result['access_token'];
-        $this->data['refresh'] = $args['refresh_token'];
+        $this->data['refresh'] = $result['refresh_token'];
         $this->data['expires'] = $result['expires'];
     }
 

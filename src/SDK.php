@@ -26,12 +26,14 @@ use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
 class SDK
 {
     // Paths
-    public $version  = 'beta';
+    public $version  = 'v1';
     public $url      = 'https://api.molt.in/';
     public $auth_url = 'http://auth.molt.in/';
 
     // Variables
     public $methods = array('GET', 'POST', 'PUT', 'DELETE');
+    public $currency;
+    public $language;
     public $store;
     public $request;
 
@@ -47,14 +49,19 @@ class SDK
         $this->request = $request;
 
         // Setup args
-        if (isset($args['version'])) {
-            $this->version = $args['version'];
-        }
+        if ( isset($args['url']) and $args['url'] !== null ) { $this->url = $args['url']; }
+        if ( isset($args['auth_url']) and $args['auth_url'] !== null ) { $this->auth_url = $args['auth_url']; }
+        if ( isset($args['version']) and $args['version'] !== null ) { $this->version = $args['version']; }
 
         // Retrieve information
-        $this->token   = $this->store->get('token');
-        $this->refresh = $this->store->get('refresh');
-        $this->expires = $this->store->get('expires');
+        $this->currency = $this->currency();
+        $this->language = $this->language();
+        $this->token    = $this->store->get('token');
+        $this->refresh  = $this->store->get('refresh');
+        $this->expires  = $this->store->get('expires');
+
+        // Register facade alias
+        $this->_registerFacades();
     }
 
     public function authenticate(\Moltin\SDK\AuthenticateInterface $auth, $args = array())
@@ -87,6 +94,30 @@ class SDK
         return ($this->token === null ? false : true);
     }
 
+    public function get($uri, $data = array())
+    {
+        $url = $this->url.$this->version.'/'.$uri;
+        return $this->_request($url, 'GET', $data);
+    }
+
+    public function post($uri, $data = array())
+    {
+        $url = $this->url.$this->version.'/'.$uri;
+        return $this->_request($url, 'POST', $data);
+    }
+
+    public function put($uri, $data = array())
+    {
+        $url = $this->url.$this->version.'/'.$uri;
+        return $this->_request($url, 'PUT', $data);
+    }
+
+    public function delete($uri, $data = array())
+    {
+        $url = $this->url.$this->version.'/'.$uri;
+        return $this->_request($url, 'DELETE', $data);
+    }
+
     public function fields($type, $id = null, $wrap = false, $suffix = 'fields')
     {
         // Variables
@@ -97,16 +128,43 @@ class SDK
         return $flows->build($fields);
     }
 
-    public function identifier()
+    public function identifier($reset = false, $identifier = null)
     {
-        if (isset($_COOKIE['identifier'])) {
-            return $_COOKIE['identifier'];
+        if ($reset) {
+            setcookie('mcart', null, -1, '/');
+            unset($_COOKIE['mcart']);
         }
 
-        $identifier = md5(uniqid());
-        setcookie('identifier', $identifier, strtotime("+30 day"), '/');
+        if (isset($_COOKIE['mcart'])) {
+            return $_COOKIE['mcart'];
+        }
+        
+        if(! $identifier) {
+            $identifier = md5(uniqid());
+        }
+        
+        setcookie('mcart', $identifier, strtotime("+30 day"), '/');
 
         return $identifier;
+    }
+
+    public function currency($code = null)
+    {
+        return $this->language($code, 'currency');
+    }
+
+    public function language($code = null, $key = 'language')
+    {
+        // Clear it
+        if ( $code === false ) { unset($_SESSION[$key]); $this->$key = null; return true; }
+
+        // Get it
+        if ( $code === null and isset($_SESSION[$key]) ) { return $_SESSION[$key]; }
+
+        // Set it
+        if ( $code !== null ) { $this->$key = $code; $_SESSION[$key] = $code; return $code; }
+
+        return false;
     }
 
     protected function _storeToken(\Moltin\SDK\AuthenticateInterface $auth)
@@ -143,6 +201,9 @@ class SDK
         if ($method == 'GET' and ! empty($data)) {
             $url .= '?' . http_build_query($data);
             $data = array();
+        } else if ($method == 'PUT') {
+            $url .= (strpos($url, '?') !== false ? '&' : '?').'_method='.$method;
+            $method = 'POST';
         }
 
         // Start request
@@ -191,6 +252,7 @@ class SDK
                 } else {
                     $error .= "\n".$e;
                 }
+<<<<<<< HEAD:src/Moltin/SDK/SDK.php
             }
         }else{
             $error = $errors;
@@ -243,23 +305,24 @@ class SDK
             if ($by !== null) {
                 $post = array(strtolower($by) => $args[0]);
                 array_shift($args);
+=======
+>>>>>>> version1:src/SDK.php
             }
-
-            // Set post
-            if ( ! empty($args)) {
-                $post = $args[0];
-            }
-
-        }
-        // Base method request
-        else {
-            // Variables
-            $type = strtoupper($method);
-            $url  = $this->url.$this->version . '/' . $args[0];
-            $post = ( isset($args[1]) ? $args[1] : array() );
+        }else{
+            $error = $errors;
         }
 
-        // Make request
-        return $this->_request($url, $type, $post);
+        return $error;
     }
+
+    protected function _registerFacades()
+    {
+        foreach (glob(__DIR__.'/Facade/*') as $facade) {
+            $facade = strstr(basename($facade), '.php', true);
+            if ( class_exists($facade) ) { continue; }
+            class_alias('\\Moltin\\SDK\\Facade\\'.$facade, $facade);
+            $facade::init($this);
+        }
+    }
+
 }
