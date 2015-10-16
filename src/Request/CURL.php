@@ -62,26 +62,13 @@ class CURL implements \Moltin\SDK\RequestInterface
             }
 
             // Inline arrays
-            foreach ( $post as $key => $value ) {
-                // $key => order
-                // $value => array with all the parents and children
+            foreach ($post as $key => $value) {
                 if (is_array($value)) {
-                    foreach ( $value as $k => $v ) {
-                        // $k => id parent or children
-                        // $v => parent or children information
-                        if (isset($v) && !empty($v)) {
-                            if (empty($v['parent'])) {
-                                $post[$key.'['.$k.'][order]'] = $v['order'];
-                            } elseif(!empty($v['parent'])) {
-                                $post[$key.'['.$k.'][order]'] = $v['order'];
-                                $post[$key.'['.$k.'][parent]'] = $v['parent'];
-                            }
-                        }
-                    }
+                    $post = array_merge($post, $this->generateInlineArray($value, '', $key));
                     unset($post[$key]);
                 }
             }
-            
+
             // Assign to curl
             curl_setopt($this->curl, CURLOPT_POST, true);
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
@@ -107,6 +94,37 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         // Set headers
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
+    }
+
+    /**
+     * Recursive function that will generate an inline array to be send to the API
+     *
+     * @param  array  $value Array of keys/values to be processed
+     * @param  string $key
+     * @param  string $index Field key e.g. categories, orders
+     * @return array  Array with all the resultant keys/values
+     */
+    protected function generateInlineArray($value, $key = '', $index = '') {
+        if (is_array($value)) {
+            $result = [];
+            foreach($value as $k => $v) {
+                $tmp = $this->generateInlineArray($v, $k, $index);
+                if(isset($tmp['index']) && isset($tmp['value'])) {
+                    // processing simple case
+                    $result[$index . (!empty($key) ? '['.$key.']' : '') . '['.$tmp['index'].']'] = $tmp['value'];
+                } else {
+                    // use simple case to process complex case
+                    $result = array_merge($result, $tmp);
+                }
+            }
+            return $result;
+        } else {
+            // base case, no recursive call
+            return [
+                'index' => $key,
+                'value' => $value
+            ];
+        }
     }
 
     public function make()
