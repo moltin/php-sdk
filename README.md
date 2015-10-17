@@ -13,7 +13,7 @@ Add the following to your project `composer.json` file
 ```
 {
     "require": {
-        "moltin/php-sdk": "dev-version1"
+        "moltin/php-sdk": "^1.0.0"
     }
 }
 ```
