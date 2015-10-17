@@ -17,7 +17,6 @@
  *
  * @link http://github.com/moltin/php-sdk
  */
-
 namespace Moltin\SDK\Request;
 
 class CURL implements \Moltin\SDK\RequestInterface
@@ -62,21 +61,21 @@ class CURL implements \Moltin\SDK\RequestInterface
 
         // Add auth header
         if ($token !== null) {
-            $headers[] = 'Authorization: Bearer ' . $token;
+            $headers[] = 'Authorization: Bearer '.$token;
         }
 
         // Add currency header
         if (isset($_SESSION['currency']) and $_SESSION['currency'] !== null) {
-            $headers[] = 'X-Currency: ' . $_SESSION['currency'];
+            $headers[] = 'X-Currency: '.$_SESSION['currency'];
         }
 
         // Add language header
         if (isset($_SESSION['language']) and $_SESSION['language'] !== null) {
-            $headers[] = 'X-Language: ' . $_SESSION['language'];
+            $headers[] = 'X-Language: '.$_SESSION['language'];
         }
 
         // Add session header
-        $headers[] = 'X-Moltin-Session: ' . session_id();
+        $headers[] = 'X-Moltin-Session: '.session_id();
 
         // Set headers
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
@@ -119,10 +118,10 @@ class CURL implements \Moltin\SDK\RequestInterface
                     // $v => parent or children information
                     if (isset($v) && !empty($v)) {
                         if (empty($v['parent'])) {
-                            $post[$key . '[' . $k . '][order]'] = $v['order'];
+                            $post[$key.'['.$k.'][order]'] = $v['order'];
                         } elseif (!empty($v['parent'])) {
-                            $post[$key . '[' . $k . '][order]'] = $v['order'];
-                            $post[$key . '[' . $k . '][parent]'] = $v['parent'];
+                            $post[$key.'['.$k.'][order]'] = $v['order'];
+                            $post[$key.'['.$k.'][parent]'] = $v['parent'];
                         }
                     }
                 }

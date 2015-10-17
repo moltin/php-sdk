@@ -1,23 +1,22 @@
 <?php
 
 /**
-* This file is part of Moltin PHP-SDK, a PHP package which
-* provides convinient and rapid access to the API.
-*
-* Copyright (c) 2013 Moltin Ltd.
-* http://github.com/moltin/php-sdk
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*
-* @package moltin/php-sdk
-* @author Jamie Holdroyd <jamie@molt.in>
-* @copyright 2013 Moltin Ltd.
-* @version dev
-* @link http://github.com/moltin/php-sdk
-*
-*/
-
+ * This file is part of Moltin PHP-SDK, a PHP package which
+ * provides convinient and rapid access to the API.
+ *
+ * Copyright (c) 2013 Moltin Ltd.
+ * http://github.com/moltin/php-sdk
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @author Jamie Holdroyd <jamie@molt.in>
+ * @copyright 2013 Moltin Ltd.
+ *
+ * @version dev
+ *
+ * @link http://github.com/moltin/php-sdk
+ */
 namespace Moltin\SDK\Storage;
 
 class Runtime implements \Moltin\SDK\StorageInterface
@@ -33,21 +32,22 @@ class Runtime implements \Moltin\SDK\StorageInterface
     public function __construct($args = [])
     {
         // Create default item
-        if (! isset($this->items)) {
+        if (!isset($this->items)) {
             $this->items = [];
         }
     }
 
     /**
-     * Retrieves the given item by id
+     * Retrieves the given item by id.
      *
-     * @param  integer    $id The id to query by
+     * @param int $id The id to query by
+     *
      * @return array|null
      */
     public function get($id)
     {
         // Not found
-        if (! isset($this->items[$id])) {
+        if (!isset($this->items[$id])) {
             return;
         }
 
@@ -57,15 +57,16 @@ class Runtime implements \Moltin\SDK\StorageInterface
     /**
      * Inserts data or updates if id is provided.
      *
-     * @param  integer [$id] The id to update
-     * @param  array $data The data to insert/update
+     * @param  int [$id] The id to update
+     * @param array $data The data to insert/update
+     *
      * @return $this
      */
     public function insertUpdate($id = null, $data)
     {
         // Update
         if ($id !== null) {
-            if (! isset($data['id'])) {
+            if (!isset($data['id'])) {
                 $data['id'] = $id;
             }
 
@@ -76,7 +77,7 @@ class Runtime implements \Moltin\SDK\StorageInterface
             $this->items[] = $data;
             $ids = array_keys($this->items);
             $id = end($ids);
-            if (! isset($this->items[$id]['id'])) {
+            if (!isset($this->items[$id]['id'])) {
                 $this->items[$id]['id'] = $id;
             }
         }
@@ -87,7 +88,8 @@ class Runtime implements \Moltin\SDK\StorageInterface
     /**
      * Removes an object with the given id from storage.
      *
-     * @param  integer $id
+     * @param int $id
+     *
      * @return $this
      */
     public function remove($id)

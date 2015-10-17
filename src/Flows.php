@@ -1,23 +1,22 @@
 <?php
 
 /**
-* This file is part of Moltin PHP-SDK, a PHP package which
-* provides convinient and rapid access to the API.
-*
-* Copyright (c) 2013 Moltin Ltd.
-* http://github.com/moltin/php-sdk
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*
-* @package moltin/php-sdk
-* @author Jamie Holdroyd <jamie@molt.in>
-* @copyright 2013 Moltin Ltd.
-* @version dev
-* @link http://github.com/moltin/php-sdk
-*
-*/
-
+ * This file is part of Moltin PHP-SDK, a PHP package which
+ * provides convinient and rapid access to the API.
+ *
+ * Copyright (c) 2013 Moltin Ltd.
+ * http://github.com/moltin/php-sdk
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @author Jamie Holdroyd <jamie@molt.in>
+ * @copyright 2013 Moltin Ltd.
+ *
+ * @version dev
+ *
+ * @link http://github.com/moltin/php-sdk
+ */
 namespace Moltin\SDK;
 
 use Moltin\SDK\Exception\InvalidFieldTypeException as InvalidFieldType;
@@ -39,7 +38,7 @@ class Flows
         // Loop fields
         foreach ($this->fields as &$field) {
             if (!$this->_isValidType($field['type'])) {
-                throw new InvalidFieldType('Field type ' . $field['type'] . ' was not found');
+                throw new InvalidFieldType('Field type '.$field['type'].' was not found');
             }
 
                 // Setup args
@@ -64,7 +63,7 @@ class Flows
 
             // Wrap form value
             if (isset($this->wrap) && $this->wrap !== false) {
-                $this->args['name'] = $this->wrap . '[' . $field['slug'] . ']';
+                $this->args['name'] = $this->wrap.'['.$field['slug'].']';
             }
 
             // Build input
@@ -78,7 +77,7 @@ class Flows
     {
         $this->args['type'] = 'text';
 
-        return '<input ' . $this->_buildArgs($this->args) . ' />';
+        return '<input '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeFile($a)
@@ -88,14 +87,14 @@ class Flows
         $this->args['value'] = $a['value']['value'];
 
         foreach (explode(',', $a['options']['allowed']) as $option) {
-            $this->args['accept'] .= (strlen($this->args['accept']) > 0 ? ', ' : '') . '.' . trim($option);
+            $this->args['accept'] .= (strlen($this->args['accept']) > 0 ? ', ' : '').'.'.trim($option);
         }
 
         if ($this->args['value'] > 0) {
-            $img = '<img src="https://' . $a['value']['data']['segments']['domain'] . '/w64/h64/' . $a['value']['data']['segments']['suffix'] . '" alt="' . $a['value']['value'] . '" />';
+            $img = '<img src="https://'.$a['value']['data']['segments']['domain'].'/w64/h64/'.$a['value']['data']['segments']['suffix'].'" alt="'.$a['value']['value'].'" />';
         }
 
-        return (isset($img) ? $img : '') . '<input ' . $this->_buildArgs($this->args) . ' />';
+        return (isset($img) ? $img : '').'<input '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeDate($a)
@@ -103,30 +102,30 @@ class Flows
         $this->args['type'] = 'text';
         $this->args['class'][] = 'datepicker';
 
-        return '<input ' . $this->_buildArgs($this->args) . ' />';
+        return '<input '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeEmail($a)
     {
         $this->args['type'] = 'email';
 
-        return '<input ' . $this->_buildArgs($this->args) . ' />';
+        return '<input '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeSlug($a)
     {
         $this->args['type'] = 'text';
         $this->args['class'][] = 'slug';
-        $this->args['data-parent'] = '#' . $a['options']['parent'];
+        $this->args['data-parent'] = '#'.$a['options']['parent'];
 
-        return '<input ' . $this->_buildArgs($this->args) . ' />';
+        return '<input '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeInteger($a)
     {
         $this->args['type'] = 'number';
 
-        return '<input ' . $this->_buildArgs($this->args) . ' />';
+        return '<input '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeDecimal($a)
@@ -135,7 +134,7 @@ class Flows
         $this->args['class'][] = 'decimal';
         $this->args['data-places'] = $a['options']['decimal_places'];
 
-        return '<input ' . $this->_buildArgs($this->args) . ' />';
+        return '<input '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeChoice($a)
@@ -146,7 +145,7 @@ class Flows
 
         $options = $this->_buildOptions($a['options']['choices'], $a['name'], $this->args['value'], $a['options']['default'], $a['required']);
 
-        return '<select ' . $this->_buildArgs($this->args, true) . '>' . $options . '</select>';
+        return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
     }
 
     protected function typeRelationship($a)
@@ -157,12 +156,12 @@ class Flows
 
         $options = $this->_buildOptions((isset($a['available']) ? $a['available'] : null), $a['name'], $this->args['value'], null, $a['required']);
 
-        return '<select ' . $this->_buildArgs($this->args, true) . '>' . $options . '</select>';
+        return '<select '.$this->_buildArgs($this->args, true).'>'.$options.'</select>';
     }
 
     protected function typeMultiple($a)
     {
-        if (! isset($_POST[$this->args['name']]) && is_array($this->args['value'])) {
+        if (!isset($_POST[$this->args['name']]) && is_array($this->args['value'])) {
             $this->args['value'] = array_keys($this->args['value']['data']);
         }
 
@@ -181,7 +180,7 @@ class Flows
         $placeholder = number_format(0, $a['options']['decimal_places']);
 
         // step should be set depending on number of decimal places to round to for currency formatting
-        return '<input min="0" placeholder="' . $placeholder . '" step="' . $step . '" ' . $this->_buildArgs($this->args) . ' />';
+        return '<input min="0" placeholder="'.$placeholder.'" step="'.$step.'" '.$this->_buildArgs($this->args).' />';
     }
 
     protected function typeTaxBand($a)
@@ -209,24 +208,24 @@ class Flows
         $value = $this->args['value'];
         unset($this->args['value']);
 
-        return '<textarea ' . $this->_buildArgs($this->args) . '>' . $value . '</textarea>';
+        return '<textarea '.$this->_buildArgs($this->args).'>'.$value.'</textarea>';
     }
 
     protected function _buildArgs($args, $skipValue = false)
     {
         $string = '';
         foreach ($args as $key => $value) {
-            if ($key == "value" && $value === 0) {
-                $string .= $key . '="0"';
-            } elseif ($key != "value" or ! $skipValue) {
-                if (! empty($value)) {
+            if ($key == 'value' && $value === 0) {
+                $string .= $key.'="0"';
+            } elseif ($key != 'value' or !$skipValue) {
+                if (!empty($value)) {
                     if (is_array($value) && isset($value['data']['raw']['without_tax'])) {
-                        $string .= $key . '="' . $value['data']['raw']['without_tax'] . '" ';
+                        $string .= $key.'="'.$value['data']['raw']['without_tax'].'" ';
                     } else {
-                        $string .= $key . '="' . (is_array($value) ? implode(' ', $value) : $value) . '" ';
+                        $string .= $key.'="'.(is_array($value) ? implode(' ', $value) : $value).'" ';
                     }
-                } elseif ($key != "required" && ! empty($value)) {
-                    $string .= $key . ' ';
+                } elseif ($key != 'required' && !empty($value)) {
+                    $string .= $key.' ';
                 }
             }
         }
@@ -236,11 +235,11 @@ class Flows
 
     protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
     {
-        $string = (! $required ? '<option value="">Select a ' . $title . '</option>' : '');
+        $string = (!$required ? '<option value="">Select a '.$title.'</option>' : '');
 
         if ($options !== null) {
             foreach ($options as $id => $title) {
-                $string .= '<option value="' . $id . '"' . ((is_array($value) && in_array($id, $value)) || (isset($value['data']['code']) && $id == $value['data']['code']) || (isset($value['data']['slug']) && $id == $value['data']['slug']) || $value == $id || ($value == null && $default == $id) ? ' selected="selected"' : '') . '>' . $title . '</option>';
+                $string .= '<option value="'.$id.'"'.((is_array($value) && in_array($id, $value)) || (isset($value['data']['code']) && $id == $value['data']['code']) || (isset($value['data']['slug']) && $id == $value['data']['slug']) || $value == $id || ($value == null && $default == $id) ? ' selected="selected"' : '').'>'.$title.'</option>';
             }
         }
 
@@ -249,7 +248,7 @@ class Flows
 
     protected function _getMethodForType($type)
     {
-        return 'type' . str_replace(' ', '', ucwords(str_replace('-', ' ', $type)));
+        return 'type'.str_replace(' ', '', ucwords(str_replace('-', ' ', $type)));
     }
 
     protected function _isValidType($type)

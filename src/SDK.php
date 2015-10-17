@@ -1,23 +1,22 @@
 <?php
 
 /**
-* This file is part of Moltin PHP-SDK, a PHP package which
-* provides convinient and rapid access to the API.
-*
-* Copyright (c) 2013 Moltin Ltd.
-* http://github.com/moltin/php-sdk
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*
-* @package moltin/php-sdk
-* @author Jamie Holdroyd <jamie@molt.in>
-* @copyright 2013 Moltin Ltd.
-* @version dev
-* @link http://github.com/moltin/php-sdk
-*
-*/
-
+ * This file is part of Moltin PHP-SDK, a PHP package which
+ * provides convinient and rapid access to the API.
+ *
+ * Copyright (c) 2013 Moltin Ltd.
+ * http://github.com/moltin/php-sdk
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @author Jamie Holdroyd <jamie@molt.in>
+ * @copyright 2013 Moltin Ltd.
+ *
+ * @version dev
+ *
+ * @link http://github.com/moltin/php-sdk
+ */
 namespace Moltin\SDK;
 
 use Moltin\SDK\Exception\InvalidRequestException as InvalidRequest;
@@ -102,28 +101,28 @@ class SDK
 
     public function get($uri, $data = [])
     {
-        $url = $this->url . $this->version . '/' . $uri;
+        $url = $this->url.$this->version.'/'.$uri;
 
         return $this->_request($url, 'GET', $data);
     }
 
     public function post($uri, $data = [])
     {
-        $url = $this->url . $this->version . '/' . $uri;
+        $url = $this->url.$this->version.'/'.$uri;
 
         return $this->_request($url, 'POST', $data);
     }
 
     public function put($uri, $data = [])
     {
-        $url = $this->url . $this->version . '/' . $uri;
+        $url = $this->url.$this->version.'/'.$uri;
 
         return $this->_request($url, 'PUT', $data);
     }
 
     public function delete($uri, $data = [])
     {
-        $url = $this->url . $this->version . '/' . $uri;
+        $url = $this->url.$this->version.'/'.$uri;
 
         return $this->_request($url, 'DELETE', $data);
     }
@@ -131,7 +130,7 @@ class SDK
     public function fields($type, $id = null, $wrap = false, $suffix = 'fields')
     {
         // Variables
-        $fields = $this->get($type . ($id !== null ? '/' . $id : '') . '/' . $suffix);
+        $fields = $this->get($type.($id !== null ? '/'.$id : '').'/'.$suffix);
         $flows = new Flows($fields['result'], $wrap);
 
         // Build and return form
@@ -149,11 +148,11 @@ class SDK
             return $_COOKIE['mcart'];
         }
 
-        if (! $identifier) {
+        if (!$identifier) {
             $identifier = md5(uniqid());
         }
 
-        setcookie('mcart', $identifier, strtotime("+30 day"), '/');
+        setcookie('mcart', $identifier, strtotime('+30 day'), '/');
 
         return $identifier;
     }
@@ -205,8 +204,8 @@ class SDK
     protected function _request($url, $method, $data)
     {
         // Check type
-        if (! in_array($method, $this->methods)) {
-            throw new InvalidRequest('Invalid request type (' . $method . ')');
+        if (!in_array($method, $this->methods)) {
+            throw new InvalidRequest('Invalid request type ('.$method.')');
         }
 
         // Check token
@@ -220,11 +219,11 @@ class SDK
         }
 
         // Append URL
-        if ($method == 'GET' and ! empty($data)) {
-            $url .= '?' . http_build_query($data);
+        if ($method == 'GET' and !empty($data)) {
+            $url .= '?'.http_build_query($data);
             $data = [];
         } elseif ($method == 'PUT') {
-            $url .= (strpos($url, '?') !== false ? '&' : '?') . '_method=' . $method;
+            $url .= (strpos($url, '?') !== false ? '&' : '?').'_method='.$method;
             $method = 'POST';
         }
 
@@ -238,8 +237,8 @@ class SDK
         $result = json_decode($result, true);
 
         // Check JSON for error
-        if (isset($result['status']) and ! $result['status']) {
-            $error = "Unknown error";
+        if (isset($result['status']) and !$result['status']) {
+            $error = 'Unknown error';
 
             // Catch multiple errors
             if (isset($result['errors'])) {
@@ -259,9 +258,10 @@ class SDK
     }
 
     /**
-     * Squash errors down from arrays if needed
+     * Squash errors down from arrays if needed.
      *
      * @param $errors mixed The array or string of errors
+     *
      * @return string
      */
     protected function _implodeErrors($errors)
@@ -272,7 +272,7 @@ class SDK
                 if (is_array($e)) {
                     $error .= implode("\n", $e);
                 } else {
-                    $error .= "\n" . $e;
+                    $error .= "\n".$e;
                 }
             }
         } else {
@@ -284,12 +284,12 @@ class SDK
 
     protected function _registerFacades()
     {
-        foreach (glob(__DIR__ . '/Facade/*') as $facade) {
+        foreach (glob(__DIR__.'/Facade/*') as $facade) {
             $facade = strstr(basename($facade), '.php', true);
             if (class_exists($facade)) {
                 continue;
             }
-            class_alias('\\Moltin\\SDK\\Facade\\' . $facade, $facade);
+            class_alias('\\Moltin\\SDK\\Facade\\'.$facade, $facade);
             $facade::init($this);
         }
     }
