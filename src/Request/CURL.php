@@ -91,7 +91,7 @@ class CURL implements \Moltin\SDK\RequestInterface
      */
     protected function generateInlineArray($value, $key = '', $index = '') {
         if (is_array($value)) {
-            $result = [];
+            $result = array();
             foreach($value as $k => $v) {
                 $tmp = $this->generateInlineArray($v, $k, $index);
                 if(isset($tmp['index']) && isset($tmp['value'])) {
