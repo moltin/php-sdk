@@ -32,7 +32,7 @@ class CURL implements \Moltin\SDK\RequestInterface
     public function setup($url, $method, $post = array(), $token = null)
     {
         // Variables
-        $headers = [];
+        $headers = array();
         $this->curl = curl_init();
         $this->url = $url;
         $this->method = $method;
