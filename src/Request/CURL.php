@@ -105,10 +105,10 @@ class CURL implements \Moltin\SDK\RequestInterface
             return $result;
         } else {
             // base case, no recursive call
-            return [
+            return array(
                 'index' => $key,
                 'value' => $value
-            ];
+            );
         }
     }
 
