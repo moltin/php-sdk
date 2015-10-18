@@ -27,14 +27,14 @@ class CURLTest extends \PHPUnit_Framework_TestCase
     {
         $dataOrder = array(
             'order' => array(
-                619  => array('order'  => 1, 'parent' => 0),
-                653  => array('order'  => 1, 'parent' => '619'),
-                650  => array('order'  => 2, 'parent' => '619'),
-                652  => array('order'  => 3, 'parent' => '619'),
-                624  => array('order'  => 2, 'parent' => 0),
-                703  => array('order'  => 1, 'parent' => '624'),
-                701  => array('order'  => 2, 'parent' => '624'),
-                704  => array('order'  => 3, 'parent' => '624')
+                619  => array('order' => 1, 'parent' => 0),
+                653  => array('order' => 1, 'parent' => '619'),
+                650  => array('order' => 2, 'parent' => '619'),
+                652  => array('order' => 3, 'parent' => '619'),
+                624  => array('order' => 2, 'parent' => 0),
+                703  => array('order' => 1, 'parent' => '624'),
+                701  => array('order' => 2, 'parent' => '624'),
+                704  => array('order' => 3, 'parent' => '624')
             )
         );
 
@@ -95,7 +95,7 @@ class CURLTest extends \PHPUnit_Framework_TestCase
      * @param $name
      * @return \ReflectionMethod
      */
-    protected static function getMethod($name) {
+    protected function getMethod($name) {
         $class = new \ReflectionClass('Moltin\SDK\Request\CURL');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
