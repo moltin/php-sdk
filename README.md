@@ -9,15 +9,10 @@ The Moltin php-sdk is a simple to use interface for the API to help you get off 
 ## Installation
 Download and install composer from `http://www.getcomposer.org/download`
 
-Add the following to your project `composer.json` file
+Run the following command:
 ```
-{
-    "require": {
-        "moltin/php-sdk": "^1.0.0"
-    }
-}
+$ composer require moltin/php-sdk
 ```
-When you're done just run `php composer.phar install` and the package is ready to be used.
 
 ## Usage
 
