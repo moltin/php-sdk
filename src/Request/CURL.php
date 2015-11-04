@@ -28,6 +28,7 @@ class CURL implements \Moltin\SDK\RequestInterface
     public $header;
 
     protected $curl;
+    protected $options = array();
 
     public function setup($url, $method, $post = array(), $token = null)
     {
@@ -36,9 +37,7 @@ class CURL implements \Moltin\SDK\RequestInterface
         $this->curl = curl_init();
         $this->url = $url;
         $this->method = $method;
-
-        // Add request settings
-        curl_setopt_array($this->curl, array(
+        $this->options = array(
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HEADER => false,
@@ -48,15 +47,16 @@ class CURL implements \Moltin\SDK\RequestInterface
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_TIMEOUT => 40,
             CURLINFO_HEADER_OUT => true,
-        ));
+        );
+
+        if ('POST' == $method) {
+            $this->options[CURLOPT_POST] = true;
+        }
 
         // Add post
         if (!empty($post)) {
             $post = $this->toFormattedPostData($post, $_FILES);
-
-            // Assign to curl
-            curl_setopt($this->curl, CURLOPT_POST, true);
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
+            $this->options[CURLOPT_POSTFIELDS] = $post;
         }
 
         // Add auth header
@@ -78,7 +78,7 @@ class CURL implements \Moltin\SDK\RequestInterface
         $headers[] = 'X-Moltin-Session: '.session_id();
 
         // Set headers
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
+        $this->options[CURLOPT_HTTPHEADER] = $headers;
     }
 
     /**
@@ -115,6 +115,7 @@ class CURL implements \Moltin\SDK\RequestInterface
     public function make()
     {
         // Make request
+        curl_setopt_array($this->curl, $this->options);
         $result = curl_exec($this->curl);
         $this->code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
         $this->time = curl_getinfo($this->curl, CURLINFO_TOTAL_TIME);

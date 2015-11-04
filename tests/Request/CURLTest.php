@@ -23,6 +23,24 @@ class CURLTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
+    public function test_that_empty_post_data_creates_post_request()
+    {
+        $request = $this->newCurlInstance();
+        $request->setup('/checkout/payment/authorize', 'POST');
+        $options = \PHPUnit_Framework_Assert::readAttribute($request, 'options');
+        $this->assertArrayHasKey(CURLOPT_POST, $options);
+        $this->assertEquals(true, $options[CURLOPT_POST]);
+
+        $request = $this->newCurlInstance();
+        $post = array('foo' => 'bar');
+        $request->setup('/checkout/payment/authorize', 'POST', $post);
+        $options = \PHPUnit_Framework_Assert::readAttribute($request, 'options');
+        $this->assertArrayHasKey(CURLOPT_POST, $options);
+        $this->assertArrayHasKey(CURLOPT_POSTFIELDS, $options);
+        $this->assertEquals(true, $options[CURLOPT_POST]);
+        $this->assertEquals($post, $options[CURLOPT_POSTFIELDS]);
+    }
+
     public function getOrderInlineArrayPostDataProvider()
     {
         $dataOrder = array(
