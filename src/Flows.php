@@ -210,6 +210,13 @@ class Flows
         return '<textarea ' . $this->_buildArgs($this->args) . '>' . $value . '</textarea>';
     }
 
+    protected function typeEncrypted($a)
+    {
+        $this->args['type'] = 'password';
+
+        return '<input ' . $this->_buildArgs($this->args) . ' />';
+    }
+
     protected function _buildArgs($args, $skipValue = false)
     {
         $string = '';

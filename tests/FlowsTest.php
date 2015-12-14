@@ -69,6 +69,27 @@ class FlowsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('<input name="email" id="email" class="form-control" data-fieldtype="email" type="email" />', $flow['input']);
     }
 
+    public function test_encrypted_type()
+    {
+        $field = array(
+            'name' => 'Password',
+            'slug' => 'password',
+            'type' => 'encrypted',
+            'options' => array(),
+            'required' => false,
+        );
+
+        $flow = $this->newBuiltFlowTypeFromField($field);
+
+        $this->assertEquals($field['name'], $flow['name']);
+        $this->assertEquals($field['slug'], $flow['slug']);
+        $this->assertEquals($field['type'], $flow['type']);
+        $this->assertEquals($field['options'], $flow['options']);
+        $this->assertEquals($field['required'], $flow['required']);
+
+        $this->assertEquals('<input name="password" id="password" class="form-control" data-fieldtype="encrypted" type="password" />', $flow['input']);
+    }
+
     public function test_slug_type()
     {
         $field = array(
