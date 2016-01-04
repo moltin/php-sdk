@@ -82,6 +82,26 @@ class SDK
         return ($this->token === null ? false : true);
     }
 
+    public function switchStore($store)
+    {
+        $result = \Moltin::Get('account/stores/switch/'.$_POST['store']);
+
+        // Check JSON for error
+        if (isset($result['error'])) {
+            throw new InvalidResponse($result['error']);
+        }
+
+        // Get keys
+        $this->token   = $result['access_token'];
+        $this->refresh = $result['refresh_token'];
+        $this->expires = $result['expires'];
+
+        // Store them
+        $this->store->insertUpdate('token',   $this->token);
+        $this->store->insertUpdate('refresh', $this->refresh);
+        $this->store->insertUpdate('expires', $this->expires);
+    }
+
     public function refresh($args = array())
     {
         // Perform refresh

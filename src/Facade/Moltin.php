@@ -40,6 +40,11 @@ class Moltin
 		return self::$sdk->authenticate(new $method(), $data);
 	}
 
+	public static function SwitchStore($store)
+	{
+		return self::$sdk->switchStore($store);
+	}
+
 	public static function Get($uri, $data = array())
 	{
 		return self::$sdk->get($uri, $data);
