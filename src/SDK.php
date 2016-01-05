@@ -84,7 +84,7 @@ class SDK
 
     public function switchStore($store)
     {
-        $result = \Moltin::Get('account/stores/switch/'.$_POST['store']);
+        $result = \Moltin::Get('account/stores/switch/' . $store);
 
         // Check JSON for error
         if (isset($result['error'])) {
