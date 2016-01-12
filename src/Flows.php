@@ -38,8 +38,9 @@ class Flows
     {
         // Loop fields
         foreach ($this->fields as &$field) {
+            
             if (!$this->_isValidType($field['type'])) {
-                throw new InvalidFieldType('Field type '.$field['type'].' was not found');
+                continue;
             }
 
                 // Setup args
