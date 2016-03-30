@@ -19,8 +19,8 @@
  */
 namespace Moltin\SDK\Authenticate;
 
-use Moltin\SDK\Exception\InvalidAuthenticationRequestException as InvalidAuthRequest;
-use Moltin\SDK\Exception\InvalidResponseException as InvalidResponse;
+use Moltin\SDK\Exception\InvalidResponseException;
+use Moltin\SDK\Exception\InvalidAuthenticationRequestException;
 
 class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
 {
@@ -34,7 +34,7 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
     {
         // Validate
         if (($valid = $this->validate($args)) !== true) {
-            throw new InvalidAuthRequest('Missing required params: '.implode(', ', $valid));
+            throw new InvalidAuthenticationRequestException('Missing required params: '.implode(', ', $valid));
         }
 
         // Variables
@@ -52,9 +52,21 @@ class ClientCredentials implements \Moltin\SDK\AuthenticateInterface
         // Check response
         $result = json_decode($result, true);
 
-        // Check JSON for error
-        if (isset($result['error'])) {
-            throw new InvalidResponse($result['error']);
+        // Check JSON for errors
+        if (isset($result['errors'])) {
+            $exception = null;
+            if (is_array($result['errors'])) {
+                foreach($result['errors'] as $k => $v) {
+                    if (isset($exception)) {
+                        $exception = new InvalidResponseException($v[0], 0, $exception);
+                    } else {
+                        $exception = new InvalidResponseException($v[0]);
+                    }
+                }
+            } else {
+                $exception = $result['errors'];
+            }
+            throw new InvalidResponseException($exception);
         }
 
         // Set data

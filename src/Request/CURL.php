@@ -39,7 +39,6 @@ class CURL implements \Moltin\SDK\RequestInterface
         $this->method = $method;
 
         $this->options = array(
-
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HEADER => false,
