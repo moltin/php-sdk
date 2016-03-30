@@ -1,6 +1,5 @@
 {
     "name": "moltin/php-sdk",
-    "version": "dev",
     "description": "The Moltin php-sdk is a simple to use interface for the API to help you get off the ground quickly and efficiently",
     "authors": [
         {
@@ -28,7 +27,7 @@
         }
     },
     "autoload-dev" : {
-        "psr-4": { 
+        "psr-4": {
             "Moltin\\SDK\\Tests\\" : "tests/"
         }
     }

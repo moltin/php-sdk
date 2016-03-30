@@ -28,9 +28,9 @@ class Transaction
         self::$sdk = $sdk;
     }
 
-    public static function Get($slug)
+    public static function Get($id)
     {
-        return self::$sdk->get('transactions/'.$slug);
+        return self::$sdk->get('transactions/'.$id);
     }
 
     public static function Listing($terms = [])
