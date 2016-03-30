@@ -219,13 +219,6 @@ class Flows
         return '<input ' . $this->_buildArgs($this->args) . ' />';
     }
 
-    protected function typeEncrypted($a)
-    {
-        $this->args['type'] = 'password';
-
-        return '<input ' . $this->_buildArgs($this->args) . ' />';
-    }
-
     protected function _buildArgs($args, $skipValue = false)
     {
         $string = '';
