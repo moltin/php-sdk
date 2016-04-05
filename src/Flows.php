@@ -243,11 +243,19 @@ class Flows
 
     protected function _buildOptions($options, $title, $value = null, $default = null, $required = false)
     {
+        if (is_array($title)) {
+            $title = $title[0];
+        }
+
         $string = (!$required ? '<option value="">Select a '.$title.'</option>' : '');
 
         if ($options !== null) {
             foreach ($options as $id => $title) {
-                $string .= '<option value="'.$id.'"'.((is_array($value) && in_array($id, $value)) || (isset($value['data']['code']) && $id == $value['data']['code']) || (isset($value['data']['slug']) && $id == $value['data']['slug']) || $value == $id || ($value == null && $default == $id) ? ' selected="selected"' : '').'>'.$title.'</option>';
+                if (((is_array($value) && in_array($id, $value)) || (isset($value['data']['code']) && $id == $value['data']['code']) || (isset($value['data']['slug']) && $id == $value['data']['slug']) || $value == $id || ($value == null && $default == $id))) {
+                    $string .= '<option value="' . $id . '" selected="selected"';
+                } else {
+                    $string .= '<option value="' . $id . '">' . $title . '</option>';
+                }
             }
         }
 
