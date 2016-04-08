@@ -72,7 +72,7 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
 
         // Set data
         $this->data['token'] = $result['access_token'];
-        $this->data['refresh'] = $args['refresh_token'];
+        $this->data['refresh'] = $result['refresh_token'];
         $this->data['expires'] = $result['expires'];
     }
 
