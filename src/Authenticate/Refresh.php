@@ -54,7 +54,7 @@ class Refresh implements \Moltin\SDK\AuthenticateInterface
         $result = json_decode($result, true);
 
         // Check JSON for errors
-        if (isset($result['errors'])) {
+        if (isset($result['errors']) || isset($result['error'])) {
             $exception = null;
             if (is_array($result['errors'])) {
                 foreach($result['errors'] as $k => $v) {
