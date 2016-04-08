@@ -48,8 +48,14 @@ class Password implements \Moltin\SDK\AuthenticateInterface
         // Check response
         $result = json_decode($result, true);
 
+        // Fix backward compatibility with new services
+        if (!isset($result['errors']) && isset($result['error'])) {
+            $result['errors'] = $result['error'];
+            unset($result['error']);
+        }
+
         // Check JSON for errors
-        if (isset($result['errors']) || isset($result['error'])) {
+        if (isset($result['errors'])) {
             $exception = null;
             if (is_array($result['errors'])) {
                 foreach($result['errors'] as $k => $v) {
