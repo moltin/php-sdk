@@ -67,7 +67,7 @@ class SDK
     public function authenticate(\Moltin\SDK\AuthenticateInterface $auth, $args = array())
     {
         // Skip active auth or refresh current
-        if ($this->expires > 0 and $this->expires > time()) {
+        if ($this->expires > 0 and $this->expires > time() and false) {
             return true;
         } else if ($this->expires > 0 and $this->expires < time() and $this->refresh !== null) {
             return $this->refresh($args);
