@@ -70,7 +70,13 @@ class SDK
         if ($this->expires > 0 and $this->expires > time()) {
             return true;
         } else if ($this->expires > 0 and $this->expires < time() and $this->refresh !== null) {
-            return $this->refresh($args);
+            return $this->refresh([
+                'client_id' => $args['client_id'],
+                'client_secret' => $args['client_secret'],
+                'token' => $this->token,
+                'refresh_token' => $this->refresh,
+                'expires' => $this->expires
+            ]);
         }
 
         // Perform authentication
