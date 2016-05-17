@@ -54,6 +54,11 @@ class Address
 		return self::$sdk->get('customers/'.$customer.'/addresses', $terms);
 	}
 
+	public static function Delete($customer, $id)
+	{
+		return self::$sdk->delete('customers/'.$customer.'/addresses/'.$id);
+	}
+
 	public static function Fields($customer = null, $id = null)
 	{
 		$uri = 'customers';
