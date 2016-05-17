@@ -30,13 +30,14 @@ class CURL implements \Moltin\SDK\RequestInterface
     protected $curl;
     protected $options = array();
 
-    public function setup($url, $method, $post = array(), $token = null)
+    public function setup($url, $method, $post = [], $token = null)
     {
         // Variables
         $headers = array();
         $this->curl = curl_init();
         $this->url = $url;
         $this->method = $method;
+
         $this->options = array(
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $method,
@@ -132,7 +133,7 @@ class CURL implements \Moltin\SDK\RequestInterface
      * @param $files array
      * @return array
      */
-    protected function toFormattedPostData(array $post, array $files = array())
+    protected function toFormattedPostData(array $post, array $files = [])
     {
         // Merge in files
         foreach ($files as $key => $data) {
