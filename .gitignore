@@ -1,7 +1,3 @@
-/vendor/
-composer.lock
-.DS_Store
-._*
-Thumbs.db
-Desktop.ini
-sftp-config.json
+/examples/.env
+/ignore
+/vendor

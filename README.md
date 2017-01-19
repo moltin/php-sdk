@@ -1,104 +1,143 @@
-# PHP SDK
+# moltin PHP SDK
 
-* [Website](http://moltin.com)
-* [License](https://github.com/moltin/php-sdk/master/LICENSE)
-* Version: dev
+## Instantiating the SDK Client:
 
-The Moltin php-sdk is a simple to use interface for the API to help you get off the ground quickly and efficiently.
+Pass in the configuration to the client:
 
-## Installation
-Download and install composer from `http://www.getcomposer.org/download`
-
-Run the following command:
-```
-$ composer require moltin/php-sdk
-```
-
-## Usage
-
-Below is a basic usage guide for this package.
-
-### Instantiating the Package
-
-Before you begin you will need to instantiate the package.
-
-``` php
-use Moltin\SDK\Request\CURL as Request;
-use Moltin\SDK\Storage\Session as Storage;
-
-$moltin = new \Moltin\SDK\SDK(new Storage(), new Request());
+```php
+$config = [
+    'client_id' => '{your_client_id}',
+    'client_secret' => '{your_client_secret}',
+    'currency_code' => 'USD',
+    'language' => 'en',
+    'locale' => 'en_gb'
+];
+$moltin = new Moltin\Client($config);
 ```
 
-If you wish to use another storage or request method simply change the relevant use statement to reflect your preferences.
+Or configure after construct:
 
-### Authorisation
-
-Before you can use the API you will need to authorise, there are a number of ways to this. The simplest of which is to use the "client credentials" method. You can do this as follows:
-
-``` php
-$result = \Moltin::Authenticate('ClientCredentials', [
-        'client_id'     => '<YOUR CLIENT ID>',
-        'client_secret' => '<YOUR CLIENT SECRET>',
-]);
+```php
+$moltin = new Moltin\Client()
+            ->setClientID('xxx')
+            ->setClientSecret('yyy')
+            ->setCurrencyCode('USD')
+            ->setLanguage('en')
+            ->setLocale('en_gb');
 ```
 
-Once this is done your token will be stored in your selected storage method and passed automatically to all subsequent calls.
+**Note:** if you are unsure what your `client_id` or `client_secret` are, please select the
+[store in your account](https://accounts.moltin.com) and copy them.
 
-### Making a Call
+## Enterprise Customers
 
-After authorising you can start to make calls to the API, there are four simple calls to use: GET, PUT, POST and DELETE.
+If you are an enterprise customer and have your own infrastructure with your own domain, you can configure the client to use your domain:
 
-*Note:* The following example shows the products API, for other end-points please check our [Documentation](http://docs.molt.in)
-
-``` php
-	// Create a product
-	$result = \Product::Create($_POST);
-
-	// Update a product
-	$result = \Product::Update('<ID>', array('title' => 'Updated!'));
-
-	// Get a product
-	$result = Product::Get('<ID>');
-
-	// Delete a product
-	$result = Product::Delete('<ID>');
+```php
+$moltin->setBaseURL('https://api.yourdomain.com');
 ```
 
-### Building a Form
+Or by adding the `api_endpoint` field to the `$config` array you pass to the constructor.
 
-To help with the usual CRUD forms we've included an automated form builder to take care of the messy bits for you.
+## Using the client
 
-``` php
-	// Get fields (create)
-	fields = \Product::Fields();
+### All Resource
 
-	// Get fields (edit product 1)
-	fields = \Product::Fields('<ID>');
+To return a list of your resources (limited to 100 depending your [store confuration] (https://moltin.api-docs.io/v2/settings)):
 
-	// Show form
-	foreach ($fields as $field) {
-		echo '<label for="'.$field['slug'].'">'.$field['name'].'</label>';
-		echo $field['input'];
-	}
+```php
+// return a list of your products 
+$moltin->products->get();
+
+// return your brands
+$moltin->brands->get();
+
+// return your categories
+$moltin->categories->get();
+
+// return your collections
+$moltin->collections->get();
+
+// return your files
+$moltin->files->get();
 ```
 
-## Testing
+### Resources by ID
 
-``` bash
-$ phpunit
+Fetch a Resource by ID:
+
+```php
+$moltin->products->get($productID);
 ```
 
-## Contributing
+### Limiting and Offsetting Results
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Limit the number of resources returned:
 
+```php
+$moltin->products->limit(10)->get();
+```
 
-## Credits
+Offset the results (page 2):
 
-- [Moltin](https://github.com/moltin)
-- [All Contributors](https://github.com/moltin/php-sdk/contributors)
+```php
+$moltin->products->limit(10)->offset(10)->get();
+```
 
+### Sorting Results
 
-## License
+Order by `name`:
 
-Please see [License File](LICENSE) for more information.
+```php
+$moltin->products->sort('name');
+```
+
+Reversed:
+
+```php
+$moltin->products->sort('-name');
+```
+
+### Create Relationships
+
+To create relationships between resources:
+
+```php
+$moltin->products->createRelationships($productID, 'categories', [$categoryOneID]);
+```
+
+To delete a relationship between resources:
+
+```php
+$moltin->products->deleteRelationships($productID, 'categories', [$categoryID]);
+```
+
+Or an update with an empty array achieves the same result if you're so inclined:
+
+```php
+$moltin->products->updateRelationships($productID, 'categories', []);
+```
+
+## Examples
+
+In the `examples` directory there are command line implementations using the SDK. To use the examples you will need to:
+
+ - Install dependencies with ```composer install```
+ - Copy the `examples/.env.tmpl` to `examples/.env` and add your credentials to it.
+ - Run the example file you want, for example: ```php ./ProductList.php```
+
+By default, for successful calls, we will display the data in a table on the command line. You can, however, use a flag to view the response:
+
+```php ./ProductList.php format=json```
+
+## Test
+
+```bash
+phpunit
+```
+
+Generate a coverage report:
+
+```bash
+phpunit --coverage-html ./ignore
+```
