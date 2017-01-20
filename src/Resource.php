@@ -208,11 +208,12 @@ class Resource
      */
     public function getRelationshipType($to)
     {
-        if (!isset(self::RELATIONSHIP_TYPE_MAP[$to])) {
-            return false;
+        $map = self::RELATIONSHIP_TYPE_MAP;
+        if (isset($map[$to])) {
+            return self::RELATIONSHIP_TYPE_MAP[$to];
         }
 
-        return self::RELATIONSHIP_TYPE_MAP[$to];
+        return false;
     }
 
     /**
