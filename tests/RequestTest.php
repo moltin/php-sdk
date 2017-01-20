@@ -30,9 +30,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('PUT', $this->underTest->getMethod());
     }
 
+    /**
+     * @expectedException Moltin\Exceptions\InvalidRequestMethod
+     */
     public function testSetMethodToInvlaidValueThrowsException()
     {
-        $this->expectException(Moltin\Exceptions\InvalidRequestMethod::class);
         $this->underTest->setMethod('replace');
     }
 
@@ -84,16 +86,20 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('form_params', $this->underTest->getBodyKey());
     }
 
+    /**
+     * @expectedException Moltin\Exceptions\InvalidContentType
+     */
     public function testBodyKeyThrowsExceptionWithInvalidContentType()
     {
-        $this->expectException(Moltin\Exceptions\InvalidContentType::class);
         $this->underTest->addHeader('Content-Type', 'nope/not');
         $this->underTest->getBodyKey();
     }
 
+    /**
+     * @expectedException Moltin\Exceptions\InvalidContentType
+     */
     public function testBodyKeyThrowsExceptionWithNoContentType()
     {
-        $this->expectException(Moltin\Exceptions\InvalidContentType::class);
         $this->underTest->getBodyKey();
     }
 

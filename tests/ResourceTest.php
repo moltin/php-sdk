@@ -157,9 +157,11 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceof(Response::class, $this->underTest->updateRelationships('c9b96b2f-574d-43f7-be53-3737959ddbb1', 'categories', []));
     }
 
+    /**
+     * @expectedException Moltin\Exceptions\InvalidRelationshipTypeException
+     */
     public function testRelationshipCallWithInvalidTypeThrowsException()
     {
-        $this->expectException(Moltin\Exceptions\InvalidRelationshipTypeException::class);
         $this->underTest->updateRelationships('c9b96b2f-574d-43f7-be53-3737959ddbb1', 'notreal', []);
     }
 
@@ -200,6 +202,9 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ef6206afa0a8a95d342c10b9eadb3082e19c8021', $test->getAccessToken());
     }
 
+    /**
+     * @expectedException Moltin\Exceptions\AuthenticationException
+     */
     public function testGetAccessTokenWhichIsForbiddenThrowsException()
     {
         $response = Mockery::mock('Moltin\Response');
@@ -231,7 +236,6 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
             ->andReturn(new \StdClass);
 
         $test = new Moltin\Resources\Products($this->client, $requestLibrary, $this->storage);
-        $this->expectException(Moltin\Exceptions\AuthenticationException::class);
         $test->makeAuthenticationCall();
     }
 
