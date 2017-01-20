@@ -307,8 +307,8 @@ class Resource
             $url = $url . '/' . $uriAppend;
         }
 
-        $request = (clone $this->requestLib)
-            ->setURL($url)
+        $request = clone $this->requestLib;
+        $request->setURL($url)
             ->setMethod($method)
             ->addHeaders($headers)
             ->setBody($body);

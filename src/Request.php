@@ -262,8 +262,8 @@ class Request
         $result = $this->httpClient->request($this->getMethod(), $this->getURL(), $this->getPayload());
         $endTime = microtime(true);
 
-        $this->response = (new Response())
-            ->setExecutionTime(round(($endTime - $startTime), 5))
+        $this->response = new Response();
+        $this->response->setExecutionTime(round(($endTime - $startTime), 5))
             ->setStatusCode($result->getStatusCode());
 
         // set the request ID for remote debugging if it is present            
