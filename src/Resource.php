@@ -12,7 +12,7 @@ class Resource
     private $requiresAuthentication = true;
 
     // a map of plural => single types for relationships
-    const RELATIONSHIP_TYPE_MAP = [
+    protected $relationshipTypeMap = [
         'brands' => 'brand',
         'categories' => 'category',
         'collections' => 'collection',
@@ -208,9 +208,9 @@ class Resource
      */
     public function getRelationshipType($to)
     {
-        $map = self::RELATIONSHIP_TYPE_MAP;
+        $map = $this->relationshipTypeMap;
         if (isset($map[$to])) {
-            return self::RELATIONSHIP_TYPE_MAP[$to];
+            return $map[$to];
         }
 
         return false;
