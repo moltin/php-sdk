@@ -54,6 +54,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($newCurrency, $this->underTest->getCurrencyCode());
     }
 
+    public function testCurrencyAlias()
+    {
+        $newCurrency = 'AUD';
+        $this->underTest->currency($newCurrency);
+        $this->assertEquals($newCurrency, $this->underTest->getCurrencyCode());
+    }
+
     public function testGetVersion()
     {
         $this->assertEquals($this->underTest->getVersion(), 'v2');

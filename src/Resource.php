@@ -301,6 +301,7 @@ class Resource
      */
     public function call($method, $body = false, $uriAppend = false, $headers = [], $requiresAuthentication = true, $buildQueryParams = true)
     {
+        $headers = $this->addRequestHeaders($headers);
 
         $url = $requiresAuthentication ? $this->client->getAPIEndpoint($this->uri) : $this->client->getAuthEndpoint();
         if ($uriAppend) {
@@ -324,6 +325,26 @@ class Resource
         return $request->make()->getResponse();
     }
 
+    /**
+     *  Adds moltin specific request headers to an array to be passed to the request
+     *
+     *  @param array $headers
+     *  @return array
+     */
+    public function addRequestHeaders($headers)
+    {
+        $currency = $this->client->getCurrencyCode();
+        if (!empty($currency)) {
+            $headers['X-MOLTIN-CURRENCY'] = $this->client->getCurrencyCode();
+        }
+        return $headers;
+    }
+
+    /**
+     *  Build the query string parameters based on the resource settings
+     *
+     *  @return array
+     */
     public function buildQueryStringParams()
     {
         $params = [];

@@ -23,7 +23,9 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('getClientID')
             ->andReturn('123')
             ->shouldReceive('getClientSecret')
-            ->andReturn('456');
+            ->andReturn('456')
+            ->shouldReceive('getCurrencyCode')
+            ->andReturn('CURRENCY_CODE');
 
         $this->storage = Mockery::mock('Moltin\Session');
         $sessonObject = new \stdClass();
@@ -243,6 +245,11 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     {
         $this->underTest->limit(5)->offset(3)->sort('name');
         $this->assertEquals(['page' => ['limit' => 5, 'offset' => 3], 'sort' => 'name'], $this->underTest->buildQueryStringParams());
+    }
+
+    public function testCanAddRequestHeader()
+    {
+        $this->assertEquals(['X-MOLTIN-CURRENCY' => 'CURRENCY_CODE'], $this->underTest->addRequestHeaders([]));
     }
 
 }

@@ -214,13 +214,23 @@ class Client
      *  Set the requested currency code
      *
      *  @param string the currency code
-     *
      *  @return $this
      */
     public function setCurrencyCode($code)
     {
         $this->currency_code = $code;
         return $this;
+    }
+
+    /**
+     *  Alias for $this->setCurrencyCode($code)
+     *
+     *  @param string the currency code
+     *  @return $this
+     */
+    public function currency($code)
+    {
+        return $this->setCurrencyCode($code);
     }
 
     /**

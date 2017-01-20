@@ -118,6 +118,15 @@ Or an update with an empty array achieves the same result if you're so inclined:
 $moltin->products->updateRelationships($productID, 'categories', []);
 ```
 
+### Requesting a Specific Currency
+
+For calls that support the `X-MOLTIN-CURRENCY` header, you can specifiy it on the client:
+
+```php
+$moltin->currency('USD')->products->get();
+$moltin->currency('GBP')->products->get();
+```
+
 ## Examples
 
 In the `examples` directory there are command line implementations using the SDK. To use the examples you will need to:
