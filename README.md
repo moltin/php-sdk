@@ -43,7 +43,7 @@ Or by adding the `api_endpoint` field to the `$config` array you pass to the con
 
 ### All Resource
 
-To return a list of your resources (limited to 100 depending your [store confuration] (https://moltin.api-docs.io/v2/settings)):
+To return a list of your resources (limited to 100 depending your [store configuration] (https://moltin.api-docs.io/v2/settings)):
 
 ```php
 // return a list of your products 
@@ -89,13 +89,13 @@ $moltin->products->limit(10)->offset(10)->get();
 Order by `name`:
 
 ```php
-$moltin->products->sort('name');
+$moltin->products->sort('name')->get();
 ```
 
 Reversed:
 
 ```php
-$moltin->products->sort('-name');
+$moltin->products->sort('-name')->get();
 ```
 
 ### Create Relationships
@@ -103,7 +103,7 @@ $moltin->products->sort('-name');
 To create relationships between resources:
 
 ```php
-$moltin->products->createRelationships($productID, 'categories', [$categoryOneID]);
+$moltin->products->createRelationships($productID, 'categories', [$categoryID]);
 ```
 
 To delete a relationship between resources:
