@@ -40,12 +40,19 @@ try {
     }
 
     // settings don't have an ID so the first param is false
-    $newPageLength = 100;
+    $newPageLength = 50;
     $moltin->settings->update(false, [
         'data' => ['type' => 'settings', 'page_length' => $newPageLength]
     ]);
 
     echo "\nPage Length updated to " . $newPageLength . "\n\n";
+
+    // reset the page length
+    $moltin->settings->update(false, [
+        'data' => ['type' => 'settings', 'page_length' => $settings->page_length]
+    ]);
+
+    echo "[Page length reverted]\n";
 
 } catch(Exception $e) {
 
