@@ -15,8 +15,10 @@ class Resource
     protected $relationshipTypeMap = [
         'brands' => 'brand',
         'categories' => 'category',
+        'children' => 'category',
         'collections' => 'collection',
         'files' => 'file',
+        'parent' => 'category',
         'products' => 'product'
     ];
 
@@ -157,7 +159,7 @@ class Resource
      *
      *  @param string $from the UUID of the resource you're creating a relationship on
      *  @param string $to the resource type to create a link to (use the plural, eg 'categories' rather than 'category')
-     *  @param array|null $ids the $ids to create relationships to
+     *  @param array|string|null $ids the $ids to create relationships to
      */
     public function createRelationships($from, $to, $ids)
     {
@@ -169,11 +171,11 @@ class Resource
      *
      *  @param string $from the UUID of the resource you're updating a relationship on
      *  @param string $to the resource type to update links to (use the plural, eg 'categories' rather than 'category')
-     *  @param array|null $ids the $ids to create relationships to
+     *  @param array|string|null $ids the $ids to create relationships to
      */
     public function updateRelationships($from, $to, $ids = null)
     {
-        return $this->makeRelationshipCall('patch', $from, $to, $ids);
+        return $this->makeRelationshipCall('put', $from, $to, $ids);
     }
 
     /**
@@ -225,10 +227,19 @@ class Resource
      */
     public function buildRelationshipData($type, $ids)
     {
-        if ($ids === null|| (is_array($ids) && empty($ids))) {
+        if ($ids === null || (is_array($ids) && empty($ids))) {
             return null;
         }
 
+        // one relationship to add
+        if (is_string($ids)) {
+            return [
+                'type' => $type,
+                'id' => $ids
+            ];
+        }
+
+        // many relationships to add
         $data = [];
         if(!empty($ids)) {
             foreach($ids as $id) {

@@ -70,6 +70,16 @@ Fetch a Resource by ID:
 $moltin->products->get($productID);
 ```
 
+### Fetching the category/brand/collection tree
+
+Categories, brands and collections can be nested to create a tree structure (see the CategoryRelationships example).
+
+You can retrieve a full tree of the items rather than having to build them by using `tree` in the get call:
+
+```php
+$moltin->categories->get('tree');
+```
+
 ### Limiting and Offsetting Results
 
 Limit the number of resources returned:

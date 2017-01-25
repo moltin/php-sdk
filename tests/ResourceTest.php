@@ -100,6 +100,14 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->underTest->buildRelationshipData('category', ['fe743255-b387-4a37-a712-6e341e81a6ab', '838ff042-7d4b-4b4b-8d6c-443e7368e73a']), $expected);
     }
 
+    public function testBuildRelationshipDataWithStringReturnsValidSingleArray()
+    {
+        $expected = [
+            'type' => 'category', 'id' => 'fe743255-b387-4a37-a712-6e341e81a6ab'
+        ];
+
+        $this->assertEquals($this->underTest->buildRelationshipData('category', 'fe743255-b387-4a37-a712-6e341e81a6ab'), $expected);
+    }
     public function testBuildRelationshipDataWithNullReturnsNull()
     {
         $this->assertEquals($this->underTest->buildRelationshipData('category', null), null);
