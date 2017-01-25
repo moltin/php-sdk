@@ -41,6 +41,7 @@ try {
     // create a product with both currency prices
     $unique = sha1(rand(0,5000) . microtime());
     $productCreateResponse = $moltin->products->create([
+        'type' => 'product',
         'name' => 'My Product ' . $unique,
         'slug' => 'my-product ' . $unique,
         'sku' => 'my.prod.' . $unique,
