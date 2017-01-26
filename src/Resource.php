@@ -238,7 +238,7 @@ class Resource
     public function buildRelationshipData($type, $ids)
     {
         if ($ids === null || (is_array($ids) && empty($ids))) {
-            return [];
+            return null;
         }
 
         // one relationship to add

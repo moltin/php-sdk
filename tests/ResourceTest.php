@@ -123,9 +123,9 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceof(Response::class, $this->underTest->attributes());
     }
 
-    public function testCanMakeGetAllRequest()
+    public function testCanMakeListRequest()
     {
-        $this->assertInstanceof(Response::class, $this->underTest->get());
+        $this->assertInstanceof(Response::class, $this->underTest->list());
     }
 
     public function testCanMakeGetByIDRequest()

@@ -41,7 +41,7 @@ Or by adding the `api_endpoint` field to the `$config` array you pass to the con
 
 ## Using the client
 
-### All Resource
+### Multiple Resources
 
 To return a list of your resources (limited to 100 depending your [store configuration] (https://moltin.api-docs.io/v2/settings)):
 
@@ -62,7 +62,7 @@ $moltin->collections->list();
 $moltin->files->list();
 ```
 
-### Resources by ID
+### Single Resource by ID
 
 Fetch a Resource by ID:
 
