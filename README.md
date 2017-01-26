@@ -137,6 +137,20 @@ $moltin->currency('USD')->products->get();
 $moltin->currency('GBP')->products->get();
 ```
 
+### Working with files
+
+A `POST` request to the `v2/files` endpoint allows you to upload a file and store it remotely.
+
+To create a file using the SDK, you need to have the file on disk:
+
+```php
+// create a file from a local disk
+$moltin->files->create(['public' => 'true'], '/path/to/file.jpg');
+
+// create a file from a URL (note: this will download the file to your local disk then upload)
+$moltin->files->create(['public' => 'true'], 'https://placeholdit.imgix.net/~text?&w=350&h=150');
+```
+
 ## Examples
 
 In the `examples` directory there are command line implementations using the SDK. To use the examples you will need to:

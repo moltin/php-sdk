@@ -3,6 +3,7 @@
 namespace Moltin;
 
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\MultipartStream as MultipartStream;
 use Moltin\Client as Client;
 
 class Request
@@ -196,6 +197,28 @@ class Request
         if (!empty($params)) {
             $payload['query'] = $params;
         }
+
+        // when sending multipart, specify our boundary and stream the data
+        if ($this->getHeader('Content-Type') === 'multipart/form-data') {
+            $payload = $this->prepareMultipartPayload($payload);
+        }
+
+        return $payload;
+    }
+
+    public function prepareMultipartPayload($payload)
+    {
+        // generate a random boundary
+        $boundary = 'moltin_file_upload_' . rand(50000, 60000);
+
+        // specify the boundary in the content type header
+        $contentType = 'multipart/form-data; boundary=' . $boundary;
+        $this->addHeader('Content-Type', $contentType);
+        $payload['headers']['Content-Type'] = $contentType;
+
+        // remove the multipart 
+        $payload['body'] = new MultipartStream($payload['body'], $boundary);
+
         return $payload;
     }
 
@@ -233,8 +256,11 @@ class Request
             case 'application/json':
                 return'json';
                 break;
-            case 'multipart/form-data':
+            case 'application/x-www-form-urlencoded':
                 return 'form_params';
+                break;
+            case 'multipart/form-data':
+                return 'body';
                 break;
             default:
                 throw new Exceptions\InvalidContentType;

@@ -290,7 +290,7 @@ class Resource
             'grant_type' => 'client_credentials',
             'client_id' => $this->client->getClientID(),
             'client_secret' => $this->client->getClientSecret()
-        ], false, ['Content-Type' => 'multipart/form-data'], false, false);
+        ], false, ['Content-Type' => 'application/x-www-form-urlencoded'], false, false);
 
         if (empty($authResponse->getRaw()->access_token)) {
             throw new Exceptions\AuthenticationException;

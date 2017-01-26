@@ -82,8 +82,46 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
     public function testBodyKeyCanReturnFormParams()
     {
-        $this->underTest->addHeader('Content-Type', 'multipart/form-data');
+        $this->underTest->addHeader('Content-Type', 'application/x-www-form-urlencoded');
         $this->assertEquals('form_params', $this->underTest->getBodyKey());
+    }
+
+    public function testBodyKeyCanReturnMultipart()
+    {
+        $this->underTest->addHeader('Content-Type', 'multipart/form-data');
+        $this->assertEquals('body', $this->underTest->getBodyKey());
+    }
+
+    public function testMultipartPayloadReturnsArray()
+    {
+        $payload = [
+            'body' => [
+                [
+                    'name' => 'field',
+                    'contents' => 'value'
+                ]
+            ]
+        ];
+
+        $payload = $this->underTest->prepareMultipartPayload($payload);
+
+        $this->assertContains('multipart/form-data; boundary=', $payload['headers']['Content-Type']);
+        $this->assertInstanceOf(\GuzzleHttp\Psr7\MultipartStream::class, $payload['body']);
+    }
+
+    public function testgetPayloiadCallsMultipart()
+    {
+        $this->underTest->addHeader('Content-Type', 'multipart/form-data');
+        $this->underTest->setBody([
+                [
+                    'name' => 'field',
+                    'contents' => 'value'
+                ]
+        ]);
+
+        $payload = $this->underTest->getPayload();
+        $this->assertContains('multipart/form-data; boundary=', $payload['headers']['Content-Type']);
+        $this->assertInstanceOf(\GuzzleHttp\Psr7\MultipartStream::class, $payload['body']);
     }
 
     /**
