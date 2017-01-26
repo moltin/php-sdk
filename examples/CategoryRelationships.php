@@ -62,23 +62,23 @@ try {
 
     echo "make second a child of first:\n";
     $moltin->categories->createRelationships($categoryIds[0], 'children', [$categoryIds[1]]);
-    printTree($moltin->categories->get('tree')->data());
+    printTree($moltin->categories->tree()->data());
 
     echo "move second to be a child of third:\n";
     $moltin->categories->createRelationships($categoryIds[1], 'parent', $categoryIds[2]);
-    printTree($moltin->categories->get('tree')->data());
+    printTree($moltin->categories->tree()->data());
 
     echo "make second to be a child of first again:\n";
     $moltin->categories->createRelationships($categoryIds[1], 'parent', $categoryIds[0]);
-    printTree($moltin->categories->get('tree')->data());
+    printTree($moltin->categories->tree()->data());
 
     echo "make third the parent of first:\n";
     $moltin->categories->createRelationships($categoryIds[2], 'children', [$categoryIds[0]]);
-    printTree($moltin->categories->get('tree')->data());
+    printTree($moltin->categories->tree()->data());
 
     echo "remove children of third:\n";
     $moltin->categories->updateRelationships($categoryIds[2], 'children', []);
-    printTree($moltin->categories->get('tree')->data());
+    printTree($moltin->categories->tree()->data());
 
     // clean up
     if ($cleanup) {

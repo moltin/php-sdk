@@ -87,7 +87,7 @@ try {
         }
 
         // delete the product
-        $deleteProductResponse = $moltin->products->delete($product->id);
+        $deleteProductResponse = $moltin->currency(false)->products->delete($product->id);
         if ($deleteProductResponse->getStatusCode() === 200) {
             echo "[Product removed (" . $deleteProductResponse->getExecutionTime() . " secs)]\n";
         }

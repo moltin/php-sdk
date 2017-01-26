@@ -110,14 +110,24 @@ class Resource
     }
 
     /**
-     *  Get a resource(s)
+     *  Get a resource
      *
-     *  @param string|false $id the ID of a specific resource
+     *  @param string $id the ID of the resource
      *  @return Moltin\Response
      */
-    public function get($id = false)
+    public function get($id)
     {
         return $this->call('get', false, $id);
+    }
+
+    /**
+     *  Get resources
+     *
+     *  @return Moltin\Response
+     */
+    public function list()
+    {
+        return $this->call('get', false, false);
     }
 
     /**
@@ -175,7 +185,7 @@ class Resource
      */
     public function updateRelationships($from, $to, $ids = null)
     {
-        return $this->makeRelationshipCall('put', $from, $to, $ids);
+        return $this->makeRelationshipCall('put', $from, $to, $ids, true);
     }
 
     /**
@@ -191,7 +201,7 @@ class Resource
     }
 
 
-    public function makeRelationshipCall($method, $from, $to, $ids)
+    public function makeRelationshipCall($method, $from, $to, $ids, $d = false)
     {
         if (!($type = $this->getRelationshipType($to))) {
             throw new Exceptions\InvalidRelationshipTypeException;
@@ -228,7 +238,7 @@ class Resource
     public function buildRelationshipData($type, $ids)
     {
         if ($ids === null || (is_array($ids) && empty($ids))) {
-            return null;
+            return [];
         }
 
         // one relationship to add

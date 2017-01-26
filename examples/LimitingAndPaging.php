@@ -11,24 +11,32 @@ try {
         echo "\t". $name . " (" . $product->id . ")\n";
     }
 
-    echo "Limit to 10:\n\n";
-    foreach($moltin->products->limit(10)->get()->data() as $product) {
-        outputLine($product);
-    }
+    if(count($moltin->products->list()->data()) > 10) {
 
-    echo "\nThen offset 10:\n\n";
-    foreach($moltin->products->limit(10)->offset(10)->get()->data() as $product) {
-        outputLine($product);
-    }
+        echo "Limit to 10:\n\n";
+        foreach($moltin->products->limit(10)->list()->data() as $product) {
+            outputLine($product);
+        }
 
-    echo "\nFirst page (sorted by name this time):\n\n";
-    foreach($moltin->products->limit(10)->sort('name')->get()->data() as $product) {
-        outputLine($product);
-    }
+        echo "\nThen offset 10:\n\n";
+        foreach($moltin->products->limit(10)->offset(10)->list()->data() as $product) {
+            outputLine($product);
+        }
 
-    echo "\nReverse the order:\n\n";
-    foreach($moltin->products->limit(10)->sort('-name')->get()->data() as $product) {
-        outputLine($product);
+        echo "\nFirst page (sorted by name this time):\n\n";
+        foreach($moltin->products->limit(10)->sort('name')->list()->data() as $product) {
+            outputLine($product);
+        }
+
+        echo "\nReverse the order:\n\n";
+        foreach($moltin->products->limit(10)->sort('-name')->list()->data() as $product) {
+            outputLine($product);
+        }
+
+    } else {
+
+        echo "For this example to work (to demostrate limit and offset) you need more than 10 products. Why not write a SDK script here to do it then run it again? :)\n\n";
+
     }
 
 } catch(Exception $e) {

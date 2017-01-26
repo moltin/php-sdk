@@ -29,6 +29,7 @@ try {
 
         // create a category
         $categoryCreate = $moltin->categories->create([
+            'type' => 'category',
             'name' => 'My First Category',
             'slug' => 'my-first-category-' . $unique
         ]);
@@ -43,6 +44,7 @@ try {
 
         // create a second category
         $categoryCreate = $moltin->categories->create([
+            'type' => 'category',
             'name' => 'My Second Category',
             'slug' => 'my-second-category-' . $unique
         ]);
@@ -62,7 +64,7 @@ try {
         $relationshipCreate = $moltin->products->createRelationships($productID, 'categories', [$categoryIds[1]]);
 
         // delete the relationship between the product and the first category (inferred using UPDATE)
-        $relationshipDelete = $moltin->products->updateRelationships($productID, 'categories', [$categoryIds[1]]);
+        $relationshipUpdate = $moltin->products->updateRelationships($productID, 'categories', [$categoryIds[1]]);
 
         // delete the relationship between the product and the second category (using DELETE)
         $relationshipDelete = $moltin->products->deleteRelationships($productID, 'categories', [$categoryIds[0]]);

@@ -12,7 +12,7 @@ try {
     $fileCreateLocal = $moltin->files->create(['public' => 'true', 'file' => 'https://placeholdit.imgix.net/~text?&w=350&h=150']);
     $fileIDs[] = $fileCreateLocal->data()->id;
 
-    $filesResponse = $moltin->files->get();
+    $filesResponse = $moltin->files->list();
     $files = $filesResponse->data();
 
     $format = 'table';

@@ -47,19 +47,19 @@ To return a list of your resources (limited to 100 depending your [store configu
 
 ```php
 // return a list of your products 
-$moltin->products->get();
+$moltin->products->list();
 
 // return your brands
-$moltin->brands->get();
+$moltin->brands->list();
 
 // return your categories
-$moltin->categories->get();
+$moltin->categories->list();
 
 // return your collections
-$moltin->collections->get();
+$moltin->collections->list();
 
 // return your files
-$moltin->files->get();
+$moltin->files->list();
 ```
 
 ### Resources by ID
@@ -72,12 +72,12 @@ $moltin->products->get($productID);
 
 ### Fetching the category/brand/collection tree
 
-Categories, brands and collections can be nested to create a tree structure (see the CategoryRelationships example).
+Categories, brands and collections can be nested to create a tree structure (see the [CategoryRelationships](examples/CategoryRelationships.php) example).
 
-You can retrieve a full tree of the items rather than having to build them by using `tree` in the get call:
+You can retrieve a full tree of the items rather than having to build them by using `tree` method:
 
 ```php
-$moltin->categories->get('tree');
+$moltin->categories->tree();
 ```
 
 ### Limiting and Offsetting Results
@@ -85,13 +85,13 @@ $moltin->categories->get('tree');
 Limit the number of resources returned:
 
 ```php
-$moltin->products->limit(10)->get();
+$moltin->products->limit(10)->list();
 ```
 
 Offset the results (page 2):
 
 ```php
-$moltin->products->limit(10)->offset(10)->get();
+$moltin->products->limit(10)->offset(10)->list();
 ```
 
 ### Sorting Results
@@ -99,13 +99,13 @@ $moltin->products->limit(10)->offset(10)->get();
 Order by `name`:
 
 ```php
-$moltin->products->sort('name')->get();
+$moltin->products->sort('name')->list();
 ```
 
 Reversed:
 
 ```php
-$moltin->products->sort('-name')->get();
+$moltin->products->sort('-name')->list();
 ```
 
 ### Create Relationships
@@ -133,8 +133,8 @@ $moltin->products->updateRelationships($productID, 'categories', []);
 For calls that support the `X-MOLTIN-CURRENCY` header, you can specifiy it on the client:
 
 ```php
-$moltin->currency('USD')->products->get();
-$moltin->currency('GBP')->products->get();
+$moltin->currency('USD')->products->list();
+$moltin->currency('GBP')->products->list();
 ```
 
 ### Working with files
