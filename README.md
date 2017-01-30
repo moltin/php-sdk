@@ -151,6 +151,70 @@ $moltin->files->create(['public' => 'true'], '/path/to/file.jpg');
 $moltin->files->create(['public' => 'true'], 'https://placeholdit.imgix.net/~text?&w=350&h=150');
 ```
 
+### Carts, Orders and Payments
+
+To simplify the way you process carts, orders and payments, we provide some utility functions.
+
+#### Carts
+
+Adding items to a cart:
+
+```php
+$cartID = 'a_unique_refeference';
+$moltin->cart($cartID)->addProduct($productID); // adds 1 x $productID
+$moltin->cart($cartID)->addProduct($productID), 3; // adds 3 x $productID (now has 4)
+```
+
+Get the cart items:
+
+```php
+$moltin->cart($cartID)->items();
+```
+
+Update the quantity of an item in the cart:
+
+```php
+$moltin->cart($cartID)->updateItemQuantity($cartItemID, 2); // now has 2
+```
+
+Remove an item from the cart:
+
+```php
+$moltin->cart($cartID)->removeItem($cartItemID);
+```
+
+#### Orders
+
+To convert a cart to an order (which can then be paid):
+
+```php
+$customer = [ 
+    // ... customer data
+];
+$billing = [
+    // ... billing data
+];
+$shipping = [
+    // ... shipping data
+];
+$order = $moltin->cart($cartID)->checkout($customer, $billing, $shipping);
+```
+
+#### Payments
+
+When you have a `Moltin\Entities\Order` object from the checkout method you can take a payment for it:
+
+```php
+$gatewaySlug = 'stripe'; // the slug of your payment gateway
+$paymentMethod = 'purchase'; // the order payment method (purchase is supported for now)
+$params = []; // payment params (these will vary depending on the gateway, check out the example for Stripe and the docs for others)
+$payment = $order->pay($gatewaySlug, $paymentMethod, $params);
+```
+
+You can now check the response (`$payment`) to see what happened with your payment.
+
+You can also setup test details for most payment gateways, please refer to them for their details and check out the [example](examples/Cart.php) for more informatiom on `cart -> order -> pay`;
+
 ## Examples
 
 In the `examples` directory there are command line implementations using the SDK. To use the examples you will need to:
