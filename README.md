@@ -47,19 +47,19 @@ To return a list of your resources (limited to 100 depending your [store configu
 
 ```php
 // return a list of your products 
-$moltin->products->list();
+$moltin->products->all();
 
 // return your brands
-$moltin->brands->list();
+$moltin->brands->all();
 
 // return your categories
-$moltin->categories->list();
+$moltin->categories->all();
 
 // return your collections
-$moltin->collections->list();
+$moltin->collections->all();
 
 // return your files
-$moltin->files->list();
+$moltin->files->all();
 ```
 
 ### Single Resource by ID
@@ -85,13 +85,13 @@ $moltin->categories->tree();
 Limit the number of resources returned:
 
 ```php
-$moltin->products->limit(10)->list();
+$moltin->products->limit(10)->all();
 ```
 
 Offset the results (page 2):
 
 ```php
-$moltin->products->limit(10)->offset(10)->list();
+$moltin->products->limit(10)->offset(10)->all();
 ```
 
 ### Sorting Results
@@ -99,13 +99,13 @@ $moltin->products->limit(10)->offset(10)->list();
 Order by `name`:
 
 ```php
-$moltin->products->sort('name')->list();
+$moltin->products->sort('name')->all();
 ```
 
 Reversed:
 
 ```php
-$moltin->products->sort('-name')->list();
+$moltin->products->sort('-name')->all();
 ```
 
 ### Create Relationships
@@ -133,8 +133,8 @@ $moltin->products->updateRelationships($productID, 'categories', []);
 For calls that support the `X-MOLTIN-CURRENCY` header, you can specifiy it on the client:
 
 ```php
-$moltin->currency('USD')->products->list();
-$moltin->currency('GBP')->products->list();
+$moltin->currency('USD')->products->all();
+$moltin->currency('GBP')->products->all();
 ```
 
 ### Working with files

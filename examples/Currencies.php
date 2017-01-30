@@ -4,7 +4,7 @@ require_once('./init.php');
 
 try {
 
-    $response = $moltin->currencies->list();
+    $response = $moltin->currencies->all();
     $currencies = $response->data();
     echo "\n\tExecution time:\t\t" . $response->getExecutionTime() . " seconds (inc network)";
     echo "\n\tMoltin Trace ID:\t" . $response->getRequestID() . "\n\n";

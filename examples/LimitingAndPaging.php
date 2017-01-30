@@ -4,32 +4,30 @@ require_once('./init.php');
 
 try {
 
-    session_start();
-
     function outputLine($product) {
         $name = substr($product->name, 0, 10) . '...';
         echo "\t". $name . " (" . $product->id . ")\n";
     }
 
-    if(count($moltin->products->list()->data()) > 10) {
+    if(count($moltin->products->all()->data()) > 10) {
 
         echo "Limit to 10:\n\n";
-        foreach($moltin->products->limit(10)->list()->data() as $product) {
+        foreach($moltin->products->limit(10)->all()->data() as $product) {
             outputLine($product);
         }
 
         echo "\nThen offset 10:\n\n";
-        foreach($moltin->products->limit(10)->offset(10)->list()->data() as $product) {
+        foreach($moltin->products->limit(10)->offset(10)->all()->data() as $product) {
             outputLine($product);
         }
 
         echo "\nFirst page (sorted by name this time):\n\n";
-        foreach($moltin->products->limit(10)->sort('name')->list()->data() as $product) {
+        foreach($moltin->products->limit(10)->sort('name')->all()->data() as $product) {
             outputLine($product);
         }
 
         echo "\nReverse the order:\n\n";
-        foreach($moltin->products->limit(10)->sort('-name')->list()->data() as $product) {
+        foreach($moltin->products->limit(10)->sort('-name')->all()->data() as $product) {
             outputLine($product);
         }
 

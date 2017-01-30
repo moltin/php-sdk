@@ -4,7 +4,7 @@ require_once('./init.php');
 
 try {
 
-    $response = $moltin->currency(false)->products->list();
+    $response = $moltin->currency(false)->products->all();
     $products = $response->data();
 
     echo "\n\tExecution time:\t\t" . $response->getExecutionTime() . " seconds (inc network)";

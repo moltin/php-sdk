@@ -56,6 +56,26 @@ class Resource
     }
 
     /**
+     *  Get the storage implementation
+     *
+     *  @return Moltin\Interfaces\Storage concrete implementation
+     */
+    public function getStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     *  Get the storage implementation
+     *
+     *  @return Moltin\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      *  @todo implement
      *  @return $this
      */
@@ -76,6 +96,16 @@ class Resource
     }
 
     /**
+     *  Get the resource offset
+     *
+     *  @return false|string
+     */
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    /**
      *  Set a limit on the number of resources
      *
      *  @param int $limit
@@ -88,15 +118,35 @@ class Resource
     }
 
     /**
+     *  Get the resource limit
+     *
+     *  @return false|int
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
      *  Set an offset on the resources
      *
-     *  @param int $offset
+     *  @param false|int $offset
      *  @return $this
      */
     public function offset($offset = false)
     {
         $this->offset = $offset;
         return $this;
+    }
+
+    /**
+     *  Get the resource offset
+     *
+     *  @return false|int
+     */
+    public function getOffset()
+    {
+        return $this->offset;
     }
 
     /**
@@ -125,7 +175,7 @@ class Resource
      *
      *  @return Moltin\Response
      */
-    public function list()
+    public function all()
     {
         return $this->call('get', false, false);
     }
