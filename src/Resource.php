@@ -36,6 +36,9 @@ class Resource
     private $limit;
     private $offset;
 
+    // resource types to include
+    private $includes = [];
+
     // response from the API
     private $response;
 
@@ -81,6 +84,20 @@ class Resource
      */
     public function filter()
     {
+        return $this;
+    }
+
+    /**
+     *  Set the included resources to request
+     *
+     *  @param array $includes the included resource type(s) eg ['products'], ['products', 'categories']
+     *  @return $this
+     */
+    public function include($includes = [])
+    {
+        foreach($includes as $include) {
+            $this->includes[] = strtolower(trim($include));
+        }
         return $this;
     }
 
@@ -427,6 +444,9 @@ class Resource
         }
         if ($this->sort) {
             $params['sort'] = $this->sort;
+        }
+        if (!empty($this->includes)) {
+            $params['include'] = implode(',', $this->includes);
         }
         return $params;
     }

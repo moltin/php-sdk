@@ -108,6 +108,14 @@ Reversed:
 $moltin->products->sort('-name')->all();
 ```
 
+### Including data
+
+To include other data in your request (such as products when getting a category) call the `include()` method on the resource:
+
+```php
+$moltin->categories->include(['products'])->get($categoryID);
+```
+
 ### Create Relationships
 
 To create relationships between resources:
