@@ -2,6 +2,8 @@
 
 namespace Moltin;
 
+use Moltin\Entities\Cart as Cart;
+
 class Client
 {
     const UA = 'moltin-php-sdk/2';
@@ -106,6 +108,17 @@ class Client
         }
 
         return $endpoint;
+    }
+
+    /**
+     *  Get a cart - if $cartID is not provided a new cart will be created
+     *
+     *  @param string|false $cartID
+     *  @return Moltin\Entities\Cart
+     */
+    public function cart($cartID = false)
+    {
+        return new Cart($cartID, $this);
     }
 
     /**

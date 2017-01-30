@@ -65,19 +65,45 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->underTest->filter(), $this->underTest);
     }
 
-    public function testSort()
+    public function testSortMethodUpdatesSort()
     {
-        $this->assertEquals($this->underTest->sort(false), $this->underTest);
+        $this->underTest->sort('-name');
+        $this->assertEquals($this->underTest->getSort(), '-name');
     }
 
-    public function testLimit()
+    public function testSortAsFalseMethodUpdatesSort()
     {
-        $this->assertEquals($this->underTest->limit(10), $this->underTest);
+        $this->underTest->sort('-name');
+        $this->underTest->sort(false);
+        $this->assertEquals($this->underTest->getSort(), false);
     }
 
-    public function testOffset()
+    public function testLimitMethodUpdatesLimit()
     {
-        $this->assertEquals($this->underTest->offset(5), $this->underTest);
+        $this->underTest->limit(5);
+        $this->assertEquals($this->underTest->getLimit(), 5);
+    }
+
+    public function testOffsetMethodUpdatesOffset()
+    {
+        $this->underTest->offset(20);
+        $this->assertEquals($this->underTest->getOffset(), 20);
+    }
+
+    public function testOffsetMethodToFalseUpdatesOffset()
+    {
+        $this->underTest->offset(false);
+        $this->assertEquals($this->underTest->getOffset(), false);
+    }
+
+    public function testGetStorageReturnsStorage()
+    {
+        $this->assertInstanceof(Moltin\Interfaces\Storage::class, $this->underTest->getStorage());
+    }
+
+    public function testGetClientReturnsClient()
+    {
+        $this->assertInstanceof(Moltin\Client::class, $this->underTest->getClient());
     }
 
     public function testGetRelationshipTypeReturnsValueWithValidType()
