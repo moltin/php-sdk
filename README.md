@@ -213,7 +213,7 @@ $payment = $order->pay($gatewaySlug, $paymentMethod, $params);
 
 You can now check the response (`$payment`) to see what happened with your payment.
 
-You can also setup test details for most payment gateways, please refer to them for their details and check out the [example](examples/Cart.php) for more informatiom on `cart -> order -> pay`;
+You can also setup test details for most payment gateways, please refer to them for their details and check out the [example](examples/Carts.php) for more informatiom on `cart -> order -> pay`.
 
 ## Examples
 
