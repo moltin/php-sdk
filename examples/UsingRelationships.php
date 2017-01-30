@@ -66,6 +66,10 @@ try {
         // delete the relationship between the product and the first category (inferred using UPDATE)
         $relationshipUpdate = $moltin->products->updateRelationships($productID, 'categories', [$categoryIds[1]]);
 
+        // include the category data
+        $includeResponse = $moltin->products->with(['categories'])->get($productID);
+        $cats = $includeResponse->included();
+
         // delete the relationship between the product and the second category (using DELETE)
         $relationshipDelete = $moltin->products->deleteRelationships($productID, 'categories', [$categoryIds[0]]);
 

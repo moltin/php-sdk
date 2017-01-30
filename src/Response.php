@@ -31,6 +31,11 @@ class Response
     private $data;
 
     /**
+     *  @var array|object the included data resource
+     */
+    private $included;
+
+    /**
      *  @var object the responses meta
      */
     private $meta;
@@ -64,6 +69,10 @@ class Response
             $this->setData($this->raw->data);
         }
 
+        if (isset($this->raw->included)) {
+            $this->setIncluded($this->raw->included);
+        }
+
         if (isset($this->raw->links)) {
             $this->setLinks($this->raw->links);
         }
@@ -87,6 +96,16 @@ class Response
     public function data()
     {
         return $this->data;
+    }
+
+    /**
+     *  Get the included data
+     *
+     *  @return
+     */
+    public function included()
+    {
+        return $this->included;
     }
 
     /**
@@ -211,6 +230,19 @@ class Response
     public function setData($data)
     {
         $this->data = $data;
+        return $this;
+    }
+
+    /**
+     *  Set the included resource data
+     *
+     *  @param array|object
+     *
+     *  @return $this
+     */
+    public function setIncluded($included)
+    {
+        $this->included = $included;
         return $this;
     }
 

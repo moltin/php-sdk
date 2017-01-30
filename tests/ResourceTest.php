@@ -277,7 +277,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildQueryStringParams()
     {
-        $this->underTest->include(['categories'])->limit(5)->offset(3)->sort('name');
+        $this->underTest->with(['categories'])->limit(5)->offset(3)->sort('name');
         $this->assertEquals(['page' => ['limit' => 5, 'offset' => 3], 'sort' => 'name', 'include' => 'categories'], $this->underTest->buildQueryStringParams());
     }
 

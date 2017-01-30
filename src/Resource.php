@@ -93,7 +93,7 @@ class Resource
      *  @param array $includes the included resource type(s) eg ['products'], ['products', 'categories']
      *  @return $this
      */
-    public function include($includes = [])
+    public function with($includes = [])
     {
         foreach($includes as $include) {
             $this->includes[] = strtolower(trim($include));
