@@ -10,7 +10,9 @@ $config = [
     'client_secret' => '{your_client_secret}',
     'currency_code' => 'USD',
     'language' => 'en',
-    'locale' => 'en_gb'
+    'locale' => 'en_gb',
+    'cookie_cart_name' => 'moltin_cart_reference',
+    'cookie_lifetime' => '+28 days'
 ];
 $moltin = new Moltin\Client($config);
 ```
@@ -23,7 +25,9 @@ $moltin = new Moltin\Client()
             ->setClientSecret('yyy')
             ->setCurrencyCode('USD')
             ->setLanguage('en')
-            ->setLocale('en_gb');
+            ->setLocale('en_gb')
+            ->setCookieCartName('moltin_cart_reference')
+            ->setCookieLifetime('+28 days');
 ```
 
 **Note:** if you are unsure what your `client_id` or `client_secret` are, please select the
@@ -170,27 +174,39 @@ To simplify the way you process carts, orders and payments, we provide some util
 Adding items to a cart:
 
 ```php
-$cartID = 'a_unique_refeference';
-$moltin->cart($cartID)->addProduct($productID); // adds 1 x $productID
-$moltin->cart($cartID)->addProduct($productID), 3; // adds 3 x $productID (now has 4)
+$cartReference = 'a_unique_refeference'; // supply a custom cart reference
+$moltin->cart($cartReference)->addProduct($productID); // adds 1 x $productID
+$moltin->cart($cartReference)->addProduct($productID, 3); // adds 3 x $productID (now has 4)
+```
+
+When no cart reference is supplied, we will get it from the `$_COOKIE`. You can change the name used in the `$_COOKIE` by passing it in the config when instantiating the client.
+
+This is therefore a valid call (although the cart will be a new one if you follow on from the example above):
+
+```php
+$moltin->cart()->addProduct($productID);
 ```
 
 Get the cart items:
 
 ```php
-$moltin->cart($cartID)->items();
+foreach($moltin->cart()->items() as $item) {
+    $cartItemID = $item->id;
+    // ... do something
+    echo $item->name . "\n";
+}
 ```
 
 Update the quantity of an item in the cart:
 
 ```php
-$moltin->cart($cartID)->updateItemQuantity($cartItemID, 2); // now has 2
+$moltin->cart()->updateItemQuantity($cartItemID, 2); // now has 2
 ```
 
 Remove an item from the cart:
 
 ```php
-$moltin->cart($cartID)->removeItem($cartItemID);
+$moltin->cart()->removeItem($cartItemID);
 ```
 
 #### Orders
@@ -207,7 +223,7 @@ $billing = [
 $shipping = [
     // ... shipping data
 ];
-$order = $moltin->cart($cartID)->checkout($customer, $billing, $shipping);
+$order = $moltin->cart($cartReference)->checkout($customer, $billing, $shipping);
 ```
 
 #### Payments
@@ -224,6 +240,20 @@ $payment = $order->pay($gatewaySlug, $paymentMethod, $params);
 You can now check the response (`$payment`) to see what happened with your payment.
 
 You can also setup test details for most payment gateways, please refer to them for their details and check out the [example](examples/Carts.php) for more informatiom on `cart -> order -> pay`.
+
+## Handling Exceptions
+
+Aside from errors that may occur due to the call, there may be other Exceptions thrown. To handle them, simply wrap your call in a try catch block:
+
+```php
+try {
+    $moltin->products->all();
+} catch (Exception $e) {
+    // do something with $e
+}
+```
+
+Internally, there are several custom Exceptions which may be raised - see the [Exceptions](src/Exceptions) directory for more information.
 
 ## Examples
 
