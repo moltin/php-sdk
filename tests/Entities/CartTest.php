@@ -26,7 +26,11 @@ class CartTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('getClientSecret')
             ->andReturn('456')
             ->shouldReceive('getCurrencyCode')
-            ->andReturn('CURRENCY_CODE');
+            ->andReturn('CURRENCY_CODE')
+            ->shouldReceive('getCookieCartName')
+            ->andReturn('moltin_cart_cookie_reference')
+            ->shouldReceive('getCookieLifetime')
+            ->andReturn('+1 week');
 
         $this->storage = Mockery::mock('Moltin\Session');
         $sessonObject = new \stdClass();
@@ -80,6 +84,21 @@ class CartTest extends \PHPUnit_Framework_TestCase
     public function testGetReferenceReturnsReference()
     {
         $this->assertEquals($this->underTest->getReference(), '6c54b4a4-20ed-4378-9839-abf58dfa079e');
+    }
+
+    public function testGetReferenceReturnsFromCookie()
+    {
+        $this->underTest->setReference(false);
+        $_COOKIE['moltin_cart_cookie_reference'] = 'ecab0864-e648-450e-b5d1-b6ed83f5b7fc';
+        $this->assertEquals($this->underTest->getReference($this->client), 'ecab0864-e648-450e-b5d1-b6ed83f5b7fc');
+    }
+
+    public function testGetReferenceSetsCookie()
+    {
+        $this->underTest->setReference(false);
+        unset($_COOKIE['moltin_cart_cookie_reference']);
+        $reference = $this->underTest->getReference($this->client);
+        $this->assertNotEquals($reference, false);
     }
 
     public function testAddProductReturnsResponse()

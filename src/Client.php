@@ -22,6 +22,11 @@ class Client
     private $language;
     private $locale;
 
+    // the name of the cart reference in the $_COOKIE
+    private $cookieCartName = 'moltin_cart_reference';
+    // the lifetime of the $_COOKIE : must be compatible with strtotime() - http://php.net/manual/en/function.strtotime.php
+    private $cookieLifetime = '+1 week';
+
     /**
      *  __get overloads the client with a property that will check if there is a resource for the given $method
      *  which allows calls such as $moltin->products->get() to be correctly routed to the appropriate handler
@@ -67,6 +72,12 @@ class Client
         if (isset($config['api_endpoint'])) {
             $this->setBaseURL($config['api_endpoint']);
         }
+        if (isset($config['cookie_cart_name'])) {
+            $this->setCookieCartName($config['cookie_cart_name']);
+        }
+        if (isset($config['cookie_lifetime'])) {
+            $this->setCookieLifetime($config['cookie_lifetime']);
+        }
         return $this;
     }
 
@@ -80,6 +91,51 @@ class Client
     {
         $this->base = $base;
         return $this;
+    }
+
+    /**
+     *  Set a custom cart name to use in the $_COOKIE
+     *
+     *  @param string $name
+     *  @return $this
+     */
+    public function setCookieCartName($name)
+    {
+        $this->cookieCartName = $name;
+        return $this;
+    }
+
+    /**
+     *  Get the cookie name
+     *
+     *  @return string
+     */
+    public function getCookieCartName()
+    {
+        return $this->cookieCartName;
+    }
+
+
+    /**
+     *  Set a custom lifetime for the $_COOKIE
+     *
+     *  @param string $lifeTime must be compatible with strtotime() - http://php.net/manual/en/function.strtotime.php
+     *  @return $this
+     */
+    public function setCookieLifetime($lifeTime)
+    {
+        $this->cookieLifetime = $lifeTime;
+        return $this;
+    }
+
+    /**
+     *  Get the cookie lifetime
+     *
+     *  @return string
+     */
+    public function getCookieLifetime()
+    {
+        return $this->cookieLifetime;
     }
 
     /**

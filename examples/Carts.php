@@ -41,7 +41,7 @@ try {
 
     $startTime = microtime(true);
 
-    // known cart id (eg stored in cookie)
+    // known cart id (usually stored in cookie - we're setting it here because we're on the CLI)
     $cartID = '35597f65a5ea7e907a4dcbe4eb6b4435';
 
     // add a product to the cart

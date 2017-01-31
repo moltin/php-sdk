@@ -12,6 +12,9 @@ class Cart extends Carts
 
     public function __construct($cartID, $client = false, $requestLibrary = false, $storage = false)
     {
+        if (!$cartID) {
+            $cartID = $this->getReference($client);
+        }
         $this->setReference($cartID);
         return parent::__construct($client, $requestLibrary, $storage);
     }
@@ -44,17 +47,20 @@ class Cart extends Carts
      *
      *  @return string
      */
-    public function getReference()
+    public function getReference($client = false)
     {
         if (empty($this->reference)) {
 
-            // try and get the reference
-            $existing = $this->getStorage()->getKey('cart_reference');
+            $reference = $this->createReference();
 
-            $this->setReference($existing ? $existing : $this->createReference());
-            if (!$existing) {
-                $this->getStorage()->setKey('cart_reference', $this->reference);
+            if ($client) {
+                if (isset($_COOKIE[$client->getCookieCartName()])) {
+                    $reference = $_COOKIE[$client->getCookieCartName()];
+                } else {
+                    setcookie($client->getCookieCartName(), $reference, strtotime($client->getCookieLifetime()), '/');
+                }
             }
+            $this->setReference($reference);
         }
 
         return $this->reference;

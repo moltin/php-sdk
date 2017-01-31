@@ -14,7 +14,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         'locale' => 'EN_GB',
         'client_id' => 'abc',
         'client_secret' => '123',
-        'api_endpoint' => 'https://api.moltin.com'
+        'api_endpoint' => 'https://api.moltin.com',
+        'cookie_cart_name' => 'moltin_cart_name_for_cookie',
+        'cookie_lifetime' => '+3 days'
     ];
 
     public function setUp()
@@ -45,6 +47,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testSetUpConfiguresClientSecret()
     {
         $this->assertEquals($this->initialConfig['client_secret'], $this->underTest->getClientSecret());
+    }
+
+    public function testSetUpConfiguresCookieName()
+    {
+        $this->assertEquals($this->initialConfig['cookie_cart_name'], $this->underTest->getCookieCartName());
+    }
+
+    public function testSetUpConfiguresCookieLifetime()
+    {
+        $this->assertEquals($this->initialConfig['cookie_lifetime'], $this->underTest->getCookieLifetime());
     }
 
     public function testCurrencySwitch()
