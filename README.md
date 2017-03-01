@@ -1,5 +1,17 @@
 # moltin PHP SDK
 
+## Installation
+
+You can install the package manually or by adding it to your `composer.json`:
+
+```
+{
+  "require": {
+      "moltin/php-sdk": "v2.x-dev"
+  }
+}
+```
+
 ## Instantiating the SDK Client:
 
 Pass in the configuration to the client:

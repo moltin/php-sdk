@@ -42,17 +42,17 @@ try {
     $startTime = microtime(true);
 
     // known cart id (usually stored in cookie - we're setting it here because we're on the CLI)
-    $cartID = '35597f65a5ea7e907a4dcbe4eb6b4435';
+    $cartID = '95597f65a5ea7e907a4dcbe4eb6b4435';
 
     // add a product to the cart
-    $productOneID = 'b0bcd4f1-c853-4154-8cde-d5ce61195434';
+    $productOneID = 'a8a40abb-5357-4df4-83a0-35ccbd1d15ab';
     $productQuantity = 2;
     echo "\n\nAdding " . $productQuantity . " x " . $productOneID . " to your cart. ";
     $cart = $moltin->cart($cartID)->addProduct($productOneID, $productQuantity);
     echo "Cart value (with tax) is now: " . $cart->meta()->display_price->with_tax->formatted . "\n";
     printCartItemsTable($cart->data());
 
-    $productTwoID = '2bbfa7e0-cb9b-4eb5-8be4-ed01e3c5c18d';
+    $productTwoID = 'ac964ac0-3740-458d-933a-8647041032a3';
     $productTwoQuantity = 3;
     echo "\n\nAdding " . $productTwoQuantity . " x " . $productTwoID . " to your cart.";
     $cart = $moltin->cart($cartID)->addProduct($productTwoID, $productTwoQuantity);
