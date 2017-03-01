@@ -124,6 +124,32 @@ Reversed:
 $moltin->products->sort('-name')->all();
 ```
 
+### Filtering Results
+
+To [filter your results](https://moltin.api-docs.io/v2/using-the-api/filtering) when calling resources which support it (e.g. `/v2/products`).
+
+A simple filter to get all products which are in stock may look like this:
+
+```php
+$moltin->products->filter([
+    ['gt' => ['stock' => 0]]
+])->all();
+```
+
+A more advanced filter to find products which are digital, drafted and have a stock greater than 20 would look like this:
+
+```php
+$moltin->products->filter([
+    ['eq' => ['status' => 'draft']],
+    ['eq' => ['commodity_type' => 'digital']],
+    ['gt' => ['stock' => 20]]
+])->all();
+```
+
+The `array` passed to the `filter` method should contain all of the conditions required to be met by the filter on the API and allow you to use several filters of the same type (as demostrated above).
+
+For more information on the filter operations please read the [API reference](https://moltin.api-docs.io/v2/using-the-api/filtering).
+
 ### Including data
 
 To include other data in your request (such as products when getting a category) call the `with()` method on the resource:

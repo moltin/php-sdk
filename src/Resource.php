@@ -36,6 +36,9 @@ class Resource
     private $limit;
     private $offset;
 
+    // string
+    private $filter;
+
     // resource types to include
     private $includes = [];
 
@@ -79,12 +82,84 @@ class Resource
     }
 
     /**
-     *  @todo implement
+     *  Adds a filter to the resource request
+     *
+     *  @param array $filter
+     *
      *  @return $this
      */
-    public function filter()
+    public function filter($filter)
     {
+        $this->filter = $filter;
         return $this;
+    }
+
+    /**
+     *  Get the current filter
+     *
+     *  @return array
+     */
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+
+    /**
+     *  Using the current filter, parse the array and return a string that can be used in the request
+     *  or false if there is no filter
+     *
+     *  @return string|false
+     */
+    public function buildFilterString()
+    {
+        $filter = $this->getFilter();
+
+        if (!$filter || empty($filter)) {
+            return false;
+        }
+
+        $string = '';
+        $i = 0;
+
+        foreach($this->getFilter() as $rule) {
+
+            $i++;
+            $tmp = $this->buildFilterRuleString($rule);
+
+            // append with `:` when joining rules
+            if ($i < count($filter)) {
+                $tmp .= ':';
+            }
+
+            $string .= $tmp;
+        }
+
+        return $string;
+    }
+
+    /**
+     *  Given a rule from the filter return a string representation
+     *
+     *  @param array $rule
+     *  @return string
+     */
+    private function buildFilterRuleString($rule)
+    {
+        // build the query
+        foreach($rule as $operator => $conditions) {
+            $tmp = $operator . '(';
+            foreach($conditions as $field => $by) {
+                $tmp .= $field . ',';
+                if (is_array($by)) {
+                    $tmp .= '(' . implode(',', $by) . ')';
+                } else {
+                    $tmp .= $by;
+                }
+            }
+            $tmp .= ')';
+        }
+
+        return $tmp;
     }
 
     /**
@@ -444,6 +519,9 @@ class Resource
         }
         if ($this->sort) {
             $params['sort'] = $this->sort;
+        }
+        if ($this->filter) {
+            $params['filter'] = $this->buildFilterString();
         }
         if (!empty($this->includes)) {
             $params['include'] = implode(',', $this->includes);
