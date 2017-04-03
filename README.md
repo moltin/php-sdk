@@ -203,6 +203,41 @@ $moltin->files->create(['public' => 'true'], '/path/to/file.jpg');
 $moltin->files->create(['public' => 'true'], 'https://placeholdit.imgix.net/~text?&w=350&h=150');
 ```
 
+### Integrations
+
+```php
+$moltin->integrations->all();
+$moltin->integrations->create([
+    'integration_type' => 'webhook',
+    'enabled' => true,
+    'name' => 'My Webhook Name',
+    'description' => 'An example webhook integration from the SDK',
+    'observes' => [
+        'product.created',
+        'product.updated',
+        'product.deleted'
+    ],
+    'configuration' => [
+        'url' => 'https://your.domain.com/webhooks',
+        'secret' => 'opensesame'
+    ]
+]);
+$moltin->integrations->update('55f33a71-b45a-4c30-a872-6e6a0f442af1', [
+    'integration_type' => 'webhook',
+    'enabled' => false,
+    'name' => 'Updated Webhook Name',
+    'description' => 'An updated example webhook integration from the SDK',
+    'observes' => [
+        'product.deleted'
+    ],
+    'configuration' => [
+        'url' => 'https://your.domain.com/webhooks',
+        'secret' => 'opensesame'
+    ]
+]);
+$moltin->integrations->delete('55f33a71-b45a-4c30-a872-6e6a0f442af1');
+```
+
 ### Carts, Orders and Payments
 
 To simplify the way you process carts, orders and payments, we provide some utility functions.
