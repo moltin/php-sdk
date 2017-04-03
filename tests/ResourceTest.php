@@ -320,6 +320,10 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
             [
                 [['in' => ['slug' => ['sku.1', 'sku.2']]]],
                 'in(slug,(sku.1,sku.2))'
+            ],
+            [
+                [['out' => ['slug' => ['sku.1', 'sku.2', 'sku.3']]]],
+                'out(slug,(sku.1,sku.2,sku.3))'
             ]
         ];
     }
