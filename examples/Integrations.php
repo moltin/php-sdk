@@ -72,6 +72,10 @@ try {
 
     }
 
+    // Here's how you can get your logs for this integration (commented out because there won't be any):
+#    $jobs = $moltin->integrations->getJobs($integration->id)->data();
+#    $logs = $moltin->integrations->getLogs($integration->id, $jobs[0]->id);
+
     $moltin->integrations->delete($created->data()->id);
 
 } catch(Exception $e) {

@@ -208,6 +208,7 @@ $moltin->files->create(['public' => 'true'], 'https://placeholdit.imgix.net/~tex
 ```php
 $moltin->integrations->all();
 $moltin->integrations->create([
+    'type' => 'integration',
     'integration_type' => 'webhook',
     'enabled' => true,
     'name' => 'My Webhook Name',
@@ -223,19 +224,44 @@ $moltin->integrations->create([
     ]
 ]);
 $moltin->integrations->update('55f33a71-b45a-4c30-a872-6e6a0f442af1', [
-    'integration_type' => 'webhook',
-    'enabled' => false,
-    'name' => 'Updated Webhook Name',
-    'description' => 'An updated example webhook integration from the SDK',
-    'observes' => [
-        'product.deleted'
-    ],
-    'configuration' => [
-        'url' => 'https://your.domain.com/webhooks',
-        'secret' => 'opensesame'
+    'data' => [
+        'id' => '55f33a71-b45a-4c30-a872-6e6a0f442af1',
+        'type' => 'integration',
+        'integration_type' => 'webhook',
+        'enabled' => false,
+        'name' => 'Updated Webhook Name',
+        'description' => 'An updated example webhook integration from the SDK',
+        'observes' => [
+            'product.deleted'
+        ],
+        'configuration' => [
+            'url' => 'https://your.domain.com/webhooks',
+            'secret' => 'opensesame'
+        ]
     ]
 ]);
+$moltin->integrations->get('55f33a71-b45a-4c30-a872-6e6a0f442af1');
 $moltin->integrations->delete('55f33a71-b45a-4c30-a872-6e6a0f442af1');
+```
+
+#### Getting Logs
+
+To get all integration logs for your store:
+
+```php
+$logs = $moltin->integrations->getLogs()->data();
+```
+
+To get all jobs for an integration:
+
+```php
+$jobs = $moltin->integrations->getJobs($integrationID)->data();
+```
+
+To get all logs for job:
+
+```php
+$logs = $moltin->integrations->getLogs($integrationID, $jobID)->data();
 ```
 
 ### Carts, Orders and Payments
