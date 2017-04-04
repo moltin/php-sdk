@@ -1,3 +1,10 @@
 /examples/.env
 /ignore
 /vendor
+composer.lock
+
+.DS_STORE
+._*
+Thumbs.db
+Desktop.ini
+sftp-config.json
