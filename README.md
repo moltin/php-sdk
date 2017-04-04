@@ -98,29 +98,21 @@ $moltin->categories->tree();
 
 ### Limiting and Offsetting Results
 
-Limit the number of resources returned:
-
 ```php
+// limit the number of resources returned:
 $moltin->products->limit(10)->all();
-```
 
-Offset the results (page 2):
-
-```php
+// offset the results (page 2):
 $moltin->products->limit(10)->offset(10)->all();
 ```
 
 ### Sorting Results
 
-Order by `name`:
-
 ```php
+// order by `name`:
 $moltin->products->sort('name')->all();
-```
 
-Reversed:
-
-```php
+// reversed:
 $moltin->products->sort('-name')->all();
 ```
 
@@ -162,21 +154,14 @@ $products = $response->included()->products;
 
 ### Create Relationships
 
-To create relationships between resources:
-
 ```php
+// create relationships between resources:
 $moltin->products->createRelationships($productID, 'categories', [$categoryID]);
-```
 
-To delete a relationship between resources:
-
-```php
+// delete a relationship between resources:
 $moltin->products->deleteRelationships($productID, 'categories', [$categoryID]);
-```
 
-Or an update with an empty array achieves the same result if you're so inclined:
-
-```php
+// (Or an update with an empty array achieves the same result if you're so inclined):
 $moltin->products->updateRelationships($productID, 'categories', []);
 ```
 
@@ -246,22 +231,32 @@ $moltin->integrations->delete('55f33a71-b45a-4c30-a872-6e6a0f442af1');
 
 #### Getting Logs
 
-To get all integration logs for your store:
-
 ```php
+// get all integration logs for your store:
 $logs = $moltin->integrations->getLogs()->data();
-```
 
-To get all jobs for an integration:
-
-```php
+// get all jobs for an integration:
 $jobs = $moltin->integrations->getJobs($integrationID)->data();
+
+// get all logs for job:
+$logs = $moltin->integrations->getLogs($integrationID, $jobID)->data();
 ```
 
-To get all logs for job:
+### Gateways
+
+Your payment gateways can be managed using the SDK.
 
 ```php
-$logs = $moltin->integrations->getLogs($integrationID, $jobID)->data();
+// get all
+$gateways = $moltin->gateways->all();
+
+// update
+$moltin->gateways->update('stripe', [
+    'data' => [
+        'enabled': true,
+        'login': 'your_stripe_login'
+    ]
+])
 ```
 
 ### Carts, Orders and Payments
