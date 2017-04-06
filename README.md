@@ -7,7 +7,7 @@ You can install the package manually or by adding it to your `composer.json`:
 ```
 {
   "require": {
-      "moltin/php-sdk": "v2.x-dev"
+      "moltin/php-sdk": "^2.0.0"
   }
 }
 ```
