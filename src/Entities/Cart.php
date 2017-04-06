@@ -134,8 +134,11 @@ class Cart extends Carts
      *  @return Moltin\Entities\Order
      *  @throws Moltin\Exceptions\UnableToCheckoutException
      */
-    public function checkout($customer, $billing, $shipping)
+    public function checkout($customer, $billing, $shipping = false)
     {
+        if (!$shipping) {
+            $shipping = $billing;
+        }
         $response = $this->call('POST', [
             'data' => [
                 'customer' => $customer,
