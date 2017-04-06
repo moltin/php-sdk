@@ -19,7 +19,11 @@ class Resource
         'collections' => 'collection',
         'files' => 'file',
         'parent' => 'category',
-        'products' => 'product'
+        'products' => 'product',
+        'variations' => 'variation',
+        'variation-options' => 'variation-option',
+        'options' => 'variation-option',
+        'product-modifiers' => 'product-modifier'
     ];
 
     // the \Moltin\Client
