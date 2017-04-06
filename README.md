@@ -1,5 +1,9 @@
 # moltin PHP SDK
 
+This official PHP SDK for interacting with **moltin**.
+
+NOTE: `master` is designed to access `V2` of the API. If you want legacy access to `V1` of the API, please use the most recent `1.x.x` [tag](https://github.com/moltin/php-sdk/releases)
+
 ## Installation
 
 You can install the package manually or by adding it to your `composer.json`:
