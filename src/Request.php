@@ -126,7 +126,9 @@ class Request
         $defaultHeaders = [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'User-Agent' =>  Client::UA
+            'User-Agent' =>  Client::UA,
+            'X-MOLTIN-SDK-LANGUAGE' => 'php',
+            'X-MOLTIN-SDK-VERSION' => 'v2-dev'
         ];
 
         foreach($defaultHeaders as $name => $value) {
