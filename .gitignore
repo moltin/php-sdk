@@ -1,6 +1,9 @@
-/vendor/
+/examples/.env
+/ignore
+/vendor
 composer.lock
-.DS_Store
+
+.DS_STORE
 ._*
 Thumbs.db
 Desktop.ini
