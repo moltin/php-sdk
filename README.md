@@ -136,7 +136,8 @@ A more advanced filter to find products which are digital, drafted and have a st
 
 ```php
 $moltin->products->filter(new \Moltin\Filter([
-    'eq' => ['status' => 'draft', 'commodity_type' => 'digital']
+    'eq' => ['status' => 'draft', 'commodity_type' => 'digital'],
+    'gt' => ['stock' => 20]
 ])->all();
 ```
 
