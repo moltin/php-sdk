@@ -60,19 +60,6 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->underTest = new Moltin\Resources\Products($this->client, $this->requestLibrary, $this->storage);
     }
 
-    public function testFilter()
-    {
-        $filter = [];
-        $this->assertEquals($this->underTest->filter($filter), $this->underTest);
-    }
-
-    public function testGetFilter()
-    {
-        $filter = ['eq' => ['stock' => 0]];
-        $this->underTest->filter($filter);
-        $this->assertEquals($this->underTest->getFilter(), ['eq' => ['stock' => 0]]);
-    }
-
     public function testSortMethodUpdatesSort()
     {
         $this->underTest->sort('-name');
@@ -107,6 +94,12 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     public function testGetStorageReturnsStorage()
     {
         $this->assertInstanceof(Moltin\Interfaces\Storage::class, $this->underTest->getStorage());
+    }
+
+    public function testGetFilterReturnsFilter()
+    {
+        $this->underTest->filter(['eq' => ['status', 'live']]);
+        $this->assertInstanceof(Moltin\Filter::class, $this->underTest->getFilter());
     }
 
     public function testGetClientReturnsClient()
@@ -285,47 +278,15 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildQueryStringParams()
     {
-        $this->underTest->with(['categories'])->limit(5)->offset(3)->sort('name')->filter([['eq' => ['stock' => 0]]]);
-        $this->assertEquals(['page' => ['limit' => 5, 'offset' => 3], 'sort' => 'name', 'include' => 'categories', 'filter' => 'eq(stock,0)'], $this->underTest->buildQueryStringParams());
+        $this->underTest->with(['categories'])->limit(5)->offset(3)->sort('name')->filter(['eq' => ['stock' => 0, 'status' => 'draft']]);
+        $this->assertEquals(
+            ['page' => ['limit' => 5, 'offset' => 3], 'sort' => 'name', 'include' => 'categories', 'filter' => 'eq(stock,0):eq(status,draft)'],
+            $this->underTest->buildQueryStringParams()
+        );
     }
 
     public function testCanAddRequestHeader()
     {
         $this->assertEquals(['X-MOLTIN-CURRENCY' => 'CURRENCY_CODE'], $this->underTest->addRequestHeaders([]));
     }
-
-    /**
-     *  @dataProvider filterProvider
-     */
-    public function testFilterQueryStrings($filter, $expected)
-    {
-        $this->assertEquals($this->underTest->filter($filter)->buildFilterString(), $expected);
-    }
-
-    public function filterProvider()
-    {
-        return [
-            [
-                [],
-                false
-            ],
-            [
-                [['eq' => ['status' => 'live']]],
-                'eq(status,live)'
-            ],
-            [
-                [['eq' => ['status' => 'live']],['gt' => ['stock' => '20']]],
-                'eq(status,live):gt(stock,20)'
-            ],
-            [
-                [['in' => ['slug' => ['sku.1', 'sku.2']]]],
-                'in(slug,(sku.1,sku.2))'
-            ],
-            [
-                [['out' => ['slug' => ['sku.1', 'sku.2', 'sku.3']]]],
-                'out(slug,(sku.1,sku.2,sku.3))'
-            ]
-        ];
-    }
-
 }

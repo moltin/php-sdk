@@ -128,17 +128,15 @@ A simple filter to get all products which are in stock may look like this:
 
 ```php
 $moltin->products->filter([
-    ['gt' => ['stock' => 0]]
+    'gt' => ['stock' => 0]
 ])->all();
 ```
 
 A more advanced filter to find products which are digital, drafted and have a stock greater than 20 would look like this:
 
 ```php
-$moltin->products->filter([
-    ['eq' => ['status' => 'draft']],
-    ['eq' => ['commodity_type' => 'digital']],
-    ['gt' => ['stock' => 20]]
+$moltin->products->filter(new \Moltin\Filter([
+    'eq' => ['status' => 'draft', 'commodity_type' => 'digital']
 ])->all();
 ```
 

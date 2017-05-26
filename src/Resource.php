@@ -3,6 +3,7 @@
 namespace Moltin;
 
 use Moltin\Client as Client;
+use Moltin\Filter as Filter;
 use Moltin\Request as Request;
 use Moltin\Session as Session;
 
@@ -40,7 +41,7 @@ class Resource
     private $limit;
     private $offset;
 
-    // string
+    // Moltin\Filter
     private $filter;
 
     // resource types to include
@@ -88,12 +89,15 @@ class Resource
     /**
      *  Adds a filter to the resource request
      *
-     *  @param array $filter
+     *  @param array|Filter $filter
      *
      *  @return $this
      */
     public function filter($filter)
     {
+        if (is_array($filter)) {
+            $filter = new Filter($filter);
+        }
         $this->filter = $filter;
         return $this;
     }
@@ -101,69 +105,11 @@ class Resource
     /**
      *  Get the current filter
      *
-     *  @return array
+     *  @return Moltin\Filter
      */
     public function getFilter()
     {
         return $this->filter;
-    }
-
-    /**
-     *  Using the current filter, parse the array and return a string that can be used in the request
-     *  or false if there is no filter
-     *
-     *  @return string|false
-     */
-    public function buildFilterString()
-    {
-        $filter = $this->getFilter();
-
-        if (!$filter || empty($filter)) {
-            return false;
-        }
-
-        $string = '';
-        $i = 0;
-
-        foreach($this->getFilter() as $rule) {
-
-            $i++;
-            $tmp = $this->buildFilterRuleString($rule);
-
-            // append with `:` when joining rules
-            if ($i < count($filter)) {
-                $tmp .= ':';
-            }
-
-            $string .= $tmp;
-        }
-
-        return $string;
-    }
-
-    /**
-     *  Given a rule from the filter return a string representation
-     *
-     *  @param array $rule
-     *  @return string
-     */
-    private function buildFilterRuleString($rule)
-    {
-        // build the query
-        foreach($rule as $operator => $conditions) {
-            $tmp = $operator . '(';
-            foreach($conditions as $field => $by) {
-                $tmp .= $field . ',';
-                if (is_array($by)) {
-                    $tmp .= '(' . implode(',', $by) . ')';
-                } else {
-                    $tmp .= $by;
-                }
-            }
-            $tmp .= ')';
-        }
-
-        return $tmp;
     }
 
     /**
@@ -525,7 +471,7 @@ class Resource
             $params['sort'] = $this->sort;
         }
         if ($this->filter) {
-            $params['filter'] = $this->buildFilterString();
+            $params['filter'] = (string) $this->filter;
         }
         if (!empty($this->includes)) {
             $params['include'] = implode(',', $this->includes);
