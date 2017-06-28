@@ -16,15 +16,16 @@ class Resource
     protected $relationshipTypeMap = [
         'brands' => 'brand',
         'categories' => 'category',
-        'children' => 'category',
         'collections' => 'collection',
+        'children' => 'category',
         'files' => 'file',
+        'main-image' => 'main_image',
+        'options' => 'variation-option',
         'parent' => 'category',
         'products' => 'product',
+        'product-modifiers' => 'product-modifier',
         'variations' => 'variation',
-        'variation-options' => 'variation-option',
-        'options' => 'variation-option',
-        'product-modifiers' => 'product-modifier'
+        'variation-options' => 'variation-option'
     ];
 
     // the \Moltin\Client
