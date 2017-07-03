@@ -98,9 +98,9 @@ try {
         'first_name' => 'John',
         'last_name' => 'Doe',
         'number' => '4242424242424242',
-        'expiry_month' => 05,
-        'expiry_year' => date('Y', strtotime('+1 year')),
-        'cvv' => 213
+        'month' => 05,
+        'year' => date('Y', strtotime('+1 year')),
+        'verification_value' => 213
     ]);
 
     // get the full order info and view it
