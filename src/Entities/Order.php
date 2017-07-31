@@ -10,7 +10,7 @@ class Order extends Orders
     private $id;
     private $cart;
     private $data;
-
+    
     /**
      *  Set the order ID
      *
@@ -77,6 +77,16 @@ class Order extends Orders
         return $this->cart;
     }
 
+    /**
+     *  Get the items in a order
+     *
+     *  @return Moltin\Response
+     */
+    public function items()
+    {
+        return $this->call('GET', false, $this->getID() . '/items');
+    }
+    
     /**
      *  Pay for the order
      *

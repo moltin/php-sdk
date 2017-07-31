@@ -3,6 +3,7 @@
 namespace Moltin;
 
 use Moltin\Entities\Cart as Cart;
+use Moltin\Entities\Order as Order;
 
 class Client
 {
@@ -175,6 +176,17 @@ class Client
     public function cart($cartID = false)
     {
         return new Cart($cartID, $this);
+    }
+
+    /**
+     *  Get a order
+     *
+     *  @param string|false $orderID
+     *  @return Moltin\Entities\Order
+     */
+    public function order($orderID = false)
+    {
+        return new Order($this);
     }
 
     /**
