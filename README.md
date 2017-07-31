@@ -185,10 +185,10 @@ To create a file using the SDK, you need to have the file on disk:
 
 ```php
 // create a file from a local disk
-$moltin->files->create(['public' => 'true'], '/path/to/file.jpg');
+$moltin->files->create(['public' => 'true', 'file' => '/path/to/file.jpg']);
 
 // create a file from a URL (note: this will download the file to your local disk then upload)
-$moltin->files->create(['public' => 'true'], 'https://placeholdit.imgix.net/~text?&w=350&h=150');
+$moltin->files->create(['public' => 'true', 'file' => 'https://placeholdit.imgix.net/~text?&w=350&h=150']);
 ```
 
 ### Integrations
