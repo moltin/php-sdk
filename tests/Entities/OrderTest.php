@@ -80,6 +80,12 @@ class OrderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->underTest->getCart(), ['id' => '41fecb2b-57ab-4dbe-a54f-13141fa6b484']);
     }
 
+    public function testGetItemsReturnsResponse()
+    {
+        $this->underTest->setID('63c97277-334f-4bcb-b0a7-3ff9f65abfbd');
+        $this->assertInstanceof(Response::class, $this->underTest->items());
+    }
+    
     public function testCanMakeMergePaymentData()
     {
         $this->assertEquals($this->underTest->mergePayData('stripe', 'purchase', ['number' => '4242424242424242']), ['number' => '4242424242424242', 'gateway' => 'stripe', 'method' => 'purchase']);
