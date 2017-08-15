@@ -4,15 +4,26 @@ require_once('./init.php');
 
 try {
 
-    // this example follows the example documented here:
+    // reset resources (optional)
+    // foreach($moltin->products->all()->data() as $product) {
+    //     $moltin->products->delete($product->id);
+    // }
+    // foreach($moltin->variations->all()->data() as $variation) {
+    //     $moltin->variations->delete($variation->id);
+    // }
+
+    // this example follows the documentation here:
     // https://moltin.api-docs.io/v2/product-variations/variations-example
+
+    $startTime = microtime(true);
+    $calls = 0;
 
     // Create the base product
     $base = $moltin->products->create([
         "type" => "product",
         "name" => "iPad Mini 4",
         "slug" => "ipad-mini-4",
-        "sku" => "mini-4",
+        "sku" => "IPAD-MINI-4",
         "manage_stock" => true,
         "status" => "live",
         "commodity_type" => "physical",
@@ -26,7 +37,7 @@ try {
         ],
         "stock" => 1000
     ])->data();
-
+    $calls++;
 
     // all variations in a variable we can iterate
     $variations = [
@@ -54,6 +65,20 @@ try {
             ]
         ],
         "Storage" => [
+            "32gb" => [
+                "name" => "32GB",
+                "name_append" => " 32GB",
+                "sku_append" => ".32GB",
+                "slug_append" => "-32",
+                "description" => "32GB Storage"
+            ],
+            "64gb" => [
+                "name" => "64GB",
+                "name_append" => " 64GB",
+                "sku_append" => ".64GB",
+                "slug_append" => "-64",
+                "description" => "64GB Storage"
+            ],
             "128gb" => [
                 "name" => "128GB",
                 "name_append" => " 128GB",
@@ -73,7 +98,7 @@ try {
             "wifiAndCellular" => [
                 "name" => "Wifi",
                 "name_append" => " Wifi + Cellular",
-                "sku_append" => ".WIFI.CELLULAR",
+                "sku_append" => ".WIFI+CELLULAR",
                 "slug_append" => "-wifi-cellular",
                 "description" => "Wifi & Cellular connectivity"
             ]
@@ -83,56 +108,91 @@ try {
     foreach($variations as $variationName => $variation) {
 
         // Create the variation
-        $storedVariation = $moltin->variations->create([
+        $variationID = $moltin->variations->create([
             "type" => "product-variation",
             "name" => $variationName
-        ])->data();
-
+        ])->data()->id;
+        $calls++;
+        
         $variationRelationships = [];
 
         foreach($variation as $slug => $config) {
 
-            // Create the product name modifier
-            $nameModifier = $moltin->modifiers->create([
-                'type' => 'product-modifier',
-                'modifier_type' => 'name_append',
-                'value' => $config['name_append']
-            ])->data();
-
-            // Create the product SKU modifier
-            $skuModifier = $moltin->modifiers->create([
-                'type' => 'product-modifier',
-                'modifier_type' => 'sku_append',
-                'value' => $config['sku_append']
-            ])->data();
-
-            // Create the product slug modifier
-            $slugModifier = $moltin->modifiers->create([
-                'type' => 'product-modifier',
-                'modifier_type' => 'slug_append',
-                'value' => $config['slug_append']
-            ])->data();
-
             // Create the variation option
-            $option = $moltin->variationOptions->create([
-                'type' => 'product-variation-option',
+            foreach($moltin->variations->createOption($variationID, [
                 'name' => $config['name'],
                 'description' => $config["description"]
-            ])->data();
-
-            // link the variation to the option
-            $moltin->variations->createRelationships($storedVariation->id, 'variation-options', [$option->id]);
-
-            // Link the modifer to the option
-            $r = $moltin->variationOptions->createRelationships($option->id, 'product-modifiers', [$nameModifier->id, $skuModifier->id, $slugModifier->id]);
-
-            // Link to the Variation
-            $variationRelationships[] = $option->id;
+            ])->data()->options as $o) {
+                if ($o->name === $config['name']) {
+                    $option = $o;
+                }
+            }
+            $calls++;
+            
+            // Create the product name modifier
+            $nameModifier = $moltin->variations->createModifier(
+                $variationID,
+                $option->id,
+                [
+                    'modifier_type' => 'name_append',
+                    'value' => $config['name_append']
+                ]
+            )->data();
+            $calls++;
+            
+            // Create the product SKU modifier
+            $skuModifier = $moltin->variations->createModifier(
+                $variationID,
+                $option->id,
+                [
+                    'modifier_type' => 'sku_append',
+                    'value' => $config['sku_append']
+                ]
+            )->data();
+            $calls++;
+            
+            // Create the product slug modifier
+            $slugModifier = $moltin->variations->createModifier(
+                $variationID,
+                $option->id,
+                [
+                    'modifier_type' => 'slug_append',
+                    'value' => $config['slug_append']
+                ]
+            )->data();
+            $calls++;
         }
 
-        $moltin->products->createRelationships($base->id, 'variations', [$storedVariation->id]);
+        // link the product to the variation to the option
+        $moltin->products->createRelationships($base->id, 'variations', [$variationID]);
+        $calls++;
     }
 
+    // build the child products
+    $moltin->products->build($base->id);
+    $calls++;
+    
+    $products = $moltin->products->all()->data();
+
+    $table = new Console_Table();
+    $table->setHeaders(['Name', 'SKU']);
+
+    $i = 0;
+    foreach($products as $product) {
+        $table->addRow([
+            $product->name,
+            $product->sku,
+        ]);
+        if ($i < count($products) - 1) {
+            $table->addSeparator();
+        }
+        $i++;
+    }
+
+    $endTime = microtime(true);
+    echo "[Created " . count($products) . " products ({$calls} API calls) in " . round(($endTime - $startTime), 5) . " seconds]\n\n";
+
+    echo $table->getTable();
 
 } catch(Exception $e) {
 
