@@ -148,7 +148,7 @@ When the variation is set up, we can then relate it to the base product:
 $moltin->products->createRelationships($productID, 'variations', [$variationID]);
 ```
 
-Now our product is related, we can instatite the build on the product which will create all of the products based on its variations and options:
+Now our product is related, we can instantiate the build on the product which will create all of the products based on its variations and options:
 
 ```php
 $moltin->products->build($productID);
