@@ -87,74 +87,8 @@ $moltin->files->all();
 Fetch a Resource by ID:
 
 ```php
-$moltin->files->get($productID);
 $moltin->products->get($productID);
-...
 ```
-
-### Deleting a Resource
-
-```php
-$moltin->files->delete($productID);
-$moltin->products->delete($productID);
-...
-```
-
-### Managing Product Variations / Options / Modifiers
-
-You can manage your product variations and modifiers using the SDK.
-
-Assuming you already have a base produt set up, you can then create the variation:
-
-```php
-$variationID = $moltin->variations->create([
-    'type'=> 'product-variation',
-    'name' => 'Colour'
-])->data()->id;
-```
-
-Then create the options on your variation:
-
-```php
-$variation = $moltin->variations->createOption($variationID, [
-    'name' => 'Red',
-    'description' => 'Grab the limited edition RED!'
-])->data();
-```
-
-Note that creating the option actually [returns the variation with all options](https://moltin.api-docs.io/v2/product-variation-options/create-a-product-variation-option), so to add the modifier, we need to find our option in the response:
-
-```php
-foreach($variation->data()->options as $option) {
-    if ($option->name === 'Red') {
-        $optionID = $option->id;
-    }
-}
-```
-
-Then we can create modifiers for the option:
-
-```php
-// then the modifiers
-$moltin->variations->createModifier($variationID, $optionID, [
-    'modifier_type' => 'sku_append',
-    'value' => '-RED'
-]);
-```
-
-When the variation is set up, we can then relate it to the base product:
-
-```php
-$moltin->products->createRelationships($productID, 'variations', [$variationID]);
-```
-
-Now our product is related, we can instantiate the build on the product which will create all of the products based on its variations and options:
-
-```php
-$moltin->products->build($productID);
-```
-
-Now when you retieve your product list, you will see all of your products. For an example of this in action please see the [Product Variations example](examples/ProductVariations.php).
 
 ### Fetching the category/brand/collection tree
 
@@ -211,7 +145,7 @@ The `array` passed to the `filter` method should contain all of the conditions r
 
 For more information on the filter operations please read the [API reference](https://moltin.api-docs.io/v2/using-the-api/filtering).
 
-### Including Data
+### Including data
 
 To include other data in your request (such as products when getting a category) call the `with()` method on the resource:
 

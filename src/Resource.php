@@ -24,7 +24,7 @@ class Resource
         'parent' => 'category',
         'products' => 'product',
         'product-modifiers' => 'product-modifier',
-        'variations' => 'product-variation',
+        'variations' => 'variation',
         'variation-options' => 'variation-option'
     ];
 
