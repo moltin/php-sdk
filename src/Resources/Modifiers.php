@@ -4,8 +4,8 @@ namespace Moltin\Resources;
 
 use Moltin\Resource as Resource;
 
-class Variations extends Resource
+class Modifiers extends Resource
 {
-    public $uri = 'variations';
+    public $uri = 'product-modifiers';
 
 }
