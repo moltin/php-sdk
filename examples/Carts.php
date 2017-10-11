@@ -12,7 +12,7 @@ try {
         foreach($items as $item) {
             $table->addRow([
                 $item->id,
-                $item->product_id,
+                empty($item->product_id) ? 'custom' : $item->product_id,
                 $item->quantity,
                 $item->unit_price->amount . " (" . $item->unit_price->currency . ")",
                 $item->value->amount . " (" . $item->value->currency . ")",
@@ -44,21 +44,62 @@ try {
     // known cart id (usually stored in cookie - we're setting it here because we're on the CLI)
     $cartID = '95597f65a5ea7e907a4dcbe4eb6b4435';
 
+    $stamp = time();
+
     // add a product to the cart
-    $productOneID = 'a8a40abb-5357-4df4-83a0-35ccbd1d15ab';
+    $productOne = $moltin->products->create([
+        'type' => 'product',
+        'name' => 'My Great Product',
+        'slug' => 'my-great-product-' . $stamp,
+        'sku' => 'my.great.product.' . $stamp,
+        'manage_stock' => false,
+        'description' => 'My Great Product is awesome',
+        'price' => [
+            [
+                'amount' => 5000,
+                'currency'=> 'USD',
+                'includes_tax' => true
+            ]
+        ],
+        'status' => 'live',
+        'commodity_type' => 'physical',
+    ]);
+    $productOneID = $productOne->data()->id;
     $productQuantity = 2;
     echo "\n\nAdding " . $productQuantity . " x " . $productOneID . " to your cart. ";
     $cart = $moltin->cart($cartID)->addProduct($productOneID, $productQuantity);
     echo "Cart value (with tax) is now: " . $cart->meta()->display_price->with_tax->formatted . "\n";
     printCartItemsTable($cart->data());
 
-    $productTwoID = 'ac964ac0-3740-458d-933a-8647041032a3';
+    $productTwo = $moltin->products->create([
+        'type' => 'product',
+        'name' => 'My Even Greater Product',
+        'slug' => 'my-even-greater-product-' . $stamp,
+        'sku' => 'my.even.greater.product.' . $stamp,
+        'manage_stock' => false,
+        'description' => 'My Even Greater Product is even more awesome',
+        'price' => [
+            [
+                'amount' => 10000,
+                'currency'=> 'USD',
+                'includes_tax' => true
+            ]
+        ],
+        'status' => 'live',
+        'commodity_type' => 'physical',
+    ]);
+    $productTwoID = $productTwo->data()->id;
     $productTwoQuantity = 3;
     echo "\n\nAdding " . $productTwoQuantity . " x " . $productTwoID . " to your cart.";
     $cart = $moltin->cart($cartID)->addProduct($productTwoID, $productTwoQuantity);
     echo " Cart value (with tax) is now: " . $cart->meta()->display_price->with_tax->formatted . "\n";
     printCartItemsTable($cart->data());
 
+    // add a custom item
+    $cart = $moltin->cart($cartID)->addCustomItem("Custom Item", "custom.item", "An example custom item", 100, 2);
+    echo " Cart value (with tax) is now: " . $cart->meta()->display_price->with_tax->formatted . "\n";
+    printCartItemsTable($cart->data());
+    
     // get the cart items manually
     $items = $moltin->cart($cartID)->items()->data();
 

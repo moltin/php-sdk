@@ -87,6 +87,33 @@ class Cart extends Carts
     }
 
     /**
+     *  Add a Custom Item to the Cart
+     *
+     *  @param string $name the custom item name
+     *  @param string $sku the custom item sku
+     *  @param string $description the custom item description
+     *  @param int $price
+     *  @param int $qty the quantity to add to the cart
+     *  @return Moltin\Response
+     */
+    public function addCustomItem($name, $sku, $description, $price, $qty = 1)
+    {
+        $body = [
+            'data' => [
+                'type' => 'custom_item',
+                'name' => $name,
+                'sku' => $sku,
+                'description' => $description,
+                'quantity' => $qty,
+                'price' => [
+                    'amount' => $price
+                ]
+            ]
+        ];
+        return $this->call('POST', $body, $this->getReference() . '/items');
+    }
+
+    /**
      *  Get the items in a cart
      *
      *  @return Moltin\Response
