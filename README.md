@@ -63,7 +63,7 @@ Or by adding the `api_endpoint` field to the `$config` array you pass to the con
 
 ### Multiple Resources
 
-To return a list of your resources (limited to 100 depending your [store configuration] (https://moltin.api-docs.io/v2/settings)):
+To return a list of your resources (limited to 100 depending your store configuration):
 
 ```php
 // return a list of your products 
@@ -122,7 +122,7 @@ $moltin->products->sort('-name')->all();
 
 ### Filtering Results
 
-To [filter your results](https://moltin.api-docs.io/v2/using-the-api/filtering) when calling resources which support it (e.g. `/v2/products`).
+To [filter your results](https://docs.moltin.com/#filtering) when calling resources which support it (e.g. `/v2/products`).
 
 A simple filter to get all products which are in stock may look like this:
 
@@ -143,7 +143,7 @@ $moltin->products->filter(new \Moltin\Filter([
 
 The `array` passed to the `filter` method should contain all of the conditions required to be met by the filter on the API and allow you to use several filters of the same type (as demostrated above).
 
-For more information on the filter operations please read the [API reference](https://moltin.api-docs.io/v2/using-the-api/filtering).
+For more information on the filter operations please read the [API reference](https://docs.moltin.com/#filtering).
 
 ### Including data
 
