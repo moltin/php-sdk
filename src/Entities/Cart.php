@@ -114,6 +114,23 @@ class Cart extends Carts
     }
 
     /**
+     *  Add a Promotion Code to the Cart
+     *
+     *  @param string $code the promotion code
+     *  @return Moltin\Response
+     */
+    public function addPromotionCode($code)
+    {
+        $body = [
+            'data' => [
+                'type' => 'promotion_item',
+                'code' => $code
+            ]
+        ];
+        return $this->call('POST', $body, $this->getReference() . '/items');
+    }
+
+    /**
      *  Get the items in a cart
      *
      *  @return Moltin\Response
